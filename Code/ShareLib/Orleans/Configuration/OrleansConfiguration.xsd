@@ -23,7 +23,8 @@
       <xs:enumeration value="None" />
       <xs:enumeration value="SqlServer" />
       <xs:enumeration value="AzureTable" />
-	  <xs:enumeration value="ZooKeeper" />
+      <xs:enumeration value="ZooKeeper" />
+      <xs:enumeration value="Custom" />
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="LivenessType">
@@ -348,6 +349,20 @@
           accessible to the role via RoleEnvironment.DeploymentId static variable and is passed to the silo automatically by the role via config.
           So if the silos are run as Azure roles this variable should not be specified in the OrleansConfiguration.xml (it will be overwritten if specified).
           If the silos are deployed on the cluster and not as Azure roles, this variable should be set by a deployment script in the OrleansConmfiguration.xml file.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="MembershipTableAssembly" type="xs:string" use="optional">
+    <xs:annotation>
+      <xs:documentation>
+        Fully qualified assembly to use for custom MembershipTable implementation. SystemStoreType must be 'Custom'.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:attribute>
+    <xs:attribute name="ReminderTableAssembly" type="xs:string" use="optional">
+      <xs:annotation>
+        <xs:documentation>
+          Fully qualified assembly to use for custom RemindersTable implementation. SystemStoreType must be 'Custom'.
         </xs:documentation>
       </xs:annotation>
     </xs:attribute>
@@ -775,6 +790,7 @@
           </xs:sequence>
         </xs:complexType>
       </xs:element>
+      <xs:element name="StreamProviders" minOccurs="0" maxOccurs="1" type="tns:StreamProvidersConfig" />
       <xs:element name="Application" minOccurs="0" maxOccurs="1">
         <xs:complexType>
           <xs:annotation>
@@ -1078,7 +1094,7 @@
         <xs:element name="Statistics" minOccurs="0" type="tns:StatisticsConfiguration" />
         <xs:element name="Limits" minOccurs="0" type="tns:LimitsConfiguration" />
         <xs:element name="Messaging" minOccurs="0" type="tns:MessagingConfiguration" />
-        
+        <xs:element name="StreamProviders" minOccurs="0" maxOccurs="1" type="tns:StreamProvidersConfig" />
         <xs:element name="LocalAddress" minOccurs="0">
           <xs:complexType>
             <xs:annotation>
@@ -1139,5 +1155,15 @@
         </xs:documentation>
       </xs:annotation>
     </xs:anyAttribute>
+  </xs:complexType>
+  <xs:complexType name="StreamProvidersConfig">
+    <xs:annotation>
+      <xs:documentation>
+        The optional StreamProviders element contains information relating to stream provider instances used for streaming.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Provider" type="tns:ProviderInstanceConfig" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
   </xs:complexType>
 </xs:schema>

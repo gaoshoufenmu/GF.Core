@@ -1,7 +1,5 @@
 F:\_Git\orleans\Binaries\Debug\Bootstrap\Intermediate\ClientGenerator.csprojResolveAssemblyReference.cache
 F:\_Git\orleans\Binaries\Debug\Bootstrap\Orleans.SDK.targets
-F:\_Git\orleans\Binaries\Debug\Bootstrap\Orleans.Grains.props
-F:\_Git\orleans\Binaries\Debug\Bootstrap\Orleans.Interfaces.props
 F:\_Git\orleans\Binaries\Debug\Bootstrap\Configuration\OrleansConfiguration.xsd
 F:\_Git\orleans\Binaries\Debug\Bootstrap\ClientGenerator.exe.config
 F:\_Git\orleans\Binaries\Debug\Bootstrap\Intermediate\ClientGenerator.exe

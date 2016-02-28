@@ -6110,6 +6110,11 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:Orleans.Streams.IQueueCacheCursor.RecordDeliveryFailure">
+            <summary>
+            Record that delivery of the current event has failed
+            </summary>
+        </member>
         <member name="T:Orleans.Streams.OrFilter">
             <summary>
             This class is a [Serializable] holder for a logical-or composite predicate function.

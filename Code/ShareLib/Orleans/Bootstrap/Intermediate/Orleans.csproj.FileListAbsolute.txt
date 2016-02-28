@@ -1,9 +1,8 @@
 F:\_Git\orleans\Binaries\Debug\Bootstrap\Orleans.SDK.targets
-F:\_Git\orleans\Binaries\Debug\Bootstrap\Orleans.Grains.props
-F:\_Git\orleans\Binaries\Debug\Bootstrap\Orleans.Interfaces.props
 F:\_Git\orleans\Binaries\Debug\Bootstrap\Configuration\OrleansConfiguration.xsd
 F:\_Git\orleans\Binaries\Debug\Bootstrap\Intermediate\Orleans.dll
 F:\_Git\orleans\Binaries\Debug\Bootstrap\Intermediate\Orleans.pdb
 F:\_Git\orleans\Binaries\Debug\Bootstrap\Orleans.dll
 F:\_Git\orleans\Binaries\Debug\Bootstrap\Orleans.pdb
 F:\_Git\orleans\Binaries\Debug\Bootstrap\Orleans.XML
+F:\_Git\orleans\Binaries\Debug\Bootstrap\Intermediate\Orleans.csprojResolveAssemblyReference.cache
