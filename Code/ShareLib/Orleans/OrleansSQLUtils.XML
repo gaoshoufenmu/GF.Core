@@ -4,6 +4,157 @@
         <name>OrleansSQLUtils</name>
     </assembly>
     <members>
+        <member name="T:Orleans.SqlUtils.OrleansRelationalDownloadStream">
+            <summary>
+            This is a chunked read implementation for ADO.NET providers which do
+            not otherwise implement <see cref="M:System.Data.Common.DbDataReader.GetStream(System.Int32)"/> natively.
+            </summary>
+        </member>
+        <member name="F:Orleans.SqlUtils.OrleansRelationalDownloadStream.lastTask">
+            <summary>
+            A cached task as if there are multiple rounds of reads, it is likely
+            the bytes read is the same. This saves one allocation.
+            </summary>
+        </member>
+        <member name="F:Orleans.SqlUtils.OrleansRelationalDownloadStream.reader">
+            <summary>
+            The reader to use to read from the database.
+            </summary>
+        </member>
+        <member name="F:Orleans.SqlUtils.OrleansRelationalDownloadStream.position">
+            <summary>
+            The position in the overall stream.
+            </summary>
+        </member>
+        <member name="F:Orleans.SqlUtils.OrleansRelationalDownloadStream.ordinal">
+            <summary>
+            The column ordinal to read from.
+            </summary>
+        </member>
+        <member name="F:Orleans.SqlUtils.OrleansRelationalDownloadStream.totalBytes">
+            <summary>
+            The total number of bytes in the column.
+            </summary>
+        </member>
+        <member name="F:Orleans.SqlUtils.OrleansRelationalDownloadStream.InternalReadBufferLength">
+            <summary>
+            The internal byte array buffer size used in .CopyToAsync.
+            This size is just a guess and is likely dependent on the database
+            tuning settings (e.g. read_buffer_size in case of MySQL).
+            </summary>
+        </member>
+        <member name="M:Orleans.SqlUtils.OrleansRelationalDownloadStream.#ctor(System.Data.Common.DbDataReader,System.Int32)">
+            <summary>
+            The default constructor.
+            </summary>
+            <param name="reader">The reader to use to read from the database.</param>
+            <param name="ordinal">The column ordinal to read from.</param>
+        </member>
+        <member name="P:Orleans.SqlUtils.OrleansRelationalDownloadStream.CanRead">
+            <summary>
+            Can the stream be read.
+            </summary>
+        </member>
+        <member name="P:Orleans.SqlUtils.OrleansRelationalDownloadStream.CanSeek">
+            <summary>
+            Are seeks supported.
+            </summary>
+            <remarks>Returns <em>FALSE</em>.</remarks>
+        </member>
+        <member name="P:Orleans.SqlUtils.OrleansRelationalDownloadStream.CanTimeout">
+            <summary>
+            Can the stream timeout.
+            </summary>
+            <remarks>Returns <em>FALSE</em>.</remarks>
+        </member>
+        <member name="P:Orleans.SqlUtils.OrleansRelationalDownloadStream.CanWrite">
+            <summary>
+            Can the stream write.
+            </summary>
+            <remarks>Returns <em>FALSE</em>.</remarks>
+        </member>
+        <member name="P:Orleans.SqlUtils.OrleansRelationalDownloadStream.Length">
+            <summary>
+            The length of the stream.
+            </summary>        
+        </member>
+        <member name="P:Orleans.SqlUtils.OrleansRelationalDownloadStream.Position">
+            <summary>
+            The current position in the stream.
+            </summary>
+        </member>
+        <member name="M:Orleans.SqlUtils.OrleansRelationalDownloadStream.Flush">
+            <summary>
+            Throws <exception cref="T:System.NotSupportedException"/>.
+            </summary>        
+            <exception cref="T:System.NotSupportedException" />.
+        </member>
+        <member name="M:Orleans.SqlUtils.OrleansRelationalDownloadStream.Read(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Reads the stream.
+            </summary>
+            <param name="buffer">The buffer to read to.</param>
+            <param name="offset">The offset to the buffer to stat reading.</param>
+            <param name="count">The count of bytes to read to.</param>
+            <returns>The number of actual bytes read from the stream.</returns>
+        </member>
+        <member name="M:Orleans.SqlUtils.OrleansRelationalDownloadStream.ReadAsync(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Reads the stream.
+            </summary>
+            <param name="buffer">The buffer to read to.</param>
+            <param name="offset">The offset to the buffer to stat reading.</param>
+            <param name="count">The count of bytes to read to.</param>        
+            <param name="cancellationToken">The cancellation token.</param>
+            <returns>The number of actual bytes read from the stream.</returns>
+        </member>
+        <member name="M:Orleans.SqlUtils.OrleansRelationalDownloadStream.CopyToAsync(System.IO.Stream,System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            A buffer copy operation from database to the destination stream.
+            </summary>
+            <param name="destination">The destination stream.</param>
+            <param name="bufferSize">The buffer size.</param>
+            <param name="cancellationToken">The cancellation token.</param>
+            <remarks>Reading from the underlying ADO.NET provider is currently synchro</remarks>
+        </member>
+        <member name="M:Orleans.SqlUtils.OrleansRelationalDownloadStream.Seek(System.Int64,System.IO.SeekOrigin)">
+            <summary>
+            Throws <exception cref="T:System.NotSupportedException"/>.
+            </summary>
+            <param name="offset">The offset to the stream.</param>
+            <param name="origin">The origin.</param>
+            <returns>Throws <exception cref="T:System.NotSupportedException"/>.</returns>
+            <exception cref="T:System.NotSupportedException" />.
+        </member>
+        <member name="M:Orleans.SqlUtils.OrleansRelationalDownloadStream.SetLength(System.Int64)">
+            <summary>
+            Throws <exception cref="T:System.NotSupportedException"/>. 
+            </summary>
+            <returns>Throws <exception cref="T:System.NotSupportedException"/>.</returns>
+            <exception cref="T:System.NotSupportedException" />.
+        </member>
+        <member name="M:Orleans.SqlUtils.OrleansRelationalDownloadStream.Write(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Throws <exception cref="T:System.NotSupportedException"/>. 
+            </summary>
+            <param name="buffer">The buffer.</param>
+            <param name="offset">The offset to the buffer.</param>
+            <param name="count">The count of bytes to read.</param>
+        </member>
+        <member name="M:Orleans.SqlUtils.OrleansRelationalDownloadStream.Dispose(System.Boolean)">
+            <summary>
+            Dispose.
+            </summary>
+            <param name="disposing">Whether is disposing or not.</param>
+        </member>
+        <member name="M:Orleans.SqlUtils.OrleansRelationalDownloadStream.ValidateReadParameters(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Checks the the parameters passed into a ReadAsync() or Read() are valid.
+            </summary>        
+            <param name="buffer"></param>
+            <param name="offset"></param>
+            <param name="count"></param>
+        </member>
         <member name="T:Orleans.SqlUtils.AdoNetInvariants">
             <summary>
             A holder for well known, vendor specific connector class invariant names.
@@ -33,6 +184,48 @@
             <summary>
             PostgreSQL invariant name string.
             </summary>
+        </member>
+        <member name="M:Orleans.SqlUtils.DbConstantsStore.SupportsCommandCancellation(Orleans.SqlUtils.IRelationalStorage)">
+            <summary>
+            If the underlying <see cref="T:System.Data.Common.DbCommand"/> the storage supports cancellation or not.
+            </summary>
+            <param name="storage">The storage used.</param>
+            <returns><em>TRUE</em> if cancellation is supported. <em>FALSE</em> otherwise.</returns>
+        </member>
+        <member name="M:Orleans.SqlUtils.DbConstantsStore.SupportsCommandCancellation(System.String)">
+            <summary>
+            If the <see cref="T:System.Data.Common.DbCommand"/> that would be used supports cancellation or not.
+            </summary>
+            <param name="adoNetProvider">The ADO.NET provider invariant string.</param>
+            <returns><em>TRUE</em> if cancellation is supported. <em>FALSE</em> otherwise.</returns>
+        </member>
+        <member name="M:Orleans.SqlUtils.DbConstantsStore.SupportsStreamNatively(Orleans.SqlUtils.IRelationalStorage)">
+            <summary>
+            If the underlying <see cref="T:System.Data.Common.DbCommand"/> the storage supports streaming natively.
+            </summary>
+            <param name="storage">The storage used.</param>
+            <returns><em>TRUE</em> if streaming is supported natively. <em>FALSE</em> otherwise.</returns>
+        </member>
+        <member name="M:Orleans.SqlUtils.DbConstantsStore.SupportsStreamNatively(System.String)">
+            <summary>
+            If the underlying <see cref="T:System.Data.Common.DbCommand"/> the storage supports streaming natively.
+            </summary>
+            <param name="adoNetProvider">The ADO.NET provider invariant string.</param>
+            <returns><em>TRUE</em> if streaming is supported natively. <em>FALSE</em> otherwise.</returns>
+        </member>
+        <member name="M:Orleans.SqlUtils.DbConstantsStore.IsSynchronousAdoNetImplementation(Orleans.SqlUtils.IRelationalStorage)">
+            <summary>
+            If the underlying ADO.NET implementation is known to be synchronous.
+            </summary>
+            <param name="storage">The storage used.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Orleans.SqlUtils.DbConstantsStore.IsSynchronousAdoNetImplementation(System.String)">
+            <summary>
+            If the <see cref="T:System.Data.Common.DbCommand"/> that would be used supports cancellation or not.
+            </summary>
+            <param name="adoNetProvider">The ADO.NET provider invariant string.</param>
+            <returns></returns>
         </member>
         <member name="F:Orleans.SqlUtils.DbConstants.UnionAllSelectTemplate">
             <summary>
@@ -86,6 +279,18 @@
             <exception cref="T:System.IndexOutOfRangeException"/>
             <remarks>This function throws if the given <see paramref="fieldName"/> does not exist.</remarks>
         </member>
+        <member name="M:Orleans.SqlUtils.DbExtensions.GetValueOrDefaultAsync``1(System.Data.Common.DbDataReader,System.String,``0)">
+            <summary>
+            Returns a value if it is not <see cref="T:System.DBNull"/>, <em>default(TValue)</em> otherwise.
+            </summary>
+            <typeparam name="TValue">The type of the value to request.</typeparam>
+            <param name="record">The record from which to retrieve the value.</param>
+            <param name="fieldName">The name of the field to retrieve.</param>
+            <param name="default">The default value if value in position is <see cref="T:System.DBNull"/>.</param>
+            <returns>Either the given value or the default for the requested type.</returns>
+            <exception cref="T:System.IndexOutOfRangeException"/>
+            <remarks>This function throws if the given <see paramref="fieldName"/> does not exist.</remarks>
+        </member>
         <member name="M:Orleans.SqlUtils.DbExtensions.GetValueOrDefault``1(System.Data.IDataRecord,System.Int32,``0)">
             <summary>
             Returns a value if it is not <see cref="T:System.DBNull"/>, <em>default(TValue)</em> otherwise.
@@ -95,10 +300,31 @@
             <param name="ordinal">The ordinal of the fieldname.</param>
             <param name="default">The default value if value in position is <see cref="T:System.DBNull"/>.</param>
             <returns>Either the given value or the default for the requested type.</returns>
+            <exception cref="T:System.IndexOutOfRangeException"/>                
+        </member>
+        <member name="M:Orleans.SqlUtils.DbExtensions.GetValueOrDefaultAsync``1(System.Data.Common.DbDataReader,System.Int32,``0)">
+            <summary>
+            Returns a value if it is not <see cref="T:System.DBNull"/>, <em>default(TValue)</em> otherwise.
+            </summary>
+            <typeparam name="TValue">The type of the value to request.</typeparam>
+            <param name="record">The record from which to retrieve the value.</param>
+            <param name="ordinal">The ordinal of the fieldname.</param>
+            <param name="default">The default value if value in position is <see cref="T:System.DBNull"/>.</param>
+            <returns>Either the given value or the default for the requested type.</returns>
+            <exception cref="T:System.IndexOutOfRangeException"/>                
+        </member>
+        <member name="M:Orleans.SqlUtils.DbExtensions.GetValue``1(System.Data.IDataRecord,System.String)">
+            <summary>
+            Returns a value with the given <see paramref="fieldName"/>.
+            </summary>
+            <typeparam name="TValue">The type of value to retrieve.</typeparam>
+            <param name="record">The record from which to retrieve the value.</param>
+            <param name="fieldName">The name of the field.</param>
+            <returns>Value in the given field indicated by <see paramref="fieldName"/>.</returns>
             <exception cref="T:System.IndexOutOfRangeException"/>
             <remarks>This function throws if the given <see paramref="fieldName"/> does not exist.</remarks>        
         </member>
-        <member name="M:Orleans.SqlUtils.DbExtensions.GetValue``1(System.Data.IDataRecord,System.String)">
+        <member name="M:Orleans.SqlUtils.DbExtensions.GetValueAsync``1(System.Data.Common.DbDataReader,System.String)">
             <summary>
             Returns a value with the given <see paramref="fieldName"/>.
             </summary>
@@ -185,7 +411,7 @@
             A common interface for all relational databases.
             </summary>
         </member>
-        <member name="M:Orleans.SqlUtils.IRelationalStorage.ReadAsync``1(System.String,System.Action{System.Data.IDbCommand},System.Func{System.Data.IDataRecord,System.Int32,``0})">
+        <member name="M:Orleans.SqlUtils.IRelationalStorage.ReadAsync``1(System.String,System.Action{System.Data.IDbCommand},System.Func{System.Data.IDataRecord,System.Int32,System.Threading.CancellationToken,System.Threading.Tasks.Task{``0}},System.Threading.CancellationToken,System.Data.CommandBehavior)">
              <summary>
              Executes a given statement. Especially intended to use with <em>SELECT</em> statement.
              </summary>
@@ -193,6 +419,8 @@
              <param name="query">The query to execute.</param>
              <param name="parameterProvider">Adds parameters to the query. The parameters must be in the same order with same names as defined in the query.</param>
              <param name="selector">This function transforms the raw <see cref="T:System.Data.IDataRecord"/> results to type <see paramref="TResult"/> the <see cref="T:System.Int32"/> parameter being the resultset number.</param>
+             <param name="cancellationToken">The cancellation token. Defaults to <see cref="P:System.Threading.CancellationToken.None"/>.</param>
+             <param name="commandBehavior">The command behavior that should be used. Defaults to <see cref="F:System.Data.CommandBehavior.Default"/>.</param>
              <returns>A list of objects as a result of the <see paramref="query"/>.</returns>
              <example>This sample shows how to make a hand-tuned database call.
              <code>
@@ -234,12 +462,14 @@
              </code>        
              </example>
         </member>
-        <member name="M:Orleans.SqlUtils.IRelationalStorage.ExecuteAsync(System.String,System.Action{System.Data.IDbCommand})">
+        <member name="M:Orleans.SqlUtils.IRelationalStorage.ExecuteAsync(System.String,System.Action{System.Data.IDbCommand},System.Threading.CancellationToken,System.Data.CommandBehavior)">
             <summary>
             Executes a given statement. Especially intended to use with <em>INSERT</em>, <em>UPDATE</em>, <em>DELETE</em> or <em>DDL</em> queries.
             </summary>
             <param name="query">The query to execute.</param>
             <param name="parameterProvider">Adds parameters to the query. Parameter names must match those defined in the query.</param>
+            <param name="cancellationToken">The cancellation token. Defaults to <see cref="P:System.Threading.CancellationToken.None"/>.</param>
+            <param name="commandBehavior">The command behavior that should be used. Defaults to <see cref="F:System.Data.CommandBehavior.Default"/>.</param>
             <returns>Affected rows count.</returns>
             <example>This sample shows how to make a hand-tuned database call.
             <code>
@@ -442,6 +672,18 @@
             The invariant name of the connector for this database.
             </summary>
         </member>
+        <member name="F:Orleans.SqlUtils.RelationalStorage.supportsCommandCancellation">
+            <summary>
+            If the ADO.NET provider of this storage supports cancellation or not. This
+            capability is queried and the the result is cached here.
+            </summary>
+        </member>
+        <member name="F:Orleans.SqlUtils.RelationalStorage.isSynchronousAdoNetImplementation">
+            <summary>
+            If the underlying ADO.NET implementation is natively asynchronous
+            (the ADO.NET Db*.XXXAsync classes are overriden) or not.
+            </summary>
+        </member>
         <member name="P:Orleans.SqlUtils.RelationalStorage.InvariantName">
             <summary>
             The invariant name of the connector for this database.
@@ -460,7 +702,7 @@
             <param name="connectionString">The connection string this database should use for database operations.</param>
             <returns></returns>
         </member>
-        <member name="M:Orleans.SqlUtils.RelationalStorage.ReadAsync``1(System.String,System.Action{System.Data.IDbCommand},System.Func{System.Data.IDataRecord,System.Int32,``0})">
+        <member name="M:Orleans.SqlUtils.RelationalStorage.ReadAsync``1(System.String,System.Action{System.Data.IDbCommand},System.Func{System.Data.IDataRecord,System.Int32,System.Threading.CancellationToken,System.Threading.Tasks.Task{``0}},System.Threading.CancellationToken,System.Data.CommandBehavior)">
              <summary>
              Executes a given statement. Especially intended to use with <em>SELECT</em> statement.
              </summary>
@@ -468,6 +710,8 @@
              <param name="query">Executes a given statement. Especially intended to use with <em>SELECT</em> statement.</param>        
              <param name="parameterProvider">Adds parameters to the query. Parameter names must match those defined in the query.</param>
              <param name="selector">This function transforms the raw <see cref="T:System.Data.IDataRecord"/> results to type <see paramref="TResult"/> the <see cref="T:System.Int32"/> parameter being the resultset number.</param>
+             <param name="cancellationToken">The cancellation token. Defaults to <see cref="P:System.Threading.CancellationToken.None"/>.</param>
+             <param name="commandBehavior">The command behavior that should be used. Defaults to <see cref="F:System.Data.CommandBehavior.Default"/>.</param>
              <returns>A list of objects as a result of the <see paramref="query"/>.</returns>
              <example>This sample shows how to make a hand-tuned database call.
              <code>
@@ -509,12 +753,14 @@
              </code>
              </example>
         </member>
-        <member name="M:Orleans.SqlUtils.RelationalStorage.ExecuteAsync(System.String,System.Action{System.Data.IDbCommand})">
+        <member name="M:Orleans.SqlUtils.RelationalStorage.ExecuteAsync(System.String,System.Action{System.Data.IDbCommand},System.Threading.CancellationToken,System.Data.CommandBehavior)">
             <summary>
             Executes a given statement. Especially intended to use with <em>INSERT</em>, <em>UPDATE</em>, <em>DELETE</em> or <em>DDL</em> queries.
             </summary>
             <param name="query">The query to execute.</param>
             <param name="parameterProvider">Adds parameters to the query. Parameter names must match those defined in the query.</param>
+            <param name="cancellationToken">The cancellation token. Defaults to <see cref="P:System.Threading.CancellationToken.None"/>.</param>
+            <param name="commandBehavior">The command behavior that should be used. Defaults to <see cref="F:System.Data.CommandBehavior.Default"/>.</param>
             <returns>Affected rows count.</returns>
             <example>This sample shows how to make a hand-tuned database call.
             <code>
@@ -536,6 +782,17 @@
             </summary>
             <param name="invariantName">The invariant name of the connector for this database.</param>
             <param name="connectionString">The connection string this database should use for database operations.</param>
+        </member>
+        <member name="P:Orleans.SqlUtils.RelationalStorage.SupportsCommandCancellation">
+            <summary>
+            A cached value if the underlying ADO.NET provider supports cancellation or not.        
+            </summary>
+        </member>
+        <member name="P:Orleans.SqlUtils.RelationalStorage.IsSynchronousAdoNetImplementation">
+            <summary>
+            If the underlying ADO.NET implementation is natively asynchronous
+            (the ADO.NET Db*.XXXAsync classes are overriden) or not.
+            </summary>
         </member>
         <member name="T:Orleans.SqlUtils.RelationalOrleansQueries">
             <summary>
@@ -842,7 +1099,7 @@
             This is a template to produce query parameters that are indexed.
             </summary>
         </member>
-        <member name="M:Orleans.SqlUtils.RelationalStorageExtensions.ExecuteMultipleInsertIntoAsync``1(Orleans.SqlUtils.IRelationalStorage,System.String,System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IReadOnlyDictionary{System.String,System.String},System.Collections.Generic.IEnumerable{System.String},System.Boolean)">
+        <member name="M:Orleans.SqlUtils.RelationalStorageExtensions.ExecuteMultipleInsertIntoAsync``1(Orleans.SqlUtils.IRelationalStorage,System.String,System.Collections.Generic.IEnumerable{``0},System.Threading.CancellationToken,System.Collections.Generic.IReadOnlyDictionary{System.String,System.String},System.Collections.Generic.IEnumerable{System.String},System.Boolean)">
             <summary>
             Executes a multi-record insert query clause with <em>SELECT UNION ALL</em>.
             </summary>
@@ -850,12 +1107,13 @@
             <param name="storage">The storage to use.</param>
             <param name="tableName">The table name to against which to execute the query.</param>
             <param name="parameters">The parameters to insert.</param>
+            <param name="cancellationToken">The cancellation token. Defaults to <see cref="P:System.Threading.CancellationToken.None"/>.</param>
             <param name="nameMap">If provided, maps property names from <typeparamref name="T"/> to ones provided in the map.</param>
             <param name="onlyOnceColumns">If given, SQL parameter values for the given <typeparamref name="T"/> property types are generated only once. Effective only when <paramref name="useSqlParams"/> is <em>TRUE</em>.</param>
             <param name="useSqlParams"><em>TRUE</em> if the query should be in parameterized form. <em>FALSE</em> otherwise.</param>
             <returns>The rows affected.</returns>
         </member>
-        <member name="M:Orleans.SqlUtils.RelationalStorageExtensions.ReadAsync``1(Orleans.SqlUtils.IRelationalStorage,System.String,System.Object)">
+        <member name="M:Orleans.SqlUtils.RelationalStorageExtensions.ReadAsync``1(Orleans.SqlUtils.IRelationalStorage,System.String,System.Object,System.Threading.CancellationToken)">
             <summary>
             Uses <see cref="T:Orleans.SqlUtils.IRelationalStorage"/> with <see cref="M:Orleans.SqlUtils.DbExtensions.ReflectionParameterProvider``1(System.Data.IDbCommand,``0,System.Collections.Generic.IReadOnlyDictionary{System.String,System.String})"/>.
             </summary>
@@ -863,6 +1121,7 @@
             <param name="storage">The storage to use.</param>
             <param name="query">Executes a given statement. Especially intended to use with <em>SELECT</em> statement, but works with other queries too.</param>
             <param name="parameters">Adds parameters to the query. Parameter names must match those defined in the query.</param>
+            <param name="cancellationToken">The cancellation token. Defaults to <see cref="P:System.Threading.CancellationToken.None"/>.</param>
             <returns>A list of objects as a result of the <see paramref="query"/>.</returns>
             <example>This uses reflection to read results and match the parameters.
             <code>
@@ -880,22 +1139,24 @@
             </code>
             </example>
         </member>
-        <member name="M:Orleans.SqlUtils.RelationalStorageExtensions.ReadAsync``1(Orleans.SqlUtils.IRelationalStorage,System.String)">
+        <member name="M:Orleans.SqlUtils.RelationalStorageExtensions.ReadAsync``1(Orleans.SqlUtils.IRelationalStorage,System.String,System.Threading.CancellationToken)">
             <summary>
             Uses <see cref="T:Orleans.SqlUtils.IRelationalStorage"/> with <see cref="M:Orleans.SqlUtils.DbExtensions.ReflectionParameterProvider``1(System.Data.IDbCommand,``0,System.Collections.Generic.IReadOnlyDictionary{System.String,System.String})">DbExtensions.ReflectionParameterProvider</see>.
             </summary>
             <typeparam name="TResult">The type of the result.</typeparam>
             <param name="storage">The storage to use.</param>
-            <param name="query">Executes a given statement. Especially intended to use with <em>SELECT</em> statement, but works with other queries too.</param>        
+            <param name="query">Executes a given statement. Especially intended to use with <em>SELECT</em> statement, but works with other queries too.</param>
+            <param name="cancellationToken">The cancellation token. Defaults to <see cref="P:System.Threading.CancellationToken.None"/>.</param>
             <returns>A list of objects as a result of the <see paramref="query"/>.</returns>
         </member>
-        <member name="M:Orleans.SqlUtils.RelationalStorageExtensions.ExecuteAsync(Orleans.SqlUtils.IRelationalStorage,System.String,System.Object)">
+        <member name="M:Orleans.SqlUtils.RelationalStorageExtensions.ExecuteAsync(Orleans.SqlUtils.IRelationalStorage,System.String,System.Object,System.Threading.CancellationToken)">
             <summary>
             Uses <see cref="T:Orleans.SqlUtils.IRelationalStorage"/> with <see cref="M:Orleans.SqlUtils.DbExtensions.ReflectionSelector``1(System.Data.IDataRecord)"/>.
             </summary>
             <param name="storage">The storage to use.</param>
             <param name="query">Executes a given statement. Especially intended to use with <em>INSERT</em>, <em>UPDATE</em>, <em>DELETE</em> or <em>DDL</em> queries.</param>
             <param name="parameters">Adds parameters to the query. Parameter names must match those defined in the query.</param>
+            <param name="cancellationToken">The cancellation token. Defaults to <see cref="P:System.Threading.CancellationToken.None"/>.</param>
             <returns>Affected rows count.</returns>
             <example>This uses reflection to provide parameters to an execute
             query that reads only affected rows count if available.
@@ -907,13 +1168,24 @@
             </code>
             </example>
         </member>
-        <member name="M:Orleans.SqlUtils.RelationalStorageExtensions.ExecuteAsync(Orleans.SqlUtils.IRelationalStorage,System.String)">
+        <member name="M:Orleans.SqlUtils.RelationalStorageExtensions.ExecuteAsync(Orleans.SqlUtils.IRelationalStorage,System.String,System.Threading.CancellationToken)">
             <summary>
             Uses <see cref="T:Orleans.SqlUtils.IRelationalStorage"/> with <see cref="M:Orleans.SqlUtils.DbExtensions.ReflectionSelector``1(System.Data.IDataRecord)"/>.
             </summary>
             <param name="storage">The storage to use.</param>
             <param name="query">Executes a given statement. Especially intended to use with <em>INSERT</em>, <em>UPDATE</em>, <em>DELETE</em> or <em>DDL</em> queries.</param>        
+            <param name="cancellationToken">The cancellation token. Defaults to <see cref="P:System.Threading.CancellationToken.None"/>.</param>
             <returns>Affected rows count.</returns>
+        </member>
+        <member name="M:Orleans.SqlUtils.RelationalStorageExtensions.GetStream(System.Data.Common.DbDataReader,System.Int32,Orleans.SqlUtils.IRelationalStorage)">
+            <summary>
+            Returns a native implementation of <see cref="M:System.Data.Common.DbDataReader.GetStream(System.Int32)"/> for those providers
+            which support it. Otherwise returns a chuncked read using <see cref="M:System.Data.Common.DbDataReader.GetBytes(System.Int32,System.Int64,System.Byte[],System.Int32,System.Int32)"/>.
+            </summary>
+            <param name="reader">The reader from which to return the stream.</param>
+            <param name="ordinal">The ordinal column for which to return the stream.</param>
+            <param name="storage">The storage that gives the invariant.</param>
+            <returns></returns>
         </member>
         <member name="T:Orleans.SqlUtils.SqlFormatProvider">
             <summary>

@@ -13,158 +13,6 @@ namespace Orleans
     using global::Orleans.Async;
     using global::Orleans;
 
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.2.0.0"), global::System.SerializableAttribute, global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute, global::Orleans.CodeGeneration.GrainReferenceAttribute(typeof (global::Orleans.IMembershipTableGrain))]
-    internal class OrleansCodeGenMembershipTableGrainReference : global::Orleans.Runtime.GrainReference, global::Orleans.IMembershipTableGrain
-    {
-        protected @OrleansCodeGenMembershipTableGrainReference(global::Orleans.Runtime.GrainReference @other): base (@other)
-        {
-        }
-
-        protected @OrleansCodeGenMembershipTableGrainReference(global::System.Runtime.Serialization.SerializationInfo @info, global::System.Runtime.Serialization.StreamingContext @context): base (@info, @context)
-        {
-        }
-
-        protected override global::System.Int32 InterfaceId
-        {
-            get
-            {
-                return -1256503757;
-            }
-        }
-
-        public override global::System.String InterfaceName
-        {
-            get
-            {
-                return "global::Orleans.IMembershipTableGrain";
-            }
-        }
-
-        public override global::System.Boolean @IsCompatible(global::System.Int32 @interfaceId)
-        {
-            return @interfaceId == -1256503757;
-        }
-
-        protected override global::System.String @GetMethodName(global::System.Int32 @interfaceId, global::System.Int32 @methodId)
-        {
-            switch (@interfaceId)
-            {
-                case -1256503757:
-                    switch (@methodId)
-                    {
-                        case -1745428353:
-                            return "InitializeMembershipTable";
-                        case 106897969:
-                            return "DeleteMembershipTableEntries";
-                        case -1440482971:
-                            return "ReadRow";
-                        case 572429157:
-                            return "ReadAll";
-                        case -1925884676:
-                            return "InsertRow";
-                        case 1964092804:
-                            return "UpdateRow";
-                        case -1315256828:
-                            return "UpdateIAmAlive";
-                        default:
-                            throw new global::System.NotImplementedException("interfaceId=" + -1256503757 + ",methodId=" + @methodId);
-                    }
-
-                default:
-                    throw new global::System.NotImplementedException("interfaceId=" + @interfaceId);
-            }
-        }
-
-        public global::System.Threading.Tasks.Task @InitializeMembershipTable(global::Orleans.Runtime.Configuration.GlobalConfiguration @globalConfiguration, global::System.Boolean @tryInitTableVersion, global::Orleans.Runtime.TraceLogger @traceLogger)
-        {
-            return base.@InvokeMethodAsync<global::System.Object>(-1745428353, new global::System.Object[]{@globalConfiguration, @tryInitTableVersion, @traceLogger});
-        }
-
-        public global::System.Threading.Tasks.Task @DeleteMembershipTableEntries(global::System.String @deploymentId)
-        {
-            return base.@InvokeMethodAsync<global::System.Object>(106897969, new global::System.Object[]{@deploymentId});
-        }
-
-        public global::System.Threading.Tasks.Task<global::Orleans.MembershipTableData> @ReadRow(global::Orleans.Runtime.SiloAddress @key)
-        {
-            return base.@InvokeMethodAsync<global::Orleans.MembershipTableData>(-1440482971, new global::System.Object[]{@key});
-        }
-
-        public global::System.Threading.Tasks.Task<global::Orleans.MembershipTableData> @ReadAll()
-        {
-            return base.@InvokeMethodAsync<global::Orleans.MembershipTableData>(572429157, null);
-        }
-
-        public global::System.Threading.Tasks.Task<global::System.Boolean> @InsertRow(global::Orleans.MembershipEntry @entry, global::Orleans.TableVersion @tableVersion)
-        {
-            return base.@InvokeMethodAsync<global::System.Boolean>(-1925884676, new global::System.Object[]{@entry, @tableVersion});
-        }
-
-        public global::System.Threading.Tasks.Task<global::System.Boolean> @UpdateRow(global::Orleans.MembershipEntry @entry, global::System.String @etag, global::Orleans.TableVersion @tableVersion)
-        {
-            return base.@InvokeMethodAsync<global::System.Boolean>(1964092804, new global::System.Object[]{@entry, @etag, @tableVersion});
-        }
-
-        public global::System.Threading.Tasks.Task @UpdateIAmAlive(global::Orleans.MembershipEntry @entry)
-        {
-            return base.@InvokeMethodAsync<global::System.Object>(-1315256828, new global::System.Object[]{@entry});
-        }
-    }
-
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.2.0.0"), global::Orleans.CodeGeneration.MethodInvokerAttribute("global::Orleans.IMembershipTableGrain", -1256503757, typeof (global::Orleans.IMembershipTableGrain)), global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute]
-    internal class OrleansCodeGenMembershipTableGrainMethodInvoker : global::Orleans.CodeGeneration.IGrainMethodInvoker
-    {
-        public global::System.Threading.Tasks.Task<global::System.Object> @Invoke(global::Orleans.Runtime.IAddressable @grain, global::Orleans.CodeGeneration.InvokeMethodRequest @request)
-        {
-            global::System.Int32 interfaceId = @request.@InterfaceId;
-            global::System.Int32 methodId = @request.@MethodId;
-            global::System.Object[] arguments = @request.@Arguments;
-            try
-            {
-                if (@grain == null)
-                    throw new global::System.ArgumentNullException("grain");
-                switch (interfaceId)
-                {
-                    case -1256503757:
-                        switch (methodId)
-                        {
-                            case -1745428353:
-                                return ((global::Orleans.IMembershipTableGrain)@grain).@InitializeMembershipTable((global::Orleans.Runtime.Configuration.GlobalConfiguration)arguments[0], (global::System.Boolean)arguments[1], (global::Orleans.Runtime.TraceLogger)arguments[2]).@Box();
-                            case 106897969:
-                                return ((global::Orleans.IMembershipTableGrain)@grain).@DeleteMembershipTableEntries((global::System.String)arguments[0]).@Box();
-                            case -1440482971:
-                                return ((global::Orleans.IMembershipTableGrain)@grain).@ReadRow((global::Orleans.Runtime.SiloAddress)arguments[0]).@Box();
-                            case 572429157:
-                                return ((global::Orleans.IMembershipTableGrain)@grain).@ReadAll().@Box();
-                            case -1925884676:
-                                return ((global::Orleans.IMembershipTableGrain)@grain).@InsertRow((global::Orleans.MembershipEntry)arguments[0], (global::Orleans.TableVersion)arguments[1]).@Box();
-                            case 1964092804:
-                                return ((global::Orleans.IMembershipTableGrain)@grain).@UpdateRow((global::Orleans.MembershipEntry)arguments[0], (global::System.String)arguments[1], (global::Orleans.TableVersion)arguments[2]).@Box();
-                            case -1315256828:
-                                return ((global::Orleans.IMembershipTableGrain)@grain).@UpdateIAmAlive((global::Orleans.MembershipEntry)arguments[0]).@Box();
-                            default:
-                                throw new global::System.NotImplementedException("interfaceId=" + -1256503757 + ",methodId=" + methodId);
-                        }
-
-                    default:
-                        throw new global::System.NotImplementedException("interfaceId=" + interfaceId);
-                }
-            }
-            catch (global::System.Exception exception)
-            {
-                return global::Orleans.Async.TaskUtility.@Faulted(exception);
-            }
-        }
-
-        public global::System.Int32 InterfaceId
-        {
-            get
-            {
-                return -1256503757;
-            }
-        }
-    }
-
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.2.0.0"), global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute, global::Orleans.CodeGeneration.SerializerAttribute(typeof (global::Orleans.GrainState<>))]
     internal class OrleansCodeGenOrleans_GrainStateSerializer<T>
     {
@@ -202,14 +50,14 @@ namespace Orleans
     }
 
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.2.0.0"), global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute, global::Orleans.CodeGeneration.RegisterSerializerAttribute]
-    internal class OrleansCodeGenOrleans_GrainStateSerializerRegisterer
+    internal class OrleansCodeGenOrleans_GrainStateSerializer_T_Registerer
     {
         public static void Register()
         {
             global::Orleans.Serialization.SerializationManager.@Register(typeof (global::Orleans.GrainState<>), typeof (OrleansCodeGenOrleans_GrainStateSerializer<>));
         }
 
-        static OrleansCodeGenOrleans_GrainStateSerializerRegisterer()
+        static OrleansCodeGenOrleans_GrainStateSerializer_T_Registerer()
         {
             Register();
         }
@@ -513,14 +361,14 @@ namespace Orleans
     }
 
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.2.0.0"), global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute, global::Orleans.CodeGeneration.RegisterSerializerAttribute]
-    internal class OrleansCodeGenOrleans_ObserverSubscriptionManagerSerializerRegisterer
+    internal class OrleansCodeGenOrleans_ObserverSubscriptionManagerSerializer_T_Registerer
     {
         public static void Register()
         {
             global::Orleans.Serialization.SerializationManager.@Register(typeof (global::Orleans.ObserverSubscriptionManager<>), typeof (OrleansCodeGenOrleans_ObserverSubscriptionManagerSerializer<>));
         }
 
-        static OrleansCodeGenOrleans_ObserverSubscriptionManagerSerializerRegisterer()
+        static OrleansCodeGenOrleans_ObserverSubscriptionManagerSerializer_T_Registerer()
         {
             Register();
         }
@@ -698,14 +546,14 @@ namespace Orleans
     }
 
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.2.0.0"), global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute, global::Orleans.CodeGeneration.RegisterSerializerAttribute]
-    internal class OrleansCodeGenOrleans_Streams_StreamSubscriptionHandleImplSerializerRegisterer
+    internal class OrleansCodeGenOrleans_Streams_StreamSubscriptionHandleImplSerializer_T_Registerer
     {
         public static void Register()
         {
             global::Orleans.Serialization.SerializationManager.@Register(typeof (global::Orleans.Streams.StreamSubscriptionHandleImpl<>), typeof (OrleansCodeGenOrleans_Streams_StreamSubscriptionHandleImplSerializer<>));
         }
 
-        static OrleansCodeGenOrleans_Streams_StreamSubscriptionHandleImplSerializerRegisterer()
+        static OrleansCodeGenOrleans_Streams_StreamSubscriptionHandleImplSerializer_T_Registerer()
         {
             Register();
         }
@@ -1031,14 +879,14 @@ namespace Orleans
     }
 
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.2.0.0"), global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute, global::Orleans.CodeGeneration.RegisterSerializerAttribute]
-    internal class OrleansCodeGenOrleans_Streams_StreamImplSerializerRegisterer
+    internal class OrleansCodeGenOrleans_Streams_StreamImplSerializer_T_Registerer
     {
         public static void Register()
         {
             global::Orleans.Serialization.SerializationManager.@Register(typeof (global::Orleans.Streams.StreamImpl<>), typeof (OrleansCodeGenOrleans_Streams_StreamImplSerializer<>));
         }
 
-        static OrleansCodeGenOrleans_Streams_StreamImplSerializerRegisterer()
+        static OrleansCodeGenOrleans_Streams_StreamImplSerializer_T_Registerer()
         {
             Register();
         }
@@ -2498,14 +2346,14 @@ namespace Orleans
     }
 
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.2.0.0"), global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute, global::Orleans.CodeGeneration.RegisterSerializerAttribute]
-    internal class OrleansCodeGenOrleans_Runtime_Configuration_ConfigValueSerializerRegisterer
+    internal class OrleansCodeGenOrleans_Runtime_Configuration_ConfigValueSerializer_T_Registerer
     {
         public static void Register()
         {
             global::Orleans.Serialization.SerializationManager.@Register(typeof (global::Orleans.Runtime.Configuration.ConfigValue<>), typeof (OrleansCodeGenOrleans_Runtime_Configuration_ConfigValueSerializer<>));
         }
 
-        static OrleansCodeGenOrleans_Runtime_Configuration_ConfigValueSerializerRegisterer()
+        static OrleansCodeGenOrleans_Runtime_Configuration_ConfigValueSerializer_T_Registerer()
         {
             Register();
         }
@@ -3047,15 +2895,173 @@ namespace Orleans
         }
     }
 
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.2.0.0"), global::System.SerializableAttribute, global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute, global::Orleans.CodeGeneration.GrainReferenceAttribute(typeof (global::Orleans.IMembershipTableGrain))]
+    internal class OrleansCodeGenMembershipTableGrainReference : global::Orleans.Runtime.GrainReference, global::Orleans.IMembershipTableGrain
+    {
+        protected @OrleansCodeGenMembershipTableGrainReference(global::Orleans.Runtime.GrainReference @other): base (@other)
+        {
+        }
+
+        protected @OrleansCodeGenMembershipTableGrainReference(global::System.Runtime.Serialization.SerializationInfo @info, global::System.Runtime.Serialization.StreamingContext @context): base (@info, @context)
+        {
+        }
+
+        protected override global::System.Int32 InterfaceId
+        {
+            get
+            {
+                return -1256503757;
+            }
+        }
+
+        public override global::System.String InterfaceName
+        {
+            get
+            {
+                return "global::Orleans.IMembershipTableGrain";
+            }
+        }
+
+        public override global::System.Boolean @IsCompatible(global::System.Int32 @interfaceId)
+        {
+            return @interfaceId == -1256503757;
+        }
+
+        protected override global::System.String @GetMethodName(global::System.Int32 @interfaceId, global::System.Int32 @methodId)
+        {
+            switch (@interfaceId)
+            {
+                case -1256503757:
+                    switch (@methodId)
+                    {
+                        case -1745428353:
+                            return "InitializeMembershipTable";
+                        case 106897969:
+                            return "DeleteMembershipTableEntries";
+                        case -1440482971:
+                            return "ReadRow";
+                        case 572429157:
+                            return "ReadAll";
+                        case -1925884676:
+                            return "InsertRow";
+                        case 1964092804:
+                            return "UpdateRow";
+                        case -1315256828:
+                            return "UpdateIAmAlive";
+                        default:
+                            throw new global::System.NotImplementedException("interfaceId=" + -1256503757 + ",methodId=" + @methodId);
+                    }
+
+                default:
+                    throw new global::System.NotImplementedException("interfaceId=" + @interfaceId);
+            }
+        }
+
+        public global::System.Threading.Tasks.Task @InitializeMembershipTable(global::Orleans.Runtime.Configuration.GlobalConfiguration @globalConfiguration, global::System.Boolean @tryInitTableVersion, global::Orleans.Runtime.TraceLogger @traceLogger)
+        {
+            return base.@InvokeMethodAsync<global::System.Object>(-1745428353, new global::System.Object[]{@globalConfiguration, @tryInitTableVersion, @traceLogger});
+        }
+
+        public global::System.Threading.Tasks.Task @DeleteMembershipTableEntries(global::System.String @deploymentId)
+        {
+            return base.@InvokeMethodAsync<global::System.Object>(106897969, new global::System.Object[]{@deploymentId});
+        }
+
+        public global::System.Threading.Tasks.Task<global::Orleans.MembershipTableData> @ReadRow(global::Orleans.Runtime.SiloAddress @key)
+        {
+            return base.@InvokeMethodAsync<global::Orleans.MembershipTableData>(-1440482971, new global::System.Object[]{@key});
+        }
+
+        public global::System.Threading.Tasks.Task<global::Orleans.MembershipTableData> @ReadAll()
+        {
+            return base.@InvokeMethodAsync<global::Orleans.MembershipTableData>(572429157, null);
+        }
+
+        public global::System.Threading.Tasks.Task<global::System.Boolean> @InsertRow(global::Orleans.MembershipEntry @entry, global::Orleans.TableVersion @tableVersion)
+        {
+            return base.@InvokeMethodAsync<global::System.Boolean>(-1925884676, new global::System.Object[]{@entry, @tableVersion});
+        }
+
+        public global::System.Threading.Tasks.Task<global::System.Boolean> @UpdateRow(global::Orleans.MembershipEntry @entry, global::System.String @etag, global::Orleans.TableVersion @tableVersion)
+        {
+            return base.@InvokeMethodAsync<global::System.Boolean>(1964092804, new global::System.Object[]{@entry, @etag, @tableVersion});
+        }
+
+        public global::System.Threading.Tasks.Task @UpdateIAmAlive(global::Orleans.MembershipEntry @entry)
+        {
+            return base.@InvokeMethodAsync<global::System.Object>(-1315256828, new global::System.Object[]{@entry});
+        }
+    }
+
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.2.0.0"), global::Orleans.CodeGeneration.MethodInvokerAttribute("global::Orleans.IMembershipTableGrain", -1256503757, typeof (global::Orleans.IMembershipTableGrain)), global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute]
+    internal class OrleansCodeGenMembershipTableGrainMethodInvoker : global::Orleans.CodeGeneration.IGrainMethodInvoker
+    {
+        public global::System.Threading.Tasks.Task<global::System.Object> @Invoke(global::Orleans.Runtime.IAddressable @grain, global::Orleans.CodeGeneration.InvokeMethodRequest @request)
+        {
+            global::System.Int32 interfaceId = @request.@InterfaceId;
+            global::System.Int32 methodId = @request.@MethodId;
+            global::System.Object[] arguments = @request.@Arguments;
+            try
+            {
+                if (@grain == null)
+                    throw new global::System.ArgumentNullException("grain");
+                switch (interfaceId)
+                {
+                    case -1256503757:
+                        switch (methodId)
+                        {
+                            case -1745428353:
+                                return ((global::Orleans.IMembershipTableGrain)@grain).@InitializeMembershipTable((global::Orleans.Runtime.Configuration.GlobalConfiguration)arguments[0], (global::System.Boolean)arguments[1], (global::Orleans.Runtime.TraceLogger)arguments[2]).@Box();
+                            case 106897969:
+                                return ((global::Orleans.IMembershipTableGrain)@grain).@DeleteMembershipTableEntries((global::System.String)arguments[0]).@Box();
+                            case -1440482971:
+                                return ((global::Orleans.IMembershipTableGrain)@grain).@ReadRow((global::Orleans.Runtime.SiloAddress)arguments[0]).@Box();
+                            case 572429157:
+                                return ((global::Orleans.IMembershipTableGrain)@grain).@ReadAll().@Box();
+                            case -1925884676:
+                                return ((global::Orleans.IMembershipTableGrain)@grain).@InsertRow((global::Orleans.MembershipEntry)arguments[0], (global::Orleans.TableVersion)arguments[1]).@Box();
+                            case 1964092804:
+                                return ((global::Orleans.IMembershipTableGrain)@grain).@UpdateRow((global::Orleans.MembershipEntry)arguments[0], (global::System.String)arguments[1], (global::Orleans.TableVersion)arguments[2]).@Box();
+                            case -1315256828:
+                                return ((global::Orleans.IMembershipTableGrain)@grain).@UpdateIAmAlive((global::Orleans.MembershipEntry)arguments[0]).@Box();
+                            default:
+                                throw new global::System.NotImplementedException("interfaceId=" + -1256503757 + ",methodId=" + methodId);
+                        }
+
+                    default:
+                        throw new global::System.NotImplementedException("interfaceId=" + interfaceId);
+                }
+            }
+            catch (global::System.Exception exception)
+            {
+                return global::Orleans.Async.TaskUtility.@Faulted(exception);
+            }
+        }
+
+        public global::System.Int32 InterfaceId
+        {
+            get
+            {
+                return -1256503757;
+            }
+        }
+    }
+
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.2.0.0"), global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute, global::Orleans.CodeGeneration.SerializerAttribute(typeof (global::Orleans.Runtime.TraceLogger)), global::Orleans.CodeGeneration.RegisterSerializerAttribute]
     internal class OrleansCodeGenOrleans_Runtime_TraceLoggerSerializer
     {
         private static readonly global::System.Reflection.FieldInfo field0 = typeof (global::Orleans.Runtime.TraceLogger).@GetField("defaultCopiedCounter", (System.@Reflection.@BindingFlags.@Instance | System.@Reflection.@BindingFlags.@NonPublic | System.@Reflection.@BindingFlags.@Public));
         private static readonly global::System.Func<global::Orleans.Runtime.TraceLogger, global::System.Int32> getField0 = (global::System.Func<global::Orleans.Runtime.TraceLogger, global::System.Int32>)global::Orleans.Serialization.SerializationManager.@GetGetter(field0);
         private static readonly global::System.Action<global::Orleans.Runtime.TraceLogger, global::System.Int32> setField0 = (global::System.Action<global::Orleans.Runtime.TraceLogger, global::System.Int32>)global::Orleans.Serialization.SerializationManager.@GetReferenceSetter(field0);
+        private static readonly global::System.Reflection.FieldInfo field7 = typeof (global::Orleans.Runtime.TraceLogger).@GetField("flushInterval", (System.@Reflection.@BindingFlags.@Instance | System.@Reflection.@BindingFlags.@NonPublic | System.@Reflection.@BindingFlags.@Public));
+        private static readonly global::System.Func<global::Orleans.Runtime.TraceLogger, global::System.TimeSpan> getField7 = (global::System.Func<global::Orleans.Runtime.TraceLogger, global::System.TimeSpan>)global::Orleans.Serialization.SerializationManager.@GetGetter(field7);
+        private static readonly global::System.Action<global::Orleans.Runtime.TraceLogger, global::System.TimeSpan> setField7 = (global::System.Action<global::Orleans.Runtime.TraceLogger, global::System.TimeSpan>)global::Orleans.Serialization.SerializationManager.@GetReferenceSetter(field7);
         private static readonly global::System.Reflection.FieldInfo field6 = typeof (global::Orleans.Runtime.TraceLogger).@GetField("lastBulkLogMessageFlush", (System.@Reflection.@BindingFlags.@Instance | System.@Reflection.@BindingFlags.@NonPublic | System.@Reflection.@BindingFlags.@Public));
         private static readonly global::System.Func<global::Orleans.Runtime.TraceLogger, global::System.DateTime> getField6 = (global::System.Func<global::Orleans.Runtime.TraceLogger, global::System.DateTime>)global::Orleans.Serialization.SerializationManager.@GetGetter(field6);
         private static readonly global::System.Action<global::Orleans.Runtime.TraceLogger, global::System.DateTime> setField6 = (global::System.Action<global::Orleans.Runtime.TraceLogger, global::System.DateTime>)global::Orleans.Serialization.SerializationManager.@GetReferenceSetter(field6);
+        private static readonly global::System.Reflection.FieldInfo field8 = typeof (global::Orleans.Runtime.TraceLogger).@GetField("lastFlush", (System.@Reflection.@BindingFlags.@Instance | System.@Reflection.@BindingFlags.@NonPublic | System.@Reflection.@BindingFlags.@Public));
+        private static readonly global::System.Func<global::Orleans.Runtime.TraceLogger, global::System.DateTime> getField8 = (global::System.Func<global::Orleans.Runtime.TraceLogger, global::System.DateTime>)global::Orleans.Serialization.SerializationManager.@GetGetter(field8);
+        private static readonly global::System.Action<global::Orleans.Runtime.TraceLogger, global::System.DateTime> setField8 = (global::System.Action<global::Orleans.Runtime.TraceLogger, global::System.DateTime>)global::Orleans.Serialization.SerializationManager.@GetReferenceSetter(field8);
         private static readonly global::System.Reflection.FieldInfo field4 = typeof (global::Orleans.Runtime.TraceLogger).@GetField("logName", (System.@Reflection.@BindingFlags.@Instance | System.@Reflection.@BindingFlags.@NonPublic | System.@Reflection.@BindingFlags.@Public));
         private static readonly global::System.Func<global::Orleans.Runtime.TraceLogger, global::System.String> getField4 = (global::System.Func<global::Orleans.Runtime.TraceLogger, global::System.String>)global::Orleans.Serialization.SerializationManager.@GetGetter(field4);
         private static readonly global::System.Action<global::Orleans.Runtime.TraceLogger, global::System.String> setField4 = (global::System.Action<global::Orleans.Runtime.TraceLogger, global::System.String>)global::Orleans.Serialization.SerializationManager.@GetReferenceSetter(field4);
@@ -3077,7 +3083,9 @@ namespace Orleans
             global::Orleans.Runtime.TraceLogger input = ((global::Orleans.Runtime.TraceLogger)original);
             global::Orleans.Runtime.TraceLogger result = (global::Orleans.Runtime.TraceLogger)global::System.Runtime.Serialization.FormatterServices.@GetUninitializedObject(typeof (global::Orleans.Runtime.TraceLogger));
             setField0(result, getField0(input));
+            setField7(result, getField7(input));
             setField6(result, getField6(input));
+            setField8(result, getField8(input));
             setField4(result, getField4(input));
             setField3(result, getField3(input));
             setField5(result, (global::System.Collections.Generic.Dictionary<global::System.Int32, global::System.Int32>)global::Orleans.Serialization.SerializationManager.@DeepCopyInner(getField5(input)));
@@ -3092,7 +3100,9 @@ namespace Orleans
         {
             global::Orleans.Runtime.TraceLogger input = (global::Orleans.Runtime.TraceLogger)untypedInput;
             global::Orleans.Serialization.SerializationManager.@SerializeInner(getField0(input), stream, typeof (global::System.Int32));
+            global::Orleans.Serialization.SerializationManager.@SerializeInner(getField7(input), stream, typeof (global::System.TimeSpan));
             global::Orleans.Serialization.SerializationManager.@SerializeInner(getField6(input), stream, typeof (global::System.DateTime));
+            global::Orleans.Serialization.SerializationManager.@SerializeInner(getField8(input), stream, typeof (global::System.DateTime));
             global::Orleans.Serialization.SerializationManager.@SerializeInner(getField4(input), stream, typeof (global::System.String));
             global::Orleans.Serialization.SerializationManager.@SerializeInner(getField3(input), stream, typeof (global::Orleans.Runtime.TraceLogger.LoggerType));
             global::Orleans.Serialization.SerializationManager.@SerializeInner(getField5(input), stream, typeof (global::System.Collections.Generic.Dictionary<global::System.Int32, global::System.Int32>));
@@ -3106,7 +3116,9 @@ namespace Orleans
             global::Orleans.Runtime.TraceLogger result = (global::Orleans.Runtime.TraceLogger)global::System.Runtime.Serialization.FormatterServices.@GetUninitializedObject(typeof (global::Orleans.Runtime.TraceLogger));
             global::Orleans.@Serialization.@DeserializationContext.@Current.@RecordObject(result);
             setField0(result, (global::System.Int32)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.Int32), stream));
+            setField7(result, (global::System.TimeSpan)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.TimeSpan), stream));
             setField6(result, (global::System.DateTime)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.DateTime), stream));
+            setField8(result, (global::System.DateTime)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.DateTime), stream));
             setField4(result, (global::System.String)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.String), stream));
             setField3(result, (global::Orleans.Runtime.TraceLogger.LoggerType)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::Orleans.Runtime.TraceLogger.LoggerType), stream));
             setField5(result, (global::System.Collections.Generic.Dictionary<global::System.Int32, global::System.Int32>)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.Collections.Generic.Dictionary<global::System.Int32, global::System.Int32>), stream));
