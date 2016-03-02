@@ -6,7 +6,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Xml;
 
-public class EditorInternal : EditorWindow
+public class EditorGfInternal : EditorWindow
 {
     //-------------------------------------------------------------------------
     [MenuItem("Gf/导出Gf4Unity.unitypackage")]
