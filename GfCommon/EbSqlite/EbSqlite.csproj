@@ -149,7 +149,7 @@
   <PropertyGroup>
     <PostBuildEvent>rd /s /q   $(SolutionDir)GfUnity\Assets\Plugins\GfUnity\EbSqlite
 xcopy /f /i /r /y /k /e  $(ProjectDir)*.*   $(SolutionDir)GfUnity\Assets\Plugins\GfUnity\EbSqlite\
-rd /s /q   $(SolutionDir)G4Unity\Assets\Plugins\GfUnity\EbSqlite\obj
+rd /s /q   $(SolutionDir)GfUnity\Assets\Plugins\GfUnity\EbSqlite\obj
 rd /s /q   $(SolutionDir)GfUnity\Assets\Plugins\GfUnity\EbSqlite\Properties</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
