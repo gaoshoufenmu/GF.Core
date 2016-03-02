@@ -174,9 +174,9 @@ $RECYCLE.BIN/
 .DS_Store
 
 /Output/
-/Code/Gf4Unity/Library/
-/Code/Gf4Unity/Temp/
-/Code/Gf4Unity/Gf4Unity.CSharp.Editor.csproj
-/Code/Gf4Unity/Gf4Unity.CSharp.Plugins.csproj
-/Code/Gf4Unity/Gf4Unity.CSharp.csproj
-/Code/Gf4Unity/Gf4Unity.sln
+/GfUnity/Library/
+/GfUnity/Temp/
+/GfUnity/GfUnity.CSharp.Editor.csproj
+/GfUnity/GfUnity.CSharp.Plugins.csproj
+/GfUnity/GfUnity.CSharp.csproj
+/GfUnity/GfUnity.sln
