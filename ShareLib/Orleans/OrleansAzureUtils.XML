@@ -746,6 +746,15 @@
             <param name="key"></param>
             <returns></returns>
         </member>
+        <member name="M:Orleans.AzureUtils.AzureStorageUtils.ConfigureJsonSerializerSettings(Orleans.Providers.IProviderConfiguration)">
+            <summary>
+            Customises the serializer settings returned by <see cref="T:Orleans.Serialization.OrleansJsonSerializer"/>
+            using provider configuration.
+            Can be used by any provider, allowing the users to use a standard set of configuration attributes.
+            </summary>
+            <param name="config"></param>
+            <returns><see cref="T:Newtonsoft.Json.JsonSerializerSettings" /></returns>
+        </member>
         <member name="T:Orleans.AzureUtils.AzureTableDataManager`1">
             <summary>
             Utility class to encapsulate row-based access to Azure table storage.
