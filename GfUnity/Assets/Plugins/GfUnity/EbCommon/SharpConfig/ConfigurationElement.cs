@@ -3,7 +3,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace SharpConfig
 {
@@ -15,7 +14,7 @@ namespace SharpConfig
     public abstract class ConfigurationElement
     {
         private string mName;
-        private Comment mComment;
+        private Comment? mComment;
         internal List<Comment> mPreComments;
 
         internal ConfigurationElement(string name)
@@ -44,7 +43,7 @@ namespace SharpConfig
         /// <summary>
         /// Gets or sets the comment of this element.
         /// </summary>
-        public Comment Comment
+        public Comment? Comment
         {
             get { return mComment; }
             set { mComment = value; }

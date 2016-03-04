@@ -261,9 +261,11 @@
     <Compile Include="SharpConfig\Configuration.Parsing.cs" />
     <Compile Include="SharpConfig\Configuration.Serialization.cs" />
     <Compile Include="SharpConfig\ConfigurationElement.cs" />
+    <Compile Include="SharpConfig\IgnoreAttribute.cs" />
     <Compile Include="SharpConfig\ParserException.cs" />
     <Compile Include="SharpConfig\Section.cs" />
     <Compile Include="SharpConfig\Setting.cs" />
+    <Compile Include="SharpConfig\SettingArrayEnumerator.cs" />
     <Compile Include="SharpConfig\SettingValueCastException.cs" />
     <Compile Include="ComponentDef\DefUCenterSDK.cs" />
     <Compile Include="ComponentDef\EtUCenterSDK.cs" />

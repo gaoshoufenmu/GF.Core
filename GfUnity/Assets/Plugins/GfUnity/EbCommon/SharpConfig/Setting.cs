@@ -2,8 +2,6 @@
 // https://github.com/cemdervis/SharpConfig
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SharpConfig
 {
@@ -96,16 +94,6 @@ namespace SharpConfig
         }
 
         /// <summary>
-        /// Gets or sets the raw string value of this setting.
-        /// </summary>
-        [Obsolete("The Setting.Value property is obsolete. Please use Setting.StringValue instead.", false)]
-        public string Value
-        {
-            get { return mRawValue; }
-            set { mRawValue = value; }
-        }
-
-        /// <summary>
         /// Gets a value indicating whether this setting is an array.
         /// </summary>
         public bool IsArray
@@ -126,90 +114,70 @@ namespace SharpConfig
                     return -1;
                 }
 
-                string value = mRawValue.Trim();
+                int arrayStartIdx = mRawValue.IndexOf('{');
+                int arrayEndIdx = mRawValue.LastIndexOf('}');
 
-                if (value[0] != '{')
+                if (arrayStartIdx < 0 || arrayEndIdx < 0)
                 {
+                    // Not an array.
                     return -1;
                 }
 
-                int arraySize = 0;
-                bool isInArrayBrackets = false;
-                int lastCommaIdx = 0;
-
-                for (int pos = 0; pos < value.Length; ++pos)
+                // There may only be spaces between the beginning
+                // of the string and the first left bracket.
+                for (int i = 0; i < arrayStartIdx; ++i)
                 {
-                    char ch = value[pos];
-                    
-                    if (ch == '{')
-                    {
-                        if (isInArrayBrackets)
-                        {
-                            return -1;
-                        }
-
-                        isInArrayBrackets = true;
-                    }
-                    else if (ch == '}')
-                    {
-                        if (pos != value.Length - 1)
-                        {
-                            return -1;
-                        }
-
-                        isInArrayBrackets = false;
-                        break;
-                    }
-                    else if (ch == ',')
-                    {
-                        bool isElementEmpty = true;
-
-                        for (int e = lastCommaIdx + 1; e < pos; ++e)
-                        {
-                            if (value[e] != ' ')
-                            {
-                                // Okay, this is a value.
-                                isElementEmpty = false;
-                                break;
-                            }
-                        }
-
-                        if (isElementEmpty)
-                        {
-                            return -1;
-                        }
-
-                        lastCommaIdx = pos;
-                        ++arraySize;
-                    }
-                }
-
-                // Check the last element value for emptiness, since our loop
-                // only considered n-1 elements.
-                if (lastCommaIdx + 1 < value.Length-1)
-                {
-                    bool isElementEmpty = true;
-
-                    for (int e = lastCommaIdx + 1; e < value.Length - 1; ++e)
-                    {
-                        if (value[e] != ' ')
-                        {
-                            isElementEmpty = false;
-                            break;
-                        }
-                    }
-
-                    if (isElementEmpty)
+                    if (mRawValue[i] != ' ')
                     {
                         return -1;
                     }
                 }
-                else
+
+                // Also, there may only be spaces between the last
+                // right brace and the end of the string.
+                for (int i = arrayEndIdx + 1; i < mRawValue.Length; ++i)
                 {
-                    return -1;
+                    if (mRawValue[i] != ' ')
+                    {
+                        return -1;
+                    }
                 }
 
-                return arraySize + 1;
+                int arraySize = 0;
+
+                // Naive algorithm; assume the number of commas equals the number of elements + 1.
+                for (int i = 0; i < mRawValue.Length; ++i)
+                {
+                    if (mRawValue[i] == ',')
+                    {
+                        ++arraySize;
+                    }
+                }
+
+                if (arraySize == 0)
+                {
+                    // There were no commas in the array expression.
+                    // That does not mean that there are no elements.
+                    // Check if there is at least something.
+                    // If so, that is the single element of the array.
+                    for (int i = arrayStartIdx + 1; i < arrayEndIdx; ++i)
+                    {
+                        if (mRawValue[i] != ' ')
+                        {
+                            ++arraySize;
+                            break;
+                        }
+                    }
+                }
+                else if (arraySize > 0)
+                {
+                    // If there were any commas in the array expression,
+                    // we have to increment the array size, as we assumed
+                    // that the number of commas equaled the number of elements + 1.
+                    ++arraySize;
+                }
+
+                return arraySize;
             }
         }
 
@@ -225,11 +193,6 @@ namespace SharpConfig
         public T GetValueTyped<T>()
         {
             Type type = typeof(T);
-
-            if (type == null)
-            {
-                throw new ArgumentNullException("type");
-            }
 
             if (type.IsArray)
             {
@@ -275,7 +238,7 @@ namespace SharpConfig
 
         /// <summary>
         /// Gets this setting's value as an array of a specific type.
-        /// Note: this only works if the setting represents an array.
+        /// Note: this only works if the setting represents an array. If it is not, then null is returned.
         /// </summary>
         /// <typeparam name="T">
         ///     The type of elements in the array. All values in the array are going to be converted to objects of this type.
@@ -285,32 +248,21 @@ namespace SharpConfig
         public T[] GetValueArray<T>()
         {
             int myArraySize = this.ArraySize;
+            if (myArraySize < 0)
+            {
+                return null;
+            }
 
             var values = new T[myArraySize];
-            int i = 0;
-
-            int elemIndex = 1;
-            int commaIndex = mRawValue.IndexOf(',');
-
-            while (commaIndex >= 0)
-            {
-                string sub = mRawValue.Substring(elemIndex, commaIndex - elemIndex);
-                sub = sub.Trim();
-
-                values[i] = (T)ConvertValue(sub, typeof(T));
-
-                elemIndex = commaIndex + 1;
-                commaIndex = mRawValue.IndexOf(',', elemIndex + 1);
-
-                i++;
-            }
 
             if (myArraySize > 0)
             {
-                // Read the last element.
-                values[i] = (T)ConvertValue(
-                    mRawValue.Substring(elemIndex, mRawValue.Length - elemIndex - 1),
-                    typeof(T));
+                var enumerator = new SettingArrayEnumerator(mRawValue);
+
+                while (enumerator.Next())
+                {
+                    values[enumerator.Index] = (T)ConvertValue(enumerator.Current, typeof(T));
+                }
             }
 
             return values;
@@ -318,7 +270,7 @@ namespace SharpConfig
 
         /// <summary>
         /// Gets this setting's value as an array of a specific type.
-        /// Note: this only works if the setting represents an array.
+        /// Note: this only works if the setting represents an array. If it is not, then null is returned.
         /// </summary>
         /// <param name="elementType">
         ///     The type of elements in the array. All values in the array are going to be converted to objects of this type.
@@ -328,64 +280,46 @@ namespace SharpConfig
         public object[] GetValueArray(Type elementType)
         {
             int myArraySize = this.ArraySize;
+            if (myArraySize < 0)
+            {
+                return null;
+            }
 
             var values = new object[myArraySize];
-            int i = 0;
-
-            int elemIndex = 1;
-            int commaIndex = mRawValue.IndexOf(',');
-
-            while (commaIndex >= 0)
-            {
-                string sub = mRawValue.Substring(elemIndex, commaIndex - elemIndex);
-                sub = sub.Trim();
-
-                values[i] = ConvertValue(sub, elementType);
-
-                elemIndex = commaIndex + 1;
-                commaIndex = mRawValue.IndexOf(',', elemIndex + 1);
-
-                i++;
-            }
 
             if (myArraySize > 0)
             {
-                // Read the last element.
-                values[i] = ConvertValue(
-                    mRawValue.Substring(elemIndex, mRawValue.Length - elemIndex - 1),
-                    elementType);
+                var enumerator = new SettingArrayEnumerator(mRawValue);
+
+                while (enumerator.Next())
+                {
+                    values[enumerator.Index] = ConvertValue(enumerator.Current, elementType);
+                }
             }
 
             return values;
         }
 
-        /// <summary>
-        /// Gets this setting's value as a specific type.
-        /// </summary>
-        ///
-        /// <typeparam name="T">The type of the object to retrieve.</typeparam>
-        [Obsolete("The Setting.GetValue<T> method is obsolete. Please use Setting.GetValueTyped<T> instead.", false)]
-        public T GetValue<T>()
-        {
-            return GetValueTyped<T>();
-        }
-
-        /// <summary>
-        /// Gets this setting's value as a specific type.
-        /// </summary>
-        ///
-        /// <param name="type">The type of the object to retrieve.</param>
-        [Obsolete("The Setting.GetValue method is obsolete. Please use Setting.GetValueTyped instead.", false)]
-        public object GetValue(Type type)
-        {
-            return GetValueTyped(type);
-        }
-
         // Converts the value of a single element to a desired type.
         private static object ConvertValue(string value, Type type)
         {
+            var underlyingType = Nullable.GetUnderlyingType(type);
+            if (underlyingType != null)
+            {
+                if (string.IsNullOrEmpty(value))
+                {
+                    // Returns Nullable<type>().
+                    return null;
+                }
+
+                // Otherwise, continue with our conversion using
+                // the underlying type of the nullable.
+                type = underlyingType;
+            }
+
             if (type == typeof(bool))
             {
+                // Special case for bool.
                 switch (value.ToLowerInvariant())
                 {
                     case "off":
@@ -420,19 +354,20 @@ namespace SharpConfig
                 {
                     return Enum.Parse(type, value);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    throw new SettingValueCastException(value, type);
+                    throw new SettingValueCastException(value, type, ex);
                 }
             }
 
             try
             {
+                // Main conversion routine.
                 return Convert.ChangeType(value, type, Configuration.NumberFormat);
             }
-            catch
+            catch (Exception ex)
             {
-                throw new SettingValueCastException(value, type);
+                throw new SettingValueCastException(value, type, ex);
             }
         }
 
@@ -498,7 +433,7 @@ namespace SharpConfig
                 bool hasPreComments = mPreComments != null && mPreComments.Count > 0;
 
                 string[] preCommentStrings = hasPreComments ?
-                    mPreComments.ConvertAll<string>(Comment.ConvertToString).ToArray() : null;
+                    mPreComments.ConvertAll(c => c.ToString()).ToArray() : null;
 
                 if (Comment != null && hasPreComments)
                 {

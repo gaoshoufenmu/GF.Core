@@ -2,7 +2,6 @@
 // https://github.com/cemdervis/SharpConfig
 
 using System;
-using System.Collections.Generic;
 using System.Text;
 using System.IO;
 
@@ -18,7 +17,6 @@ namespace SharpConfig
             using (var stream = new FileStream(filename, FileMode.Create, FileAccess.Write))
             {
                 Serialize(stream, encoding);
-                stream.Close();
             }
         }
 
@@ -72,7 +70,6 @@ namespace SharpConfig
             using (writer)
             {
                 writer.Write(sb.ToString());
-                writer.Close();
             }
         }
 
@@ -131,19 +128,22 @@ namespace SharpConfig
         private static void SerializeComments(BinaryWriter writer, ConfigurationElement element)
         {
             // Write the comment.
-            var comment = element.Comment;
+            var commentNullable = element.Comment;
 
-            writer.Write(comment != null);
-            if (comment != null)
+            writer.Write(commentNullable.HasValue);
+            if (commentNullable.HasValue)
             {
+                var comment = commentNullable.Value;
                 writer.Write(comment.Symbol);
                 writer.Write(comment.Value);
             }
 
             // Write the pre-comments.
+            // Note: do not access the PreComments property of element,
+            // as it will lazily create a new List of pre-comments.
+            // Access the private field instead.
             var preComments = element.mPreComments;
-
-            bool hasPreComments = preComments != null && preComments.Count > 0;
+            bool hasPreComments = (preComments != null && preComments.Count > 0);
 
             writer.Write(hasPreComments ? preComments.Count : 0);
 

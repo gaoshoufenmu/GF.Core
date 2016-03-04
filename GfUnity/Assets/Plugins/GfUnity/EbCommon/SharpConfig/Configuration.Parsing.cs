@@ -1,10 +1,8 @@
 ﻿// Copyright (c) 2013-2015 Cemalettin Dervis, MIT License.
 // https://github.com/cemdervis/SharpConfig
 
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace SharpConfig
 {
@@ -42,14 +40,14 @@ namespace SharpConfig
                     int commentIndex = 0;
                     var comment = ParseComment(line, out commentIndex);
 
-                    if (!mIgnorePreComments && commentIndex == 0)
+                    if (!IgnorePreComments && commentIndex == 0)
                     {
                         // This is a comment line (pre-comment).
                         // Add it to the list of pre-comments.
-                        preComments.Add(comment);
+                        preComments.Add(comment.Value);
                         continue;
                     }
-                    else if (!mIgnoreInlineComments && commentIndex > 0)
+                    else if (!IgnoreInlineComments && commentIndex > 0)
                     {
                         // Strip away the comments of this line.
                         line = line.Remove(commentIndex).Trim();
@@ -60,17 +58,22 @@ namespace SharpConfig
                     {
                         currentSection = ParseSection(line);
 
-                        if (!mIgnoreInlineComments)
+                        if (!IgnoreInlineComments)
                             currentSection.Comment = comment;
 
                         if (config.Contains(currentSection.Name))
                         {
+                            if (IgnoreDuplicateSections)
+                            {
+                                continue;
+                            }
+
                             throw new ParserException(string.Format(
                                 "The section '{0}' was already declared in the configuration.",
                                 currentSection.Name), mLineNumber);
                         }
 
-                        if (!mIgnorePreComments && preComments.Count > 0)
+                        if (!IgnorePreComments && preComments.Count > 0)
                         {
                             currentSection.mPreComments = new List<Comment>(preComments);
                             preComments.Clear();
@@ -82,7 +85,7 @@ namespace SharpConfig
                     {
                         Setting setting = ParseSetting(line);
 
-                        if (!mIgnoreInlineComments)
+                        if (!IgnoreInlineComments)
                             setting.Comment = comment;
 
                         if (currentSection == null)
@@ -94,12 +97,17 @@ namespace SharpConfig
 
                         if (currentSection.Contains(setting.Name))
                         {
+                            if (IgnoreDuplicateSettings)
+                            {
+                                continue;
+                            }
+
                             throw new ParserException(string.Format(
                                 "The setting '{0}' was already declared in the section.",
                                 setting.Name), mLineNumber);
                         }
 
-                        if (!mIgnorePreComments && preComments.Count > 0)
+                        if (!IgnorePreComments && preComments.Count > 0)
                         {
                             setting.mPreComments = new List<Comment>(preComments);
                             preComments.Clear();
@@ -137,14 +145,14 @@ namespace SharpConfig
             return left && right;
         }
 
-        private static Comment ParseComment(string line, out int commentIndex)
+        private static Comment? ParseComment(string line, out int commentIndex)
         {
-            Comment comment = null;
+            Comment? comment = null;
             commentIndex = -1;
 
             do
             {
-                commentIndex = line.IndexOfAny(Configuration.ValidCommentChars, commentIndex + 1);
+                commentIndex = line.IndexOfAny(ValidCommentChars, commentIndex + 1);
 
                 if (commentIndex < 0)
                     break;
