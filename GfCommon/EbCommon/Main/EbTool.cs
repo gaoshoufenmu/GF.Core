@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Bson;
 using ProtoBuf;
 using Eb;
 
@@ -70,36 +68,21 @@ public static class EbTool
     //-------------------------------------------------------------------------
     public static string jsonSerialize(object obj)
     {
-        return JsonConvert.SerializeObject(obj);
+#if UNITY_STANDALONE || UNITY_IPHONE || UNITY_ANDROID || UNITY_WEBPLAYER
+        return UnityEngine.JsonUtility.ToJson(obj);
+#else
+        return Newtonsoft.Json.JsonConvert.SerializeObject(obj);
+#endif
     }
 
     //-------------------------------------------------------------------------
     public static T jsonDeserialize<T>(string str_json)
     {
-        return (T)JsonConvert.DeserializeObject<T>(str_json);
-    }
-
-    //-------------------------------------------------------------------------
-    public static byte[] bsonSerializer(object obj)
-    {
-        MemoryStream ms = new MemoryStream();
-        using (BsonWriter writer = new BsonWriter(ms))
-        {
-            JsonSerializer serializer = new JsonSerializer();
-            serializer.Serialize(writer, obj);
-            return ms.ToArray();
-        }
-    }
-
-    //-------------------------------------------------------------------------
-    public static T bsonDeserialize<T>(byte[] data)
-    {
-        MemoryStream ms = new MemoryStream(data);
-        using (BsonReader reader = new BsonReader(ms))
-        {
-            JsonSerializer serializer = new JsonSerializer();
-            return serializer.Deserialize<T>(reader);
-        }
+#if UNITY_STANDALONE || UNITY_IPHONE || UNITY_ANDROID || UNITY_WEBPLAYER
+        return UnityEngine.JsonUtility.FromJson<T>(str_json);
+#else
+        return (T)Newtonsoft.Json.JsonConvert.DeserializeObject<T>(str_json);
+#endif
     }
 
     //-------------------------------------------------------------------------

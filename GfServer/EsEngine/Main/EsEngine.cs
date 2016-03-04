@@ -35,7 +35,6 @@ namespace Es
         EntityMgr mEntityMgr;
         Stopwatch mStopwatch = new Stopwatch();
         const float mTimeLogicGap = 50.0f;// 毫秒
-        ILog mLog;
 
         //---------------------------------------------------------------------
         public static EsEngine Instance { get { return mInstance; } }
@@ -52,15 +51,15 @@ namespace Es
             Settings = settings;
 
             // 日志设置
-            {
-                ILogFactory log_factory = new Log4NetLogFactory(settings.Log4NetConfigPath);
-                EbLogFactory.SetLogFactory(log_factory);
-                mLog = EbLogFactory.GetLog(this.GetType().Name);
+            //{
+            //    ILogFactory log_factory = new Log4NetLogFactory(settings.Log4NetConfigPath);
+            //    EbLogFactory.SetLogFactory(log_factory);
+            //    mLog = EbLogFactory.GetLog(this.GetType().Name);
 
-                EbLog.NoteCallback = mLog.Info;
-                EbLog.WarningCallback = mLog.Warn;
-                EbLog.ErrorCallback = mLog.Error;
-            }
+            //    EbLog.NoteCallback = mLog.Info;
+            //    EbLog.WarningCallback = mLog.Warn;
+            //    EbLog.ErrorCallback = mLog.Error;
+            //}
 
             // 处理未捕获的异常
             AppDomain.CurrentDomain.UnhandledException +=
@@ -105,22 +104,15 @@ namespace Es
                 mStopwatch.Restart();
 
                 // 每帧更新
-                try
-                {
-                    mEntityMgr.update(elapsed_tm);
-                }
-                catch (Exception ec)
-                {
-                    mLog.Error("EsEngine.run() Exception: " + ec);
-                }
+                mEntityMgr.update(elapsed_tm);
 
                 mStopwatch.Stop();
                 watch_time = mStopwatch.ElapsedMilliseconds;
                 if (watch_time > mTimeLogicGap)
                 {
                     elapsed_tm = watch_time / 1000.0f;
-                    mLog.Warn("EsEngine.run() 每帧时间=" + watch_time
-                        + "毫秒，大于设定的每帧固定时间=" + mTimeLogicGap + "毫秒");
+                    //mLog.Warn("EsEngine.run() 每帧时间=" + watch_time
+                    //    + "毫秒，大于设定的每帧固定时间=" + mTimeLogicGap + "毫秒");
                 }
                 else
                 {
@@ -135,14 +127,7 @@ namespace Es
         //---------------------------------------------------------------------
         public void update(float elapsed_tm)
         {
-            try
-            {
-                mEntityMgr.update(elapsed_tm);
-            }
-            catch (Exception ec)
-            {
-                mLog.Error("EsEngine.run() Exception: " + ec);
-            }
+            mEntityMgr.update(elapsed_tm);
         }
 
         //---------------------------------------------------------------------

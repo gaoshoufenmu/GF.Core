@@ -543,7 +543,8 @@ namespace Es
         /// <returns></returns>
         public SuperSocket.SocketBase.Logging.ILog GetLog(string name)
         {
-            return new SuperSocketLog(EbLogFactory.GetLog(name));
+            //return new SuperSocketLog(EbLogFactory.GetLog(name));
+            return new SuperSocketLog(null);
         }
 
         //---------------------------------------------------------------------
@@ -556,7 +557,8 @@ namespace Es
         /// <exception cref="System.NotImplementedException"></exception>
         public SuperSocket.SocketBase.Logging.ILog GetLog(string repositoryName, string name)
         {
-            return new SuperSocketLog(EbLogFactory.GetLog(repositoryName, name));
+            //return new SuperSocketLog(EbLogFactory.GetLog(repositoryName, name));
+            return new SuperSocketLog(null);
         }
     }
 }

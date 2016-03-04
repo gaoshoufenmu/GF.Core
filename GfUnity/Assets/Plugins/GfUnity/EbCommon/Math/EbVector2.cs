@@ -1,19 +1,15 @@
 ﻿using System;
-using Newtonsoft.Json;
 using ProtoBuf;
 
 namespace Eb
 {
     [Serializable]
-    [JsonObject(MemberSerialization.OptIn)]
     [ProtoContract]
     public struct EbVector2 : IEquatable<EbVector2>
     {
         //---------------------------------------------------------------------
-        [JsonProperty(PropertyName = "x")]
         [ProtoMember(1)]
         public float x { get; set; }// Gets or sets the X value.
-        [JsonProperty(PropertyName = "y")]
         [ProtoMember(2)]
         public float y { get; set; }// Gets or sets Y value.
         public float Length { get { return (float)Math.Sqrt((x * x) + (y * y)); } }

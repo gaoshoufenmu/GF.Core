@@ -3,21 +3,20 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
-using Newtonsoft.Json;
 using ProtoBuf;
 
 namespace Eb
 {
     //-------------------------------------------------------------------------
-    public enum _eRpcCmd : byte
-    {
-        Dummy = 0,
-        NodeMethod,// 节点远程调用
-        EntityMethod,// 远程调用
-        EntityProxyMethod,// 远程调用（Entity转发）
-        EntitySyncMapPropDirty,// 同步脏属性集
-        SyncPeerInfo,// 同步Peer信息
-    }
+    //public enum _eRpcCmd : byte
+    //{
+    //    Dummy = 0,
+    //    NodeMethod,// 节点远程调用
+    //    EntityMethod,// 远程调用
+    //    EntityProxyMethod,// 远程调用（Entity转发）
+    //    EntitySyncMapPropDirty,// 同步脏属性集
+    //    SyncPeerInfo,// 同步Peer信息
+    //}
 
     //[Serializable]
     //[ProtoContract]
@@ -110,7 +109,6 @@ namespace Eb
 
     //-------------------------------------------------------------------------
     [Serializable]
-    [JsonObject(MemberSerialization.OptOut)]
     [ProtoContract]
     public class EntityData
     {
@@ -120,7 +118,6 @@ namespace Eb
         public string entity_guid;
         [ProtoMember(3)]
         public List<ComponentData> list_component;
-        [JsonIgnoreAttribute]
         [NonSerialized]
         public Dictionary<string, object> cache_data;
         [ProtoMember(4)]

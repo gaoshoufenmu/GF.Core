@@ -173,6 +173,7 @@ $RECYCLE.BIN/
 # Mac crap
 .DS_Store
 
+/packages/
 /Output/
 /GfUnity/Library/
 /GfUnity/Temp/
