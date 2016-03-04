@@ -82,12 +82,6 @@ namespace Eb
         {
             PropDef prop_def;
             mMapPropDef.TryGetValue(key, out prop_def);
-
-            //if (prop_def == null)
-            //{
-            //    EbLog.Error("EbTable.getPropDef() Error! TableName=" + Name + " Key=" + key);
-            //}
-
             return prop_def;
         }
 

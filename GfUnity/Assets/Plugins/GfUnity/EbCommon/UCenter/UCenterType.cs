@@ -46,7 +46,7 @@ public class ClientRegisterRequest
 [Serializable]
 public class ClientRegisterResponse
 {
-    public UCenterResult result;
+    public short result;// UCenterResult
     public string token;
     public ulong acc_id;
     public string acc_name;
@@ -68,11 +68,11 @@ public class ClientLoginRequest
 [Serializable]
 public class ClientLoginResponse
 {
-    public UCenterResult result;
+    public short result;// UCenterResult
     public string token;
     public ulong acc_id;
     public string acc_name;
-    public SexType sex;
+    public byte sex;// SexType
 }
 
 //-------------------------------------------------------------------------

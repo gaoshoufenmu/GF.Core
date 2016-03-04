@@ -16,7 +16,7 @@ namespace Eb
     public class EbDataMgr
     {
         //---------------------------------------------------------------------
-        static EbDataMgr mDataMgr;        
+        static EbDataMgr mDataMgr;
         EbFileStream mFileStream = new EbFileStreamDefault();
         EbDb mDb = new EbDb();
         ISqlite mSqlite;
@@ -44,16 +44,16 @@ namespace Eb
 #endif
             if (!mSqlite.openDb())
             {
-                EbLog.Note("EbDataMgr.setup() failed!Can not Open File! db_filename=" + db_filename);
+                EbLog.Note("EbDataMgr.setup() failed! Can not Open File! db_filename=" + db_filename);
                 return;
             }
 
             try
             {
-                HashSet<string> list_tablename = _loadAllTableName();                
                 // 加载所有Table数据
+                HashSet<string> list_tablename = _loadAllTableName();
                 foreach (var i in list_tablename)
-                {                    
+                {
                     _loadTable(i);
                 }
 
@@ -136,21 +136,21 @@ namespace Eb
             if (map_data.Count <= 0)
             {
                 return;
-            }                    
+            }
 
             EbTable table = new EbTable();
-            table.Name = table_name;            
+            table.Name = table_name;
 
             foreach (var i in map_data)
             {
                 EbPropSet prop_set = new EbPropSet();
-                int data_id = i.Key;                
+                int data_id = i.Key;
                 List<DataInfo> list_data_info = i.Value;
                 foreach (var data_info in list_data_info)
                 {
-                    object data_value = data_info.data_value;                    
-                    string data_name = data_info.data_name;                    
-                  
+                    object data_value = data_info.data_value;
+                    string data_name = data_info.data_name;
+
                     switch (data_info.data_type)
                     {
                         case 1:
@@ -192,21 +192,21 @@ namespace Eb
                                 prop_set._addProp(data_name, prop);
                             }
                             break;
-                    }                   
+                    }
                 }
 
                 IProp prop_id = prop_set.getProp("Id");
                 if (prop_id == null)
                 {
-                    EbLog.Error("EbDataMgr1._loadTable() Error! Key=Id not exist, TableName=" + table_name);
+                    EbLog.Error("EbDataMgr._loadTable() Error! Key=Id not exist, TableName=" + table_name);
                     continue;
                 }
                 Prop<int> p = (Prop<int>)prop_id;
-                prop_set.Id = data_id;// p.get();                          
-                table._addPropSet(prop_set);   
+                prop_set.Id = data_id;
+                table._addPropSet(prop_set);
             }
 
-            mDb._addTable(table);           
+            mDb._addTable(table);
         }
     }
 }

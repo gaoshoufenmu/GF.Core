@@ -53,7 +53,7 @@ public class ClientUCenterSDK<TDef> : Component<TDef> where TDef : DefUCenterSDK
                 if (register_response == null)
                 {
                     register_response = new ClientRegisterResponse();
-                    register_response.result = UCenterResult.Failed;
+                    register_response.result = (short)UCenterResult.Failed;
                 }
 
                 if (RegisterHandler != null)
@@ -88,7 +88,7 @@ public class ClientUCenterSDK<TDef> : Component<TDef> where TDef : DefUCenterSDK
                 if (login_response == null)
                 {
                     login_response = new ClientLoginResponse();
-                    login_response.result = UCenterResult.Failed;
+                    login_response.result = (short)UCenterResult.Failed;
                 }
 
                 if (LoginHandler != null)
@@ -128,8 +128,8 @@ public class ClientUCenterSDK<TDef> : Component<TDef> where TDef : DefUCenterSDK
         Dictionary<string, string> headers = new Dictionary<string, string>();
         headers["Accept"] = "application/json";
         headers["Content-Type"] = "application/json";
-        headers["Host"] = "www.cragon.cn";
-        headers["Connection"] = "Keep-Alive";
+        headers["Host"] = UCenterDomain;
+        //headers["Connection"] = "Keep-Alive";
         headers["User-Agent"] = "";
 
         WWWRegister = new WWW(http_url, bytes, headers);
@@ -155,8 +155,8 @@ public class ClientUCenterSDK<TDef> : Component<TDef> where TDef : DefUCenterSDK
         Dictionary<string, string> headers = new Dictionary<string, string>();
         headers["Accept"] = "application/json";
         headers["Content-Type"] = "application/json";
-        headers["Host"] = "www.cragon.cn";
-        headers["Connection"] = "Keep-Alive";
+        headers["Host"] = UCenterDomain;
+        //headers["Connection"] = "Keep-Alive";
         headers["User-Agent"] = "";
 
         WWWLogin = new WWW(http_url, bytes, headers);
