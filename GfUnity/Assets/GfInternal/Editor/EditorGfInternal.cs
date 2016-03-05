@@ -9,14 +9,14 @@ using System.Xml;
 public class EditorGfInternal : EditorWindow
 {
     //-------------------------------------------------------------------------
-    [MenuItem("Gf/导出GfUnity.unitypackage")]
+    [MenuItem("Gf/导出GfCore.unitypackage")]
     static void exportGf4UnityPackage()
     {
         string[] arr_assetpathname = new string[2];
-        arr_assetpathname[0] = "Assets/GfUnity";
+        arr_assetpathname[0] = "Assets/GfCore";
         arr_assetpathname[1] = "Assets/Plugins";
-        AssetDatabase.ExportPackage(arr_assetpathname, "GfUnity.unitypackage", ExportPackageOptions.Recurse);
+        AssetDatabase.ExportPackage(arr_assetpathname, "GfCore.unitypackage", ExportPackageOptions.Recurse);
 
-        Debug.Log("Export GfUnity.unitypackage Finished!");
+        Debug.Log("Export GfCore.unitypackage Finished!");
     }
 }
