@@ -23,6 +23,7 @@ namespace SharpConfig
         #region Fields
 
         private static NumberFormatInfo mNumberFormat;
+        private static DateTimeFormatInfo mDateTimeFormat;
         private static char[] mValidCommentChars;
         private List<Section> mSections;
 
@@ -33,6 +34,7 @@ namespace SharpConfig
         static Configuration()
         {
             mNumberFormat = CultureInfo.InvariantCulture.NumberFormat;
+            mDateTimeFormat = CultureInfo.InvariantCulture.DateTimeFormat;
             mValidCommentChars = new[] { '#', ';', '\'' };
             IgnoreInlineComments = false;
             IgnorePreComments = false;
@@ -462,8 +464,8 @@ namespace SharpConfig
         #region Properties
 
         /// <summary>
-        /// Gets or sets the number format that is used for value conversion in Section.GetValue().
-        /// The default value is <b>CultureInfo.InvariantCulture.NumberFormat</b>.
+        /// Gets or sets the number format that is used for value conversion in SharpConfig.
+        /// The default value is <see cref="CultureInfo.InvariantCulture.NumberFormat"/>.
         /// </summary>
         public static NumberFormatInfo NumberFormat
         {
@@ -479,6 +481,24 @@ namespace SharpConfig
             }
         }
 
+        /// <summary>
+        /// Gets or sets the DateTime format that is used for value conversion in SharpConfig.
+        /// The default value is <see cref="CultureInfo.InvariantCulture.NumberFormat"/>.
+        /// </summary>
+        public static DateTimeFormatInfo DateTimeFormat
+        {
+            get { return mDateTimeFormat; }
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException("value");
+                }
+
+                mDateTimeFormat = value;
+            }
+        }
+        
         /// <summary>
         /// Gets or sets the array that contains all comment delimiting characters.
         /// </summary>

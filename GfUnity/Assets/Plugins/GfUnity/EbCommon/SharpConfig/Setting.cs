@@ -34,10 +34,22 @@ namespace SharpConfig
         ///
         /// <param name="name"> The name of the setting.</param>
         /// <param name="value">The value of the setting.</param>
-        public Setting(string name, string value) :
+        public Setting(string name, object value) :
             base(name)
         {
-            mRawValue = value;
+            SetValue(value);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Setting"/> class.
+        /// </summary>
+        ///
+        /// <param name="name"> The name of the setting.</param>
+        /// <param name="value">The value of the setting.</param>
+        public Setting(string name, DateTime value) :
+            base(name)
+        {
+            SetValue(value);
         }
 
         #endregion
@@ -90,6 +102,12 @@ namespace SharpConfig
         public bool BoolValue
         {
             get { return GetValueTyped<bool>(); }
+            set { SetValue(value); }
+        }
+
+        public DateTime DateTimeValue
+        {
+            get { return GetValueTyped<DateTime>(); }
             set { SetValue(value); }
         }
 
@@ -206,7 +224,7 @@ namespace SharpConfig
                     "The setting represents an array. Use GetValueArray to obtain its value.");
             }
 
-            return (T)ConvertValue(mRawValue, type);
+            return (T)CreateObjectFromString(mRawValue, type);
         }
 
         /// <summary>
@@ -233,7 +251,7 @@ namespace SharpConfig
                     "The setting represents an array. Use GetValueArray to obtain its value.");
             }
 
-            return ConvertValue(mRawValue, type);
+            return CreateObjectFromString(mRawValue, type);
         }
 
         /// <summary>
@@ -261,7 +279,7 @@ namespace SharpConfig
 
                 while (enumerator.Next())
                 {
-                    values[enumerator.Index] = (T)ConvertValue(enumerator.Current, typeof(T));
+                    values[enumerator.Index] = (T)CreateObjectFromString(enumerator.Current, typeof(T));
                 }
             }
 
@@ -293,7 +311,7 @@ namespace SharpConfig
 
                 while (enumerator.Next())
                 {
-                    values[enumerator.Index] = ConvertValue(enumerator.Current, elementType);
+                    values[enumerator.Index] = CreateObjectFromString(enumerator.Current, elementType);
                 }
             }
 
@@ -301,9 +319,9 @@ namespace SharpConfig
         }
 
         // Converts the value of a single element to a desired type.
-        private static object ConvertValue(string value, Type type)
+        private static object CreateObjectFromString(string value, Type dstType)
         {
-            var underlyingType = Nullable.GetUnderlyingType(type);
+            var underlyingType = Nullable.GetUnderlyingType(dstType);
             if (underlyingType != null)
             {
                 if (string.IsNullOrEmpty(value))
@@ -314,10 +332,13 @@ namespace SharpConfig
 
                 // Otherwise, continue with our conversion using
                 // the underlying type of the nullable.
-                type = underlyingType;
+                dstType = underlyingType;
             }
 
-            if (type == typeof(bool))
+            object ret = null;
+            IFormatProvider formatProvider = null;
+
+            if (dstType == typeof(bool))
             {
                 // Special case for bool.
                 switch (value.ToLowerInvariant())
@@ -334,7 +355,7 @@ namespace SharpConfig
                         break;
                 }
             }
-            else if (type.BaseType == typeof(Enum))
+            else if (dstType.BaseType == typeof(Enum))
             {
                 // It's possible that the value is something like:
                 // UriFormat.Unescaped
@@ -352,23 +373,34 @@ namespace SharpConfig
 
                 try
                 {
-                    return Enum.Parse(type, value);
+                    ret = Enum.Parse(dstType, value);
                 }
                 catch (Exception ex)
                 {
-                    throw new SettingValueCastException(value, type, ex);
+                    throw new SettingValueCastException(value, dstType, ex);
                 }
+            }
+            else if (dstType == typeof(DateTime))
+            {
+                formatProvider = Configuration.DateTimeFormat;
+            }
+            else
+            {
+                // Assume that the destination type is a number.
+                formatProvider = Configuration.NumberFormat;
             }
 
             try
             {
                 // Main conversion routine.
-                return Convert.ChangeType(value, type, Configuration.NumberFormat);
+                ret = Convert.ChangeType(value, dstType, formatProvider);
             }
             catch (Exception ex)
             {
-                throw new SettingValueCastException(value, type, ex);
+                throw new SettingValueCastException(value, dstType, ex);
             }
+
+            return ret;
         }
 
         #endregion
@@ -386,7 +418,7 @@ namespace SharpConfig
         }
 
         /// <summary>
-        /// Sets the value of this setting via an array object.
+        /// Sets the value of this setting via an array.
         /// </summary>
         /// 
         /// <param name="values">The values to set.</param>
@@ -400,9 +432,45 @@ namespace SharpConfig
             {
                 var strings = new string[values.Length];
 
-                for (int i = 0; i < values.Length; i++)
+                for (int i = 0; i < values.Length; ++i)
                 {
                     strings[i] = values[i].ToString();
+                }
+
+                mRawValue = string.Format("{{{0}}}", string.Join(",", strings));
+            }
+        }
+
+        /// <summary>
+        /// Sets the value of this setting via a DateTime object.
+        /// DateTime.ToString() is used for the conversion, using the format string and DateTimeFormat that
+        /// is set in <see cref="Configuration.DateTimeFormatString"/>  and <see cref="Configuration.DateTimeFormat"/>, respectively.
+        /// </summary>
+        /// <param name="value">The time value to set.</param>
+        public void SetValue(DateTime value)
+        {
+            mRawValue = value.ToString(Configuration.DateTimeFormat);
+        }
+
+        /// <summary>
+        /// Sets the value of this setting via a DateTime array.
+        /// DateTime.ToString() is used for the conversion, using the format string and DateTimeFormat that
+        /// is set in <see cref="Configuration.DateTimeFormatString"/>  and <see cref="Configuration.DateTimeFormat"/>, respectively.
+        /// </summary>
+        /// <param name="values">The time values to set.</param>
+        public void SetValue(DateTime[] values)
+        {
+            if (values == null)
+            {
+                mRawValue = null;
+            }
+            else
+            {
+                var strings = new string[values.Length];
+
+                for (int i = 0; i < values.Length; ++i)
+                {
+                    strings[i] = values[i].ToString(Configuration.DateTimeFormat);
                 }
 
                 mRawValue = string.Format("{{{0}}}", string.Join(",", strings));

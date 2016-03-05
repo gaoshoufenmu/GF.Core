@@ -61,10 +61,8 @@ namespace SharpConfig
                     // Skip this property, as it can't be read from.
                     continue;
                 }
-
-                object propValue = prop.GetValue(obj, null);
-                Setting setting = new Setting(prop.Name, propValue != null ? propValue.ToString() : "");
-
+                
+                Setting setting = new Setting(prop.Name, prop.GetValue(obj, null));
                 section.mSettings.Add(setting);
             }
 
@@ -76,10 +74,8 @@ namespace SharpConfig
                     // Skip this field.
                     continue;
                 }
-
-                object fieldValue = field.GetValue(obj);
-                Setting setting = new Setting(field.Name, fieldValue != null ? fieldValue.ToString() : "");
-
+                
+                Setting setting = new Setting(field.Name, field.GetValue(obj));
                 section.mSettings.Add(setting);
             }
 
@@ -99,7 +95,7 @@ namespace SharpConfig
         /// The specified type must have a public default constructor
         /// in order to be created.
         /// </remarks>
-        public T CreateObject<T>() where T : class
+        public T CreateObject<T>()
         {
             Type type = typeof(T);
 
@@ -149,7 +145,7 @@ namespace SharpConfig
         /// </summary>
         /// 
         /// <param name="obj">The object that is modified based on the section.</param>
-        public void MapTo<T>(T obj) where T : class
+        public void MapTo<T>(T obj)
         {
             if (obj == null)
             {
@@ -166,7 +162,7 @@ namespace SharpConfig
                     continue;
                 }
 
-                var setting = GetSetting(prop.Name);
+                var setting = FindSetting(prop.Name);
 
                 if (setting != null)
                 {
@@ -184,7 +180,7 @@ namespace SharpConfig
                     continue;
                 }
 
-                var setting = GetSetting(field.Name);
+                var setting = FindSetting(field.Name);
 
                 if (setting != null)
                 {
@@ -255,7 +251,7 @@ namespace SharpConfig
         /// <returns>True if the setting is contained in the section; false otherwise.</returns>
         public bool Contains(string settingName)
         {
-            return GetSetting(settingName) != null;
+            return FindSetting(settingName) != null;
         }
 
         /// <summary>
@@ -268,7 +264,7 @@ namespace SharpConfig
                 throw new ArgumentNullException("settingName");
             }
 
-            var setting = GetSetting(settingName);
+            var setting = FindSetting(settingName);
 
             if (setting == null)
             {
@@ -327,6 +323,24 @@ namespace SharpConfig
                     throw new ArgumentOutOfRangeException("index");
                 }
 
+                if (value == null)
+                {
+                    throw new ArgumentNullException("value");
+                }
+
+                var existingSetting = FindSetting(value.Name);
+                if (existingSetting != null)
+                {
+                    // See if the user is trying to replace a setting that has the same
+                    // name, but is at a different index.
+                    if (mSettings.IndexOf(existingSetting) != index)
+                    {
+                        throw new ArgumentException(string.Format(
+                            "A setting named '{0}' already exists in the section, at a different index.",
+                            value.Name));
+                    }
+                }
+
                 mSettings[index] = value;
             }
         }
@@ -345,7 +359,7 @@ namespace SharpConfig
         {
             get
             {
-                var setting = GetSetting(name);
+                var setting = FindSetting(name);
 
                 if (setting == null)
                 {
@@ -357,30 +371,48 @@ namespace SharpConfig
             }
             set
             {
-                // Check if there already is a setting by that name.
-                var setting = GetSetting(name);
+                if (value == null)
+                {
+                    throw new ArgumentNullException("value");
+                }
 
+                if (string.IsNullOrEmpty(name))
+                {
+                    throw new ArgumentNullException("name");
+                }
+
+                if (value.Name != name)
+                {
+                    throw new ArgumentException(string.Format(
+                        "Trying to set a setting named '{0}' as '{1}'. The names have to be equal.",
+                        value.Name, Name));
+                }
+
+                // Check if there already is a setting by that name.
+                var setting = FindSetting(name);
                 int settingIndex = setting != null ? mSettings.IndexOf(setting) : -1;
 
                 if (settingIndex < 0)
                 {
                     // A setting with that name does not exist yet; add it.
-                    mSettings.Add(setting);
+                    mSettings.Add(value);
                 }
                 else
                 {
-                    // A setting with that name exists; overwrite.
-                    mSettings[settingIndex] = setting;
+                    // A setting with that name exists; replace it.
+                    mSettings[settingIndex] = value;
                 }
             }
         }
 
-        private Setting GetSetting(string name)
+        private Setting FindSetting(string name)
         {
             foreach (var setting in mSettings)
             {
                 if (string.Equals(setting.Name, name, StringComparison.OrdinalIgnoreCase))
+                {
                     return setting;
+                }
             }
 
             return null;

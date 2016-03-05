@@ -43,7 +43,7 @@ namespace SharpConfig
 
                 int sectionCount = reader.ReadInt32();
 
-                for (int i = 0; i < sectionCount; i++)
+                for (int i = 0; i < sectionCount; ++i)
                 {
                     string sectionName = reader.ReadString();
                     int settingCount = reader.ReadInt32();
@@ -91,7 +91,7 @@ namespace SharpConfig
             {
                 element.mPreComments = new List<Comment>(preCommentCount);
 
-                for (int i = 0; i < preCommentCount; i++)
+                for (int i = 0; i < preCommentCount; ++i)
                 {
                     char symbol = reader.ReadChar();
                     string commentValue = reader.ReadString();
