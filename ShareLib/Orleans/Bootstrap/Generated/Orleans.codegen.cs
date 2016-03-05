@@ -1236,21 +1236,18 @@ namespace Orleans
     {
         private static readonly global::System.Reflection.FieldInfo field1 = typeof (global::Orleans.Runtime.RequestInvocationHistory).@GetField("<ActivationId>k__BackingField", (System.@Reflection.@BindingFlags.@Instance | System.@Reflection.@BindingFlags.@NonPublic | System.@Reflection.@BindingFlags.@Public));
         private static readonly global::System.Action<global::Orleans.Runtime.RequestInvocationHistory, global::Orleans.Runtime.ActivationId> setField1 = (global::System.Action<global::Orleans.Runtime.RequestInvocationHistory, global::Orleans.Runtime.ActivationId>)global::Orleans.Serialization.SerializationManager.@GetReferenceSetter(field1);
+        private static readonly global::System.Reflection.FieldInfo field2 = typeof (global::Orleans.Runtime.RequestInvocationHistory).@GetField("<DebugContext>k__BackingField", (System.@Reflection.@BindingFlags.@Instance | System.@Reflection.@BindingFlags.@NonPublic | System.@Reflection.@BindingFlags.@Public));
+        private static readonly global::System.Action<global::Orleans.Runtime.RequestInvocationHistory, global::System.String> setField2 = (global::System.Action<global::Orleans.Runtime.RequestInvocationHistory, global::System.String>)global::Orleans.Serialization.SerializationManager.@GetReferenceSetter(field2);
         private static readonly global::System.Reflection.FieldInfo field0 = typeof (global::Orleans.Runtime.RequestInvocationHistory).@GetField("<GrainId>k__BackingField", (System.@Reflection.@BindingFlags.@Instance | System.@Reflection.@BindingFlags.@NonPublic | System.@Reflection.@BindingFlags.@Public));
         private static readonly global::System.Action<global::Orleans.Runtime.RequestInvocationHistory, global::Orleans.Runtime.GrainId> setField0 = (global::System.Action<global::Orleans.Runtime.RequestInvocationHistory, global::Orleans.Runtime.GrainId>)global::Orleans.Serialization.SerializationManager.@GetReferenceSetter(field0);
-        private static readonly global::System.Reflection.FieldInfo field2 = typeof (global::Orleans.Runtime.RequestInvocationHistory).@GetField("<InterfaceId>k__BackingField", (System.@Reflection.@BindingFlags.@Instance | System.@Reflection.@BindingFlags.@NonPublic | System.@Reflection.@BindingFlags.@Public));
-        private static readonly global::System.Action<global::Orleans.Runtime.RequestInvocationHistory, global::System.Int32> setField2 = (global::System.Action<global::Orleans.Runtime.RequestInvocationHistory, global::System.Int32>)global::Orleans.Serialization.SerializationManager.@GetReferenceSetter(field2);
-        private static readonly global::System.Reflection.FieldInfo field3 = typeof (global::Orleans.Runtime.RequestInvocationHistory).@GetField("<MethodId>k__BackingField", (System.@Reflection.@BindingFlags.@Instance | System.@Reflection.@BindingFlags.@NonPublic | System.@Reflection.@BindingFlags.@Public));
-        private static readonly global::System.Action<global::Orleans.Runtime.RequestInvocationHistory, global::System.Int32> setField3 = (global::System.Action<global::Orleans.Runtime.RequestInvocationHistory, global::System.Int32>)global::Orleans.Serialization.SerializationManager.@GetReferenceSetter(field3);
         [global::Orleans.CodeGeneration.CopierMethodAttribute]
         public static global::System.Object DeepCopier(global::System.Object original)
         {
             global::Orleans.Runtime.RequestInvocationHistory input = ((global::Orleans.Runtime.RequestInvocationHistory)original);
             global::Orleans.Runtime.RequestInvocationHistory result = (global::Orleans.Runtime.RequestInvocationHistory)global::System.Runtime.Serialization.FormatterServices.@GetUninitializedObject(typeof (global::Orleans.Runtime.RequestInvocationHistory));
             setField1(result, (global::Orleans.Runtime.ActivationId)global::Orleans.Serialization.SerializationManager.@DeepCopyInner(input.@ActivationId));
+            setField2(result, input.@DebugContext);
             setField0(result, (global::Orleans.Runtime.GrainId)global::Orleans.Serialization.SerializationManager.@DeepCopyInner(input.@GrainId));
-            setField2(result, input.@InterfaceId);
-            setField3(result, input.@MethodId);
             global::Orleans.@Serialization.@SerializationContext.@Current.@RecordObject(original, result);
             return result;
         }
@@ -1260,9 +1257,8 @@ namespace Orleans
         {
             global::Orleans.Runtime.RequestInvocationHistory input = (global::Orleans.Runtime.RequestInvocationHistory)untypedInput;
             global::Orleans.Serialization.SerializationManager.@SerializeInner(input.@ActivationId, stream, typeof (global::Orleans.Runtime.ActivationId));
+            global::Orleans.Serialization.SerializationManager.@SerializeInner(input.@DebugContext, stream, typeof (global::System.String));
             global::Orleans.Serialization.SerializationManager.@SerializeInner(input.@GrainId, stream, typeof (global::Orleans.Runtime.GrainId));
-            global::Orleans.Serialization.SerializationManager.@SerializeInner(input.@InterfaceId, stream, typeof (global::System.Int32));
-            global::Orleans.Serialization.SerializationManager.@SerializeInner(input.@MethodId, stream, typeof (global::System.Int32));
         }
 
         [global::Orleans.CodeGeneration.DeserializerMethodAttribute]
@@ -1271,9 +1267,8 @@ namespace Orleans
             global::Orleans.Runtime.RequestInvocationHistory result = (global::Orleans.Runtime.RequestInvocationHistory)global::System.Runtime.Serialization.FormatterServices.@GetUninitializedObject(typeof (global::Orleans.Runtime.RequestInvocationHistory));
             global::Orleans.@Serialization.@DeserializationContext.@Current.@RecordObject(result);
             setField1(result, (global::Orleans.Runtime.ActivationId)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::Orleans.Runtime.ActivationId), stream));
+            setField2(result, (global::System.String)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.String), stream));
             setField0(result, (global::Orleans.Runtime.GrainId)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::Orleans.Runtime.GrainId), stream));
-            setField2(result, (global::System.Int32)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.Int32), stream));
-            setField3(result, (global::System.Int32)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.Int32), stream));
             return (global::Orleans.Runtime.RequestInvocationHistory)result;
         }
 
