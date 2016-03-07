@@ -64,21 +64,21 @@ public static class EbTool
     //-------------------------------------------------------------------------
     public static string jsonSerialize(object obj)
     {
-#if UNITY_STANDALONE || UNITY_IPHONE || UNITY_ANDROID || UNITY_WEBPLAYER
-        return UnityEngine.JsonUtility.ToJson(obj);
-#else
+//#if UNITY_STANDALONE || UNITY_IPHONE || UNITY_ANDROID || UNITY_WEBPLAYER
+//        return UnityEngine.JsonUtility.ToJson(obj);
+//#else
         return Newtonsoft.Json.JsonConvert.SerializeObject(obj);
-#endif
+//#endif
     }
 
     //-------------------------------------------------------------------------
     public static T jsonDeserialize<T>(string str_json)
     {
-#if UNITY_STANDALONE || UNITY_IPHONE || UNITY_ANDROID || UNITY_WEBPLAYER
-        return UnityEngine.JsonUtility.FromJson<T>(str_json);
-#else
+//#if UNITY_STANDALONE || UNITY_IPHONE || UNITY_ANDROID || UNITY_WEBPLAYER
+//        return UnityEngine.JsonUtility.FromJson<T>(str_json);
+//#else
         return (T)Newtonsoft.Json.JsonConvert.DeserializeObject<T>(str_json);
-#endif
+//#endif
     }
 
     //-------------------------------------------------------------------------
