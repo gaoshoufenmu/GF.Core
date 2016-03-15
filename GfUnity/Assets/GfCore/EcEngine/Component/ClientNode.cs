@@ -8,7 +8,6 @@ public class ClientNode<TDef> : Component<TDef> where TDef : DefNode, new()
 {
     //-------------------------------------------------------------------------
     public ClientSuperSocket<DefSuperSocket> CoSuperSocket { get; private set; }
-    public ClientUCenterSDK<DefUCenterSDK> CoUCenterSDK { get; private set; }
 
     //-------------------------------------------------------------------------
     public override void init()
@@ -21,12 +20,6 @@ public class ClientNode<TDef> : Component<TDef> where TDef : DefNode, new()
         {
             var et = EntityMgr.createEntity<EtSuperSocket>(null, Entity);
             CoSuperSocket = et.getComponent<ClientSuperSocket<DefSuperSocket>>();
-        }
-
-        if (settings.EnableCoUCenter)
-        {
-            var et = EntityMgr.createEntity<EtUCenterSDK>(null, Entity);
-            CoUCenterSDK = et.getComponent<ClientUCenterSDK<DefUCenterSDK>>();
         }
     }
 

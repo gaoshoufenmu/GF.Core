@@ -15,9 +15,6 @@ public class ClientSampleApp<TDef> : Component<TDef> where TDef : DefSampleApp, 
 
         EntityMgr.getDefaultEventPublisher().addHandler(Entity);
 
-        // UCenter示例
-        EntityMgr.createEntity<EtSampleUCenter>(null, Entity);
-
         // AutoPatcher示例
         //EntityMgr.createEntity<EtSampleAutoPatcher>(null, Entity);
     }

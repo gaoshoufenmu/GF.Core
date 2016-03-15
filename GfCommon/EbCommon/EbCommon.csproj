@@ -267,9 +267,6 @@
     <Compile Include="SharpConfig\Setting.cs" />
     <Compile Include="SharpConfig\SettingArrayEnumerator.cs" />
     <Compile Include="SharpConfig\SettingValueCastException.cs" />
-    <Compile Include="ComponentDef\DefUCenterSDK.cs" />
-    <Compile Include="ComponentDef\EtUCenterSDK.cs" />
-    <Compile Include="UCenter\UCenterType.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EbSqlite\EbSqlite.csproj">

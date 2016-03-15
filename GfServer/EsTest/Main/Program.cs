@@ -39,7 +39,6 @@ class Program
         settings.ListenPort = 5882;
         settings.RootEntityType = "EtNode";
         settings.EnableCoSupersocket = false;
-        settings.EnableCoUCenterSDK = false;
         settings.Log4NetConfigPath = "../../../Media/EsTest/EsTest.log4net.config";
 
         EsEngine e = new EsEngine(ref settings, new EsEngineListener());

@@ -14,7 +14,6 @@ namespace Es
         public int ListenPort;
         public string RootEntityType;
         public bool EnableCoSupersocket;
-        public bool EnableCoUCenterSDK;
         public string Log4NetConfigPath;
     }
 
@@ -41,7 +40,6 @@ namespace Es
         public EsEngineSettings Settings { get; private set; }
         public Entity EtNode { get; private set; }
         public ServerSuperSocket<DefSuperSocket> CoSuperSocket { get; private set; }
-        public ServerUCenterSDK<DefUCenterSDK> CoUCenterSDK { get; private set; }
 
         //---------------------------------------------------------------------
         public EsEngine(ref EsEngineSettings settings, IEsEngineListener listener)
@@ -72,16 +70,13 @@ namespace Es
 
             mEntityMgr.regComponent<ServerNode<DefNode>>();
             mEntityMgr.regComponent<ServerSuperSocket<DefSuperSocket>>();
-            mEntityMgr.regComponent<ServerUCenterSDK<DefUCenterSDK>>();
 
             mEntityMgr.regEntityDef<EtNode>();
             mEntityMgr.regEntityDef<EtSuperSocket>();
-            mEntityMgr.regEntityDef<EtUCenterSDK>();
 
             EtNode = mEntityMgr.createEntity<EtNode>(null, null);
             var co_node = EtNode.getComponent<ServerNode<DefNode>>();
             CoSuperSocket = co_node.CoSuperSocket;
-            CoUCenterSDK = co_node.CoUCenterSDK;
 
             EbLog.Note("-----------EsEngine启动完毕--------------");
 

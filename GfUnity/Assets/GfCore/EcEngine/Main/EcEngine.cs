@@ -19,7 +19,6 @@ namespace Ec
         public string ProjectName;
         public string RootEntityType;
         public bool EnableCoSuperSocket;
-        public bool EnableCoUCenter;
     }
 
     public sealed class EcEngine
@@ -35,7 +34,6 @@ namespace Ec
         public EcEngineSettings Settings { get; private set; }
         public Entity EtNode { get; private set; }
         public ClientSuperSocket<DefSuperSocket> CoSuperSocket { get; private set; }
-        public ClientUCenterSDK<DefUCenterSDK> CoUCenterSDK { get; private set; }
 
         //---------------------------------------------------------------------
         public EcEngine(ref EcEngineSettings settings, IEcEngineListener listener)
@@ -49,17 +47,14 @@ namespace Ec
             mEntityMgr.regComponent<ClientAutoPatcher<DefAutoPatcher>>();
             mEntityMgr.regComponent<ClientNode<DefNode>>();
             mEntityMgr.regComponent<ClientSuperSocket<DefSuperSocket>>();
-            mEntityMgr.regComponent<ClientUCenterSDK<DefUCenterSDK>>();
 
             mEntityMgr.regEntityDef<EtAutoPatcher>();
             mEntityMgr.regEntityDef<EtNode>();
             mEntityMgr.regEntityDef<EtSuperSocket>();
-            mEntityMgr.regEntityDef<EtUCenterSDK>();
 
             EtNode = mEntityMgr.createEntity<EtNode>(null, null);
             var co_node = EtNode.getComponent<ClientNode<DefNode>>();
             CoSuperSocket = co_node.CoSuperSocket;
-            CoUCenterSDK = co_node.CoUCenterSDK;
 
             // 通知业务层初始化
             if (mListener != null)

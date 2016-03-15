@@ -12,7 +12,6 @@ namespace Es
     {
         //---------------------------------------------------------------------
         public ServerSuperSocket<DefSuperSocket> CoSuperSocket { get; private set; }
-        public ServerUCenterSDK<DefUCenterSDK> CoUCenterSDK { get; private set; }
 
         //---------------------------------------------------------------------
         public override void init()
@@ -25,12 +24,6 @@ namespace Es
             {
                 var et = EntityMgr.createEntity<EtSuperSocket>(null, Entity);
                 CoSuperSocket = et.getComponent<ServerSuperSocket<DefSuperSocket>>();
-            }
-
-            if (settings.EnableCoUCenterSDK)
-            {
-                var et = EntityMgr.createEntity<EtUCenterSDK>(null, Entity);
-                CoUCenterSDK = et.getComponent<ServerUCenterSDK<DefUCenterSDK>>();
             }
         }
 

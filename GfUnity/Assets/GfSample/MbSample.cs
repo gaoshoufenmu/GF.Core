@@ -10,11 +10,9 @@ public class EcSampleListener : IEcEngineListener
     {
         entity_mgr.regComponent<ClientSampleApp<DefSampleApp>>();
         entity_mgr.regComponent<ClientSampleAutoPatcher<DefSampleAutoPatcher>>();
-        entity_mgr.regComponent<ClientSampleUCenter<DefSampleUCenter>>();
 
         entity_mgr.regEntityDef<EtSampleApp>();
         entity_mgr.regEntityDef<EtSampleAutoPatcher>();
-        entity_mgr.regEntityDef<EtSampleUCenter>();
     }
 
     //-------------------------------------------------------------------------
@@ -67,7 +65,6 @@ public class MbSample : MonoBehaviour
             settings.ProjectName = "EcSample";
             settings.RootEntityType = "EtRoot";
             settings.EnableCoSuperSocket = true;
-            settings.EnableCoUCenter = true;
             mEngine = new EcEngine(ref settings, new EcSampleListener());
         }
 

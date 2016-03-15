@@ -80,7 +80,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Component\ServerNode.cs" />
-    <Compile Include="Component\ServerUCenterSDK.cs" />
     <Compile Include="Main\EntitySerializerCouchbase.cs" />
     <Compile Include="Main\EsEngineConsoleModify.cs" />
     <Compile Include="Component\ServerSuperSocket.cs" />
