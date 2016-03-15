@@ -304,14 +304,13 @@
             Utility functions for azure queue Persistent stream provider.
             </summary>
         </member>
-        <member name="M:Orleans.Providers.Streams.AzureQueue.AzureQueueStreamProviderUtils.DeleteAllUsedAzureQueues(System.String,System.String,System.String,Orleans.Runtime.Logger)">
+        <member name="M:Orleans.Providers.Streams.AzureQueue.AzureQueueStreamProviderUtils.DeleteAllUsedAzureQueues(System.String,System.String,System.String)">
             <summary>
             Helper method for testing.
             </summary>
             <param name="providerName"></param>
             <param name="deploymentId"></param>
             <param name="storageConnectionString"></param>
-            <param name="logger"></param>
             <returns></returns>
         </member>
         <member name="T:Orleans.Providers.Streams.AzureQueue.SimpleAzureQueueAdapterFactory">

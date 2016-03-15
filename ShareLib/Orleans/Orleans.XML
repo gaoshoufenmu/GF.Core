@@ -3382,7 +3382,7 @@
             <param name="assembly">The assembly.</param>
             <returns>A value indicating whether or not the provided assembly is the Orleans assembly or references it.</returns>
         </member>
-        <member name="M:Orleans.Runtime.TypeUtils.DoReferencesContain(System.Collections.Generic.IReadOnlyCollection{System.Reflection.AssemblyName},System.String)">
+        <member name="M:Orleans.Runtime.TypeUtils.DoReferencesContain(System.Collections.Generic.IReadOnlyCollection{System.Reflection.AssemblyName},System.Reflection.AssemblyName)">
             <summary>
             Returns a value indicating whether or not the specified references contain the provided assembly name.
             </summary>
