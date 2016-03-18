@@ -4248,17 +4248,30 @@
             Resets properties of the state object to their default values.
             </summary>
         </member>
-        <member name="M:Orleans.InvocationMethodInfoMap.GetMethodInfo(System.Type,Orleans.CodeGeneration.InvokeMethodRequest)">
+        <member name="T:Orleans.InterceptedMethodInvoker">
             <summary>
-            Returns the <see cref="T:System.Reflection.MethodInfo"/> for the specified implementation and invocation request.
+            An <see cref="T:Orleans.CodeGeneration.IGrainMethodInvoker"/> which redirects execution for grains which implement
+            <see cref="T:Orleans.IGrainInvokeInterceptor"/>.
             </summary>
-            <param name="implementationType">The type of the implementation.</param>
-            <param name="request">The invocation request.</param>
-            <returns>The <see cref="T:System.Reflection.MethodInfo"/> for the specified implementation and invocation request.</returns>
         </member>
-        <member name="M:Orleans.InvocationMethodInfoMap.MapInterfaceToImplementation(System.Type,System.Type)">
+        <member name="F:Orleans.InterceptedMethodInvoker.invoker">
             <summary>
-            Maps the provided <paramref name="interfaceType"/> to the provided <paramref name="implementationType"/>.
+            The underlying invoker.
+            </summary>
+        </member>
+        <member name="F:Orleans.InterceptedMethodInvoker.methodInfos">
+            <summary>
+            The grain's methods.
+            </summary>
+        </member>
+        <member name="F:Orleans.InvocationMethodInfoMap.invokers">
+            <summary>
+            The map from implementation types to interface ids to invoker.
+            </summary>
+        </member>
+        <member name="M:Orleans.InvocationMethodInfoMap.GetInterfaceToImplementationMap(System.Int32,System.Type)">
+            <summary>
+            Maps the provided <paramref name="interfaceId"/> to the provided <paramref name="implementationType"/>.
             </summary>
             <param name="interfaceType">The interface type.</param>
             <param name="implementationType">The implementation type.</param>
@@ -4429,10 +4442,33 @@
             Service provider for dependency injection
             </summary>
         </member>
+        <member name="M:Orleans.Providers.IProviderRuntime.SetInvokeInterceptor(Orleans.Providers.InvokeInterceptor)">
+            <summary>
+            Sets the invocation interceptor which will be invoked on each request.
+            </summary>
+        </member>
+        <member name="M:Orleans.Providers.IProviderRuntime.GetInvokeInterceptor">
+            <summary>
+            Gets the invocation interceptor which will be invoked on each request.
+            </summary>
+        </member>
         <member name="T:Orleans.Providers.IStorageProviderRuntime">
             <summary>
             Provider-facing interface for manager of storage providers
             </summary>
+        </member>
+        <member name="T:Orleans.Providers.InvokeInterceptor">
+            <summary>
+            Handles the invocation of the provided <paramref name="request"/>.
+            </summary>
+            <param name="targetMethod">The method on <paramref name="target"/> being invoked.</param>
+            <param name="request">The request.</param>
+            <param name="target">The invocation target.</param>
+            <param name="invoker">
+            The invoker which is used to dispatch the provided <paramref name="request"/> to the provided
+            <paramref name="target"/>.
+            </param>
+            <returns>The result of invocation, which will be returned to the client.</returns>
         </member>
         <member name="T:Orleans.Providers.ProviderLoader`1">
             <summary>
