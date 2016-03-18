@@ -1755,7 +1755,7 @@
             Internal data structure that holds a grain interfaces to grain classes map.
             </summary>
         </member>
-        <member name="T:Orleans.Runtime.GrainInterfaceData">
+        <member name="T:Orleans.Runtime.GrainInterfaceMap.GrainInterfaceData">
             <summary>
             Metadata for a grain interface
             </summary>
@@ -4134,7 +4134,7 @@
             </summary>
             <param name="forGrainType">type argument</param>
         </member>
-        <member name="M:Orleans.CodeGeneration.GrainInterfaceData.IsReadOnly(System.Reflection.MethodInfo)">
+        <member name="M:Orleans.CodeGeneration.GrainInterfaceUtils.IsReadOnly(System.Reflection.MethodInfo)">
             <summary>
             Whether method is read-only, i.e. does not modify grain state, 
             a method marked with [ReadOnly].
@@ -4142,12 +4142,12 @@
             <param name="info"></param>
             <returns></returns>
         </member>
-        <member name="M:Orleans.CodeGeneration.GrainInterfaceData.IsPureObserverInterface(System.Type)">
+        <member name="M:Orleans.CodeGeneration.GrainInterfaceUtils.IsPureObserverInterface(System.Type)">
             <summary>
             decide whether the class is derived from Grain
             </summary>
         </member>
-        <member name="M:Orleans.CodeGeneration.GrainInterfaceData.GetMethodsImpl(System.Type,System.Type,System.Collections.Generic.List{System.Reflection.MethodInfo})">
+        <member name="M:Orleans.CodeGeneration.GrainInterfaceUtils.GetMethodsImpl(System.Type,System.Type,System.Collections.Generic.List{System.Reflection.MethodInfo})">
             <summary>
             Recurses through interface graph accumulating methods
             </summary>
