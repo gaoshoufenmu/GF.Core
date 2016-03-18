@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-using Eb;
-using Ec;
+using GF.Common;
 
 public class EcSampleListener : IEcEngineListener
 {

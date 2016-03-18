@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Eb
+namespace GF.Common
 {
     // 装饰节点，随机次数限制，每次满足随机结果后才开始执行一次行为节点
     public class DecoratorRandom : BehaviorComponent

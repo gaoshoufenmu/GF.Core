@@ -8,7 +8,7 @@
     <ProjectGuid>{47B5D60F-BE8D-4CCF-8125-800B991A6502}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GF</RootNamespace>
+    <RootNamespace>GF.Sqlite</RootNamespace>
     <AssemblyName>GF.Sqlite</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

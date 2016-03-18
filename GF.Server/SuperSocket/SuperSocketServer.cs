@@ -8,7 +8,7 @@ using SuperSocket.SocketBase.Config;
 using SuperSocket.SocketBase.Protocol;
 using SuperSocket.SocketEngine;
 
-namespace Es
+namespace GF.Server
 {
     struct SessionEvent
     {

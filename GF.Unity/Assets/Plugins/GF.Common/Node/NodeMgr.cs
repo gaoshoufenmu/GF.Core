@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Text;
 using EventDataXML;
-using Eb;
+using GF.Common;
 
 public class CNodeMgr : IDisposable
 {

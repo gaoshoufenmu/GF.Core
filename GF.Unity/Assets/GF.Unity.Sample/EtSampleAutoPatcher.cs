@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Eb;
+using GF.Common;
 
 public class EtSampleAutoPatcher : EntityDef
 {

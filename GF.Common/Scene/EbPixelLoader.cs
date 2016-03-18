@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace Eb
+namespace GF.Common
 {
     public delegate void onPixel(bool is_block, int x, int y);
 

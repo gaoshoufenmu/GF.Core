@@ -10,9 +10,9 @@ using Couchbase.Configuration.Client.Providers;
 using Couchbase.Core;
 using Couchbase.IO;
 using Newtonsoft.Json;
-using Eb;
+using GF.Common;
 
-namespace Es
+namespace GF.Server
 {
     public class EntityCouchbase
     {

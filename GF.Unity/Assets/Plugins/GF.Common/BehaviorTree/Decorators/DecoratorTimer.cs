@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Eb
+namespace GF.Common
 {
     // 装饰节点，时间限制，超过指定时间间隔后才开始执行行为节点
     public class DecoratorTimer : BehaviorComponent

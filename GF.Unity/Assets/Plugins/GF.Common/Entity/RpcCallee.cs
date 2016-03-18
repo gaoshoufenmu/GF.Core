@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using ProtoBuf;
 
-namespace Eb
+namespace GF.Common
 {
     public abstract class RpcSlotBase
     {

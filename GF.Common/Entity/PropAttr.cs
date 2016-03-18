@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Eb
+namespace GF.Common
 {
     // 编辑器相关属性描述，没有该属性描述时默认不显示在编辑器
     [System.AttributeUsage(System.AttributeTargets.Field)]

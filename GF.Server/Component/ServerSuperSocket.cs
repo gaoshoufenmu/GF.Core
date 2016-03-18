@@ -6,9 +6,9 @@ using System.Net;
 using System.Text;
 using SuperSocket.SocketBase;
 using SuperSocket.SocketBase.Config;
-using Eb;
+using GF.Common;
 
-namespace Es
+namespace GF.Server
 {
     public class ServerSuperSocket<TDef> : Component<TDef>, ISuperServerListener where TDef : DefSuperSocket, new()
     {

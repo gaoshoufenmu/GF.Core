@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Eb
+namespace GF.Common
 {
     public class EbScriptMgr
     {

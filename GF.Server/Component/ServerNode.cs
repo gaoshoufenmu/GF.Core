@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
 using System.Text;
-using Eb;
+using GF.Common;
 
-namespace Es
+namespace GF.Server
 {
     public class ServerNode<TDef> : Component<TDef> where TDef : DefNode, new()
     {

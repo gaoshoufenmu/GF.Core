@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-using Eb;
+using GF.Common;
 
 public delegate void OnAutoPatcherGetServerVersionCfg();// 从自动更新服务器获取版本配置信息
 public delegate void OnAutoPatcherGetServerVersionCfgResult(AutoPatcherResult r, string error);// 从自动更新服务器获取版本配置信息的结果

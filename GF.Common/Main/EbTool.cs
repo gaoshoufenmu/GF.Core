@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-using Eb;
+using GF.Common;
 
 public static class EbTool
 {

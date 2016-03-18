@@ -5,7 +5,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using ProtoBuf;
 
-namespace Eb
+namespace GF.Common
 {
     //-------------------------------------------------------------------------
     //public enum _eRpcCmd : byte

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 
-namespace Eb
+namespace GF.Common
 {
     public abstract class IProp : IDisposable
     {

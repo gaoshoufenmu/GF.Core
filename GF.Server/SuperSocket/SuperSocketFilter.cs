@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using SuperSocket.ProtoBase;
 
-namespace Es
+namespace GF.Server
 {
     public class SuperSocketReceiveFilter : FixedHeaderReceiveFilter<BufferedPackageInfo<ushort>>
     {

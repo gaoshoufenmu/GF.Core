@@ -5,9 +5,9 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
-using Eb;
+using GF.Common;
 
-namespace Es
+namespace GF.Server
 {
     class EsEngineConsoleModify
     {

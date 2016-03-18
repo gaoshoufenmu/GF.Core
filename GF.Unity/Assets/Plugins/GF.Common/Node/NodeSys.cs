@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using EventDataXML;
-using Eb;
+using GF.Common;
 
 public class CNodeSys : IDisposable
 {

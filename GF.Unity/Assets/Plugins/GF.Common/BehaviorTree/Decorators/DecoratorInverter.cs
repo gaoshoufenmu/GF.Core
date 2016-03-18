@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Eb
+namespace GF.Common
 {
     // 装饰节点，对行为节点返回的结果取反
     public class DecoratorInverter : BehaviorComponent

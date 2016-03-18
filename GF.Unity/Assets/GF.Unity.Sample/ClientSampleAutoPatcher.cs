@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
-using Eb;
+using GF.Common;
 
 public class ClientSampleAutoPatcher<TDef> : Component<TDef> where TDef : DefSampleAutoPatcher, new()
 {

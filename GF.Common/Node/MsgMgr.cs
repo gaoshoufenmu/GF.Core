@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using EventDataXML;
-using Eb;
+using GF.Common;
 
 class CMsgMgr
 {

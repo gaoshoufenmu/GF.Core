@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Eb
+namespace GF.Common
 {
     // 装饰节点，固定次数限制，满足次数后开始执行行为节点
     public class DecoratorCounter : BehaviorComponent

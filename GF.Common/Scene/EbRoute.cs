@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Eb
+namespace GF.Common
 {
     public class EbRouteNode
     {

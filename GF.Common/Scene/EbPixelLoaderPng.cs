@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Hjg.Pngcs;
 
-namespace Eb
+namespace GF.Common
 {
     // png读取库
     // https://code.google.com/p/pngcs/

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
-using Eb;
+using GF.Common;
 
 public enum EbLogLevel
 {

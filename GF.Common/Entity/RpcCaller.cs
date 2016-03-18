@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using ProtoBuf;
 
-namespace Eb
+namespace GF.Common
 {
     public interface IRpcSession
     {

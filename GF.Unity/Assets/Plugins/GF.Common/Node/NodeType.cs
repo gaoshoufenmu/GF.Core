@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using ProtoBuf;
-using Eb;
+using GF.Common;
 
 //-----------------------------------------------------------------------------
 [Serializable]

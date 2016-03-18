@@ -1,7 +1,7 @@
 using System;
 using ProtoBuf;
 
-namespace Eb
+namespace GF.Common
 {
     [Serializable]
     [ProtoContract]

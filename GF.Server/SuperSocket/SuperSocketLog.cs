@@ -13,7 +13,7 @@ using SuperSocket.SocketBase.Logging;
 using SuperSocket.SocketBase.Protocol;
 using SuperSocket.SocketEngine;
 
-namespace Es
+namespace GF.Server
 {
     public class SuperSocketLog : SuperSocket.SocketBase.Logging.ILog
     {

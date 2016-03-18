@@ -3,9 +3,9 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using SuperSocket.SocketBase;
 using SuperSocket.ProtoBase;
-using Eb;
+using GF.Common;
 
-namespace Es
+namespace GF.Server
 {
     public enum SessionCloseReason
     {

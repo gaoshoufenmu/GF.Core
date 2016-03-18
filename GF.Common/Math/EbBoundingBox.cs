@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Eb
+namespace GF.Common
 {
     // The bounding box is a 2d or 3d shape.
     public struct EbBoundingBox : IEquatable<EbBoundingBox>

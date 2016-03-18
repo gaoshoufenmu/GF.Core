@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace Eb
+namespace GF.Common
 {
     public abstract class IComponent
     {

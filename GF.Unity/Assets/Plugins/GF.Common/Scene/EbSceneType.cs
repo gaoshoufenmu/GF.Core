@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Eb
+namespace GF.Common
 {
     public class EvSceneEntityEnterRegion : EntityEvent
     {

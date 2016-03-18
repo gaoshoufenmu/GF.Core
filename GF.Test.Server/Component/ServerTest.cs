@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Eb;
-using Es;
+using GF.Common;
+using GF.Server;
 
 public class DefTest : ComponentDef
 {

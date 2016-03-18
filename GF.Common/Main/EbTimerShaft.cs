@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Eb
+namespace GF.Common
 {
     // 定时事件节点
     public class EbTimeEvent

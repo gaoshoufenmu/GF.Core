@@ -8,7 +8,7 @@
     <ProjectGuid>{4A1A0894-DC8E-4D16-B920-064B77C9E781}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GF</RootNamespace>
+    <RootNamespace>GF.Common</RootNamespace>
     <AssemblyName>GF.Common</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

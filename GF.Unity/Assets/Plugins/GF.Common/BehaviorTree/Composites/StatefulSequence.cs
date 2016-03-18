@@ -1,6 +1,6 @@
 using System;
 
-namespace Eb
+namespace GF.Common
 {
     public class StatefulSequence : BehaviorComponent
     {

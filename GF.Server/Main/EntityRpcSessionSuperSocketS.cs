@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using Eb;
+using GF.Common;
 
-namespace Es
+namespace GF.Server
 {
     public class EntityRpcSessionSuperSocketS : IRpcSession
     {

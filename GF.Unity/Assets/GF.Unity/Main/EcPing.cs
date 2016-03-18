@@ -1,70 +1,67 @@
 ﻿using UnityEngine;
 using System.Collections;
-using Eb;
+using GF.Common;
 
-namespace Ec
+public class EcPing
 {
-    public class EcPing
+    //-------------------------------------------------------------------------
+    Ping mPing = null;
+    float mPingTm = 5f;
+    bool mStart = false;
+    string mIp = "";
+
+    //-------------------------------------------------------------------------
+    public int PingTime { get; private set; }
+
+    //-------------------------------------------------------------------------
+    public void start(string ip)
     {
-        //-------------------------------------------------------------------------
-        Ping mPing = null;
-        float mPingTm = 5f;
-        bool mStart = false;
-        string mIp = "";
+        mStart = true;
+        mIp = ip;
 
-        //-------------------------------------------------------------------------
-        public int PingTime { get; private set; }
-
-        //-------------------------------------------------------------------------
-        public void start(string ip)
+        if (mPing != null)
         {
-            mStart = true;
-            mIp = ip;
+            mPing.DestroyPing();
+            mPing = null;
+        }
+        mPing = new Ping(mIp);
+    }
+
+    //-------------------------------------------------------------------------
+    public void stop()
+    {
+        mStart = false;
+
+        if (mPing != null)
+        {
+            mPing.DestroyPing();
+            mPing = null;
+        }
+    }
+
+    //-------------------------------------------------------------------------
+    public void update(float elapsed_tm)
+    {
+        if (!mStart) return;
+
+        if (mPing != null && mPing.isDone)
+        {
+            PingTime = mPing.time;
 
             if (mPing != null)
             {
                 mPing.DestroyPing();
                 mPing = null;
-            }
-            mPing = new Ping(mIp);
-        }
-
-        //-------------------------------------------------------------------------
-        public void stop()
-        {
-            mStart = false;
-
-            if (mPing != null)
-            {
-                mPing.DestroyPing();
-                mPing = null;
+                mPingTm = 5f;
             }
         }
-
-        //-------------------------------------------------------------------------
-        public void update(float elapsed_tm)
+        else if (mPing == null)
         {
-            if (!mStart) return;
-
-            if (mPing != null && mPing.isDone)
+            mPingTm -= elapsed_tm;
+            if (mPingTm < 0f)
             {
-                PingTime = mPing.time;
-
-                if (mPing != null)
-                {
-                    mPing.DestroyPing();
-                    mPing = null;
-                    mPingTm = 5f;
-                }
-            }
-            else if (mPing == null)
-            {
-                mPingTm -= elapsed_tm;
-                if (mPingTm < 0f)
-                {
-                    mPingTm = 5f;
-                    mPing = new Ping(mIp);
-                }
+                mPingTm = 5f;
+                mPing = new Ping(mIp);
             }
         }
     }

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
-using Eb;
+using GF.Common;
 
-namespace Es
+namespace GF.Server
 {
     public struct EsEngineSettings
     {
