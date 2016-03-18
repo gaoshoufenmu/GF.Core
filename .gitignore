@@ -169,9 +169,9 @@ $RECYCLE.BIN/
 
 /packages/
 /Output/
-/GfUnity/Library/
-/GfUnity/Temp/
-/GfUnity/GfUnity.CSharp.Editor.csproj
-/GfUnity/GfUnity.CSharp.Plugins.csproj
-/GfUnity/GfUnity.CSharp.csproj
-/GfUnity/GfUnity.sln
+/GF.Unity/Library/
+/GF.Unity/Temp/
+/GF.Unity/GF.Unity.CSharp.Editor.csproj
+/GF.Unity/GF.Unity.CSharp.Plugins.csproj
+/GF.Unity/GF.Unity.CSharp.csproj
+/GF.Unity/GF.Unity.sln
