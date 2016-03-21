@@ -71,7 +71,7 @@
             Required configuration params: <c>DataConnectionString</c>
             </para>
             <para>
-            Optional configuration params:
+            Optional configuration params: 
             <c>TableName</c> -- defaults to <c>OrleansGrainState</c>
             <c>DeleteStateOnClear</c> -- defaults to <c>false</c>
             </para>
@@ -120,13 +120,13 @@
         <member name="M:Orleans.Storage.AzureTableStorage.ClearStateAsync(System.String,Orleans.Runtime.GrainReference,Orleans.IGrainState)">
             <summary> Clear / Delete state data function for this storage provider. </summary>
             <remarks>
-            If the <c>DeleteStateOnClear</c> is set to <c>true</c> then the table row
-            for this grain will be deleted / removed, otherwise the table row will be
+            If the <c>DeleteStateOnClear</c> is set to <c>true</c> then the table row 
+            for this grain will be deleted / removed, otherwise the table row will be 
             cleared by overwriting with default / null values.
             </remarks>
             <see cref="M:Orleans.Storage.IStorageProvider.ClearStateAsync(System.String,Orleans.Runtime.GrainReference,Orleans.IGrainState)"/>
         </member>
-        <member name="M:Orleans.Storage.AzureTableStorage.ConvertToStorageFormat(System.Object,Microsoft.WindowsAzure.Storage.Table.DynamicTableEntity)">
+        <member name="M:Orleans.Storage.AzureTableStorage.ConvertToStorageFormat(System.Object,Orleans.Storage.AzureTableStorage.GrainStateEntity)">
             <summary>
             Serialize to Azure storage format in either binary or JSON format.
             </summary>
@@ -138,7 +138,7 @@
             for more on the JSON serializer.
             </remarks>
         </member>
-        <member name="M:Orleans.Storage.AzureTableStorage.ConvertFromStorageFormat(Microsoft.WindowsAzure.Storage.Table.DynamicTableEntity)">
+        <member name="M:Orleans.Storage.AzureTableStorage.ConvertFromStorageFormat(Orleans.Storage.AzureTableStorage.GrainStateEntity)">
             <summary>
             Deserialize from Azure storage format
             </summary>
