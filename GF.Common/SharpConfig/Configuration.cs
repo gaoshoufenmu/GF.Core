@@ -465,7 +465,7 @@ namespace SharpConfig
 
         /// <summary>
         /// Gets or sets the number format that is used for value conversion in SharpConfig.
-        /// The default value is <see cref="CultureInfo.InvariantCulture.NumberFormat"/>.
+        /// The default value is CultureInfo.InvariantCulture.NumberFormat.
         /// </summary>
         public static NumberFormatInfo NumberFormat
         {
@@ -483,7 +483,7 @@ namespace SharpConfig
 
         /// <summary>
         /// Gets or sets the DateTime format that is used for value conversion in SharpConfig.
-        /// The default value is <see cref="CultureInfo.InvariantCulture.NumberFormat"/>.
+        /// The default value is CultureInfo.InvariantCulture.NumberFormat.
         /// </summary>
         public static DateTimeFormatInfo DateTimeFormat
         {

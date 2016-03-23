@@ -71,7 +71,7 @@ namespace SharpConfig
         /// </summary>
         public int IntValue
         {
-            get { return GetValueTyped<int>(); }
+            get { return GetValue<int>(); }
             set { SetValue(value); }
         }
 
@@ -81,7 +81,7 @@ namespace SharpConfig
         /// </summary>
         public float FloatValue
         {
-            get { return GetValueTyped<float>(); }
+            get { return GetValue<float>(); }
             set { SetValue(value); }
         }
 
@@ -91,7 +91,7 @@ namespace SharpConfig
         /// </summary>
         public double DoubleValue
         {
-            get { return GetValueTyped<double>(); }
+            get { return GetValue<double>(); }
             set { SetValue(value); }
         }
 
@@ -101,13 +101,17 @@ namespace SharpConfig
         /// </summary>
         public bool BoolValue
         {
-            get { return GetValueTyped<bool>(); }
+            get { return GetValue<bool>(); }
             set { SetValue(value); }
         }
 
+        /// <summary>
+        /// Gets or sets the value of this settings as a date.
+        /// Note: this is a shortcut to GetValue and SetValue.
+        /// </summary>
         public DateTime DateTimeValue
         {
-            get { return GetValueTyped<DateTime>(); }
+            get { return GetValue<DateTime>(); }
             set { SetValue(value); }
         }
 
@@ -208,7 +212,29 @@ namespace SharpConfig
         /// </summary>
         ///
         /// <typeparam name="T">The type of the object to retrieve.</typeparam>
+        [Obsolete("consider using GetValue().")]
         public T GetValueTyped<T>()
+        {
+            return GetValue<T>();
+        }
+
+        /// <summary>
+        /// Gets this setting's value as a specific type.
+        /// </summary>
+        ///
+        /// <param name="type">The type of the object to retrieve.</param>
+        [Obsolete("consider using GetValue().")]
+        public object GetValueTyped(Type type)
+        {
+            return GetValue(type);
+        }
+
+        /// <summary>
+        /// Gets this setting's value as a specific type.
+        /// </summary>
+        ///
+        /// <typeparam name="T">The type of the object to retrieve.</typeparam>
+        public T GetValue<T>()
         {
             Type type = typeof(T);
 
@@ -232,7 +258,7 @@ namespace SharpConfig
         /// </summary>
         ///
         /// <param name="type">The type of the object to retrieve.</param>
-        public object GetValueTyped(Type type)
+        public object GetValue(Type type)
         {
             if (type == null)
             {
@@ -390,14 +416,17 @@ namespace SharpConfig
                 formatProvider = Configuration.NumberFormat;
             }
 
-            try
+            if (formatProvider != null)
             {
-                // Main conversion routine.
-                ret = Convert.ChangeType(value, dstType, formatProvider);
-            }
-            catch (Exception ex)
-            {
-                throw new SettingValueCastException(value, dstType, ex);
+                try
+                {
+                    // Main conversion routine.
+                    ret = Convert.ChangeType(value, dstType, formatProvider);
+                }
+                catch (Exception ex)
+                {
+                    throw new SettingValueCastException(value, dstType, ex);
+                }
             }
 
             return ret;
@@ -444,7 +473,7 @@ namespace SharpConfig
         /// <summary>
         /// Sets the value of this setting via a DateTime object.
         /// DateTime.ToString() is used for the conversion, using the format string and DateTimeFormat that
-        /// is set in <see cref="Configuration.DateTimeFormatString"/>  and <see cref="Configuration.DateTimeFormat"/>, respectively.
+        /// is set in and <see cref="Configuration.DateTimeFormat"/>, respectively.
         /// </summary>
         /// <param name="value">The time value to set.</param>
         public void SetValue(DateTime value)
@@ -455,7 +484,7 @@ namespace SharpConfig
         /// <summary>
         /// Sets the value of this setting via a DateTime array.
         /// DateTime.ToString() is used for the conversion, using the format string and DateTimeFormat that
-        /// is set in <see cref="Configuration.DateTimeFormatString"/>  and <see cref="Configuration.DateTimeFormat"/>, respectively.
+        /// is set in and <see cref="Configuration.DateTimeFormat"/>, respectively.
         /// </summary>
         /// <param name="values">The time values to set.</param>
         public void SetValue(DateTime[] values)
