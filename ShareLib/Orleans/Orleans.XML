@@ -239,12 +239,6 @@
             Default is true.
             </summary>
         </member>
-        <member name="P:Orleans.Runtime.Configuration.IMessagingConfiguration.CancellationTokenHolderDeactivationDelay">
-            <summary>
-            The CancellationTokenHolderDeactivationDelay attribute specifies how long to keep an cancellation token holder grain after
-            cancel request. Default is 30 seconds
-            </summary>
-        </member>
         <member name="P:Orleans.Runtime.Configuration.IMessagingConfiguration.SiloSenderQueues">
             <summary>
             The SiloSenderQueues attribute specifies the number of parallel queues and attendant threads used by the silo to send outbound
@@ -2596,11 +2590,6 @@
             The default timeout before a request is assumed to have failed.
             </summary>
         </member>
-        <member name="F:Orleans.Runtime.Constants.DEFAULT_CANCELLATION_TOKEN_HOLDER_DEACTIVATION_DELAY">
-            <summary>
-            The delay after a cancellation token holder grain will be marked for collection.
-            </summary>
-        </member>
         <member name="F:Orleans.Runtime.Constants.MinReminderPeriod">
             <summary>
             Minimum period for registering a reminder ... we want to enforce a lower bound
@@ -3744,61 +3733,6 @@
             3) LockReleaser is IDisposable to implement the "using" pattern.
             4) LockReleaser does NOT have to implement the Finalizer function. If users forget to Dispose the LockReleaser (analagous to forgetting to release a mutex)
             the AsyncLock wil remain locked, which may potentialy cause deadlock. This is OK, since these are the exact regular mutex semantics - if one forgets to unlcok the mutex, it stays locked. 
-        </member>
-        <member name="M:Orleans.Threading.GCObserver.#ctor(System.Action)">
-            <param name="onFinalization">Action that will be executed on finalization</param>
-        </member>
-        <member name="T:Orleans.Threading.CancellationTokenWrapper">
-            <summary>
-            Used as replacement of CancellationToken during network roundtrips
-            </summary>
-        </member>
-        <member name="P:Orleans.Threading.CancellationTokenWrapper.Id">
-            <summary>
-            Unique id of concrete token
-            </summary>
-        </member>
-        <member name="P:Orleans.Threading.CancellationTokenWrapper.CancellationToken">
-            <summary>
-            Cancellation token
-            </summary>
-        </member>
-        <member name="P:Orleans.Threading.CancellationTokenWrapper.WentThroughSerialization">
-            <summary>
-            Shows whether wrapper went though serialization process
-            </summary>
-        </member>
-        <member name="T:Orleans.Threading.CancellationTokenManager">
-            <summary>
-            Rationale: on invoking the GrainReference method the CancellationTokens from method signature being wrapped in CancellationTokenWrapper.
-            If request is local - before invoking of actual grain method it's just being unwrapped.
-            For the remote case: on message serialization subscription on token cancel event,  
-            which will cancel linked CancellationTokenSource located in the CancellationTokenHolderGrain, is being created, 
-            after deserialization of the wrapper the abovementioned grain will be allocated on same silo with called grain,
-            and wrapper will be replaced with actual token from holder grain. If CancellationTokenHolderGrain cancel 
-            method was called before grain's allocation there is a possibility that it will be allocated on another silo than target,
-            and it will lead to another token's roundtrip.
-            </summary>
-        </member>
-        <member name="M:Orleans.Threading.CancellationTokenManager.WrapCancellationTokens(System.Object[])">
-            <summary>
-            Wraps found cancellation tokens into instances of type CancellationTokenWrapper
-            </summary>
-            <param name="arguments"></param>
-        </member>
-        <member name="M:Orleans.Threading.CancellationTokenManager.WrapCancellationToken(System.Threading.CancellationToken)">
-            <summary>
-            Wraps cancellation token into CancellationTokenWrapper
-            </summary>
-            <param name="ct"> Cancellation token to be wrapped</param>
-            <returns>CancellationTokenWrapper</returns>
-        </member>
-        <member name="M:Orleans.Threading.CancellationTokenManager.GetCancellationToken(System.Guid)">
-            <summary>
-            Retrieves cancellation token from holder grain
-            </summary>
-            <param name="tokenId"> Id of token to be retrieved</param>
-            <returns></returns>
         </member>
         <member name="T:Orleans.Async.TaskUtility">
             <summary>
@@ -6145,13 +6079,12 @@
             </summary>
             <param name="purgedItems"></param>
         </member>
-        <member name="M:Orleans.Streams.IQueueCache.GetCacheCursor(System.Guid,System.String,Orleans.Streams.StreamSequenceToken)">
+        <member name="M:Orleans.Streams.IQueueCache.GetCacheCursor(Orleans.Streams.IStreamIdentity,Orleans.Streams.StreamSequenceToken)">
             <summary>
             Acquire a stream message cursor.  This can be used to retreave messages from the
               cache starting at the location indicated by the provided token.
             </summary>
-            <param name="streamGuid"></param>
-            <param name="streamNamespace"></param>
+            <param name="streamIdentity"></param>
             <param name="token"></param>
             <returns></returns>
         </member>

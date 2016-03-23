@@ -71,7 +71,7 @@
             Required configuration params: <c>DataConnectionString</c>
             </para>
             <para>
-            Optional configuration params: 
+            Optional configuration params:
             <c>TableName</c> -- defaults to <c>OrleansGrainState</c>
             <c>DeleteStateOnClear</c> -- defaults to <c>false</c>
             </para>
@@ -120,13 +120,13 @@
         <member name="M:Orleans.Storage.AzureTableStorage.ClearStateAsync(System.String,Orleans.Runtime.GrainReference,Orleans.IGrainState)">
             <summary> Clear / Delete state data function for this storage provider. </summary>
             <remarks>
-            If the <c>DeleteStateOnClear</c> is set to <c>true</c> then the table row 
-            for this grain will be deleted / removed, otherwise the table row will be 
+            If the <c>DeleteStateOnClear</c> is set to <c>true</c> then the table row
+            for this grain will be deleted / removed, otherwise the table row will be
             cleared by overwriting with default / null values.
             </remarks>
             <see cref="M:Orleans.Storage.IStorageProvider.ClearStateAsync(System.String,Orleans.Runtime.GrainReference,Orleans.IGrainState)"/>
         </member>
-        <member name="M:Orleans.Storage.AzureTableStorage.ConvertToStorageFormat(System.Object,Orleans.Storage.AzureTableStorage.GrainStateEntity)">
+        <member name="M:Orleans.Storage.AzureTableStorage.ConvertToStorageFormat(System.Object,Microsoft.WindowsAzure.Storage.Table.DynamicTableEntity)">
             <summary>
             Serialize to Azure storage format in either binary or JSON format.
             </summary>
@@ -138,7 +138,7 @@
             for more on the JSON serializer.
             </remarks>
         </member>
-        <member name="M:Orleans.Storage.AzureTableStorage.ConvertFromStorageFormat(Orleans.Storage.AzureTableStorage.GrainStateEntity)">
+        <member name="M:Orleans.Storage.AzureTableStorage.ConvertFromStorageFormat(Microsoft.WindowsAzure.Storage.Table.DynamicTableEntity)">
             <summary>
             Deserialize from Azure storage format
             </summary>
@@ -306,12 +306,19 @@
         </member>
         <member name="M:Orleans.Providers.Streams.AzureQueue.AzureQueueStreamProviderUtils.DeleteAllUsedAzureQueues(System.String,System.String,System.String)">
             <summary>
-            Helper method for testing.
+            Helper method for testing. Deletes all the queues used by the specifed stream provider.
             </summary>
-            <param name="providerName"></param>
-            <param name="deploymentId"></param>
-            <param name="storageConnectionString"></param>
-            <returns></returns>
+            <param name="providerName">The Azure Queue stream privider name.</param>
+            <param name="deploymentId">The deployment ID hosting the stream provider.</param>
+            <param name="storageConnectionString">The azure storage connection string.</param>
+        </member>
+        <member name="M:Orleans.Providers.Streams.AzureQueue.AzureQueueStreamProviderUtils.ClearAllUsedAzureQueues(System.String,System.String,System.String)">
+            <summary>
+            Helper method for testing. Clears all messages in all the queues used by the specifed stream provider.
+            </summary>
+            <param name="providerName">The Azure Queue stream privider name.</param>
+            <param name="deploymentId">The deployment ID hosting the stream provider.</param>
+            <param name="storageConnectionString">The azure storage connection string.</param>
         </member>
         <member name="T:Orleans.Providers.Streams.AzureQueue.SimpleAzureQueueAdapterFactory">
             <summary> Factory class for Simple Azure Queue based stream provider.</summary>
