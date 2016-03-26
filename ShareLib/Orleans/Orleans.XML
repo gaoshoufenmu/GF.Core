@@ -3511,6 +3511,12 @@
             Implemented in Orleans generated code.
             </summary>
         </member>
+        <member name="P:Orleans.Runtime.GrainReference.GenericArguments">
+            <summary>
+            Return the generic type arguments of the interface as a string
+            Implemented in generated code.
+            </summary>
+        </member>
         <member name="M:Orleans.Runtime.GrainReference.GetMethodName(System.Int32,System.Int32)">
             <summary>
             Return the method name associated with the specified interfaceId and methodId values.

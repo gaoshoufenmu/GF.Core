@@ -166,7 +166,7 @@ namespace Orleans
             result.@InstanceName = input.@InstanceName;
             result.@ProxyPort = input.@ProxyPort;
             result.@RoleName = input.@RoleName;
-            result.@SiloAddress = (global::Orleans.Runtime.SiloAddress)global::Orleans.Serialization.SerializationManager.@DeepCopyInner(input.@SiloAddress);
+            result.@SiloAddress = input.@SiloAddress;
             result.@StartTime = input.@StartTime;
             result.@Status = input.@Status;
             result.@SuspectTimes = (global::System.Collections.Generic.List<global::System.Tuple<global::Orleans.Runtime.SiloAddress, global::System.DateTime>>)global::Orleans.Serialization.SerializationManager.@DeepCopyInner(input.@SuspectTimes);
@@ -1121,7 +1121,7 @@ namespace Orleans
         {
             global::Orleans.GrainDirectory.AddressAndTag input = ((global::Orleans.GrainDirectory.AddressAndTag)original);
             global::Orleans.GrainDirectory.AddressAndTag result = default (global::Orleans.GrainDirectory.AddressAndTag);
-            setField0(ref result, (global::Orleans.Runtime.ActivationAddress)global::Orleans.Serialization.SerializationManager.@DeepCopyInner(getField0(input)));
+            setField0(ref result, getField0(input));
             setField1(ref result, getField1(input));
             global::Orleans.@Serialization.@SerializationContext.@Current.@RecordObject(original, result);
             return result;
@@ -1245,9 +1245,9 @@ namespace Orleans
         {
             global::Orleans.Runtime.RequestInvocationHistory input = ((global::Orleans.Runtime.RequestInvocationHistory)original);
             global::Orleans.Runtime.RequestInvocationHistory result = (global::Orleans.Runtime.RequestInvocationHistory)global::System.Runtime.Serialization.FormatterServices.@GetUninitializedObject(typeof (global::Orleans.Runtime.RequestInvocationHistory));
-            setField1(result, (global::Orleans.Runtime.ActivationId)global::Orleans.Serialization.SerializationManager.@DeepCopyInner(input.@ActivationId));
+            setField1(result, input.@ActivationId);
             setField2(result, input.@DebugContext);
-            setField0(result, (global::Orleans.Runtime.GrainId)global::Orleans.Serialization.SerializationManager.@DeepCopyInner(input.@GrainId));
+            setField0(result, input.@GrainId);
             global::Orleans.@Serialization.@SerializationContext.@Current.@RecordObject(original, result);
             return result;
         }
@@ -1863,7 +1863,7 @@ namespace Orleans
             global::Orleans.Runtime.SimpleGrainStatistic result = new global::Orleans.Runtime.SimpleGrainStatistic();
             result.@ActivationCount = input.@ActivationCount;
             result.@GrainType = input.@GrainType;
-            result.@SiloAddress = (global::Orleans.Runtime.SiloAddress)global::Orleans.Serialization.SerializationManager.@DeepCopyInner(input.@SiloAddress);
+            result.@SiloAddress = input.@SiloAddress;
             global::Orleans.@Serialization.@SerializationContext.@Current.@RecordObject(original, result);
             return result;
         }
@@ -2681,7 +2681,7 @@ namespace Orleans
             result.@MinDotNetThreadPoolSize = input.@MinDotNetThreadPoolSize;
             result.@Port = input.@Port;
             result.@PropagateActivityId = input.@PropagateActivityId;
-            result.@ProxyGatewayEndpoint = (global::System.Net.IPEndPoint)global::Orleans.Serialization.SerializationManager.@DeepCopyInner(input.@ProxyGatewayEndpoint);
+            result.@ProxyGatewayEndpoint = input.@ProxyGatewayEndpoint;
             result.@SiloShutdownEventName = input.@SiloShutdownEventName;
             result.@StartupTypeName = input.@StartupTypeName;
             result.@StatisticsCollectionLevel = input.@StatisticsCollectionLevel;
@@ -2844,7 +2844,7 @@ namespace Orleans
             setField2(result, input.@SourceFile);
             setField6(result, (global::System.Collections.Generic.Dictionary<global::System.String, global::System.Collections.Generic.List<global::System.Action>>)global::Orleans.Serialization.SerializationManager.@DeepCopyInner(getField6(input)));
             setField5(result, (global::System.Collections.Generic.Dictionary<global::System.String, global::System.String>)global::Orleans.Serialization.SerializationManager.@DeepCopyInner(getField5(input)));
-            setField3(result, (global::System.Net.IPEndPoint)global::Orleans.Serialization.SerializationManager.@DeepCopyInner(getField3(input)));
+            setField3(result, getField3(input));
             global::Orleans.@Serialization.@SerializationContext.@Current.@RecordObject(original, result);
             return result;
         }
@@ -2914,6 +2914,15 @@ namespace Orleans
             get
             {
                 return "global::Orleans.IMembershipTableGrain";
+            }
+        }
+
+        private static global::System.String genericArgs = default (global::System.String);
+        protected override global::System.String GenericArguments
+        {
+            get
+            {
+                return genericArgs;
             }
         }
 
@@ -3160,6 +3169,15 @@ namespace Orleans
             }
         }
 
+        private static global::System.String genericArgs = default (global::System.String);
+        protected override global::System.String GenericArguments
+        {
+            get
+            {
+                return genericArgs;
+            }
+        }
+
         public override global::System.Boolean @IsCompatible(global::System.Int32 @interfaceId)
         {
             return @interfaceId == -1135060418;
@@ -3354,6 +3372,15 @@ namespace Orleans
             }
         }
 
+        private static global::System.String genericArgs = default (global::System.String);
+        protected override global::System.String GenericArguments
+        {
+            get
+            {
+                return genericArgs;
+            }
+        }
+
         public override global::System.Boolean @IsCompatible(global::System.Int32 @interfaceId)
         {
             return @interfaceId == 1450843817;
@@ -3494,6 +3521,15 @@ namespace Orleans
             get
             {
                 return "global::Orleans.ISiloControl";
+            }
+        }
+
+        private static global::System.String genericArgs = default (global::System.String);
+        protected override global::System.String GenericArguments
+        {
+            get
+            {
+                return genericArgs;
             }
         }
 
@@ -3712,6 +3748,15 @@ namespace Orleans
             }
         }
 
+        private static global::System.String genericArgs = default (global::System.String);
+        protected override global::System.String GenericArguments
+        {
+            get
+            {
+                return genericArgs;
+            }
+        }
+
         public override global::System.Boolean @IsCompatible(global::System.Int32 @interfaceId)
         {
             return @interfaceId == -831689659;
@@ -3810,6 +3855,15 @@ namespace Orleans
             }
         }
 
+        private static global::System.String genericArgs = default (global::System.String);
+        protected override global::System.String GenericArguments
+        {
+            get
+            {
+                return genericArgs;
+            }
+        }
+
         public override global::System.Boolean @IsCompatible(global::System.Int32 @interfaceId)
         {
             return @interfaceId == -1277021679;
@@ -3902,6 +3956,15 @@ namespace Orleans.Streams
             get
             {
                 return "global::Orleans.Streams.IStreamQueueBalanceListener";
+            }
+        }
+
+        private static global::System.String genericArgs = default (global::System.String);
+        protected override global::System.String GenericArguments
+        {
+            get
+            {
+                return genericArgs;
             }
         }
 
@@ -4000,6 +4063,15 @@ namespace Orleans.Streams
             get
             {
                 return "global::Orleans.Streams.IPersistentStreamPullingAgent";
+            }
+        }
+
+        private static global::System.String genericArgs = default (global::System.String);
+        protected override global::System.String GenericArguments
+        {
+            get
+            {
+                return genericArgs;
             }
         }
 
@@ -4197,6 +4269,15 @@ namespace Orleans.Streams
             }
         }
 
+        private static global::System.String genericArgs = default (global::System.String);
+        protected override global::System.String GenericArguments
+        {
+            get
+            {
+                return genericArgs;
+            }
+        }
+
         public override global::System.Boolean @IsCompatible(global::System.Int32 @interfaceId)
         {
             return @interfaceId == 789366386;
@@ -4328,6 +4409,15 @@ namespace Orleans.Streams
             get
             {
                 return "global::Orleans.Streams.IStreamConsumerExtension";
+            }
+        }
+
+        private static global::System.String genericArgs = default (global::System.String);
+        protected override global::System.String GenericArguments
+        {
+            get
+            {
+                return genericArgs;
             }
         }
 
@@ -4503,6 +4593,15 @@ namespace Orleans.Streams
             }
         }
 
+        private static global::System.String genericArgs = default (global::System.String);
+        protected override global::System.String GenericArguments
+        {
+            get
+            {
+                return genericArgs;
+            }
+        }
+
         public override global::System.Boolean @IsCompatible(global::System.Int32 @interfaceId)
         {
             return @interfaceId == 939373632;
@@ -4639,6 +4738,15 @@ namespace Orleans.Streams
             get
             {
                 return "global::Orleans.Streams.IPubSubRendezvousGrain";
+            }
+        }
+
+        private static global::System.String genericArgs = default (global::System.String);
+        protected override global::System.String GenericArguments
+        {
+            get
+            {
+                return genericArgs;
             }
         }
 
@@ -4827,6 +4935,15 @@ namespace Orleans.Storage
             }
         }
 
+        private static global::System.String genericArgs = default (global::System.String);
+        protected override global::System.String GenericArguments
+        {
+            get
+            {
+                return genericArgs;
+            }
+        }
+
         public override global::System.Boolean @IsCompatible(global::System.Int32 @interfaceId)
         {
             return @interfaceId == 577125491;
@@ -4949,6 +5066,15 @@ namespace Orleans.Runtime
             }
         }
 
+        private static global::System.String genericArgs = default (global::System.String);
+        protected override global::System.String GenericArguments
+        {
+            get
+            {
+                return genericArgs;
+            }
+        }
+
         public override global::System.Boolean @IsCompatible(global::System.Int32 @interfaceId)
         {
             return @interfaceId == 471740693;
@@ -5056,6 +5182,15 @@ namespace Orleans.Runtime
             }
         }
 
+        private static global::System.String genericArgs = default (global::System.String);
+        protected override global::System.String GenericArguments
+        {
+            get
+            {
+                return genericArgs;
+            }
+        }
+
         public override global::System.Boolean @IsCompatible(global::System.Int32 @interfaceId)
         {
             return @interfaceId == -2124089409;
@@ -5151,6 +5286,15 @@ namespace Orleans.Runtime
             get
             {
                 return "global::Orleans.Runtime.IManagementGrain";
+            }
+        }
+
+        private static global::System.String genericArgs = default (global::System.String);
+        protected override global::System.String GenericArguments
+        {
+            get
+            {
+                return genericArgs;
             }
         }
 
@@ -5378,6 +5522,15 @@ namespace Orleans.Runtime
             }
         }
 
+        private static global::System.String genericArgs = default (global::System.String);
+        protected override global::System.String GenericArguments
+        {
+            get
+            {
+                return genericArgs;
+            }
+        }
+
         public override global::System.Boolean @IsCompatible(global::System.Int32 @interfaceId)
         {
             return @interfaceId == 1380110596;
@@ -5482,6 +5635,15 @@ namespace Orleans.Runtime
             get
             {
                 return "global::Orleans.Runtime.IRemoteGrainDirectory";
+            }
+        }
+
+        private static global::System.String genericArgs = default (global::System.String);
+        protected override global::System.String GenericArguments
+        {
+            get
+            {
+                return genericArgs;
             }
         }
 
@@ -5655,6 +5817,15 @@ namespace Orleans.Runtime
             }
         }
 
+        private static global::System.String genericArgs = default (global::System.String);
+        protected override global::System.String GenericArguments
+        {
+            get
+            {
+                return genericArgs;
+            }
+        }
+
         public override global::System.Boolean @IsCompatible(global::System.Int32 @interfaceId)
         {
             return @interfaceId == -300889017;
@@ -5750,6 +5921,15 @@ namespace Orleans.Runtime
             get
             {
                 return "global::Orleans.Runtime.IClientObserverRegistrar";
+            }
+        }
+
+        private static global::System.String genericArgs = default (global::System.String);
+        protected override global::System.String GenericArguments
+        {
+            get
+            {
+                return genericArgs;
             }
         }
 
