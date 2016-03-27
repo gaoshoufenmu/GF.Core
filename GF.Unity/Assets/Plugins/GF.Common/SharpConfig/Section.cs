@@ -166,7 +166,7 @@ namespace SharpConfig
 
                 if (setting != null)
                 {
-                    object value = setting.GetValueTyped(prop.PropertyType);
+                    object value = setting.GetValue(prop.PropertyType);
                     prop.SetValue(obj, value, null);
                 }
             }
@@ -184,7 +184,7 @@ namespace SharpConfig
 
                 if (setting != null)
                 {
-                    object value = setting.GetValueTyped(field.FieldType);
+                    object value = setting.GetValue(field.FieldType);
                     field.SetValue(obj, value);
                 }
             }
