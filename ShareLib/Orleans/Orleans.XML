@@ -179,6 +179,29 @@
             A hash code for the current object.
             </returns>
         </member>
+        <member name="T:Orleans.Runtime.Configuration.ConfigurationExtensions">
+            <summary>
+            Extension methods for configuration classes specific to Orleans.dll 
+            </summary>
+        </member>
+        <member name="M:Orleans.Runtime.Configuration.ConfigurationExtensions.AddSimpleMessageStreamProvider(Orleans.Runtime.Configuration.ClusterConfiguration,System.String,System.Boolean,Orleans.Streams.StreamPubSubType)">
+            <summary>
+            Adds a stream provider of type <see cref="T:Orleans.Providers.Streams.SimpleMessageStream.SimpleMessageStreamProvider"/>
+            </summary>
+            <param name="config">The cluster configuration object to add provider to.</param>
+            <param name="providerName">The provider name.</param>
+            <param name="fireAndForgetDelivery">Specifies whether the producer waits for the consumer to process the event before continuing. Setting this to false is useful for troubleshooting serialization issues.</param>
+            <param name="pubSubType">Specifies how can grains subscribe to this stream.</param>
+        </member>
+        <member name="M:Orleans.Runtime.Configuration.ConfigurationExtensions.AddSimpleMessageStreamProvider(Orleans.Runtime.Configuration.ClientConfiguration,System.String,System.Boolean,Orleans.Streams.StreamPubSubType)">
+            <summary>
+            Adds a stream provider of type <see cref="T:Orleans.Providers.Streams.SimpleMessageStream.SimpleMessageStreamProvider"/>
+            </summary>
+            <param name="config">The cluster configuration object to add provider to.</param>
+            <param name="providerName">The provider name.</param>
+            <param name="fireAndForgetDelivery">Specifies whether the producer waits for the consumer to process the event before continuing. Setting this to false is useful for troubleshooting serialization issues.</param>
+            <param name="pubSubType">Specifies how can grains subscribe to this stream.</param>
+        </member>
         <member name="T:Orleans.Runtime.Configuration.LimitNames">
             <summary>
             Class containing key names for the configurable LimitValues used by Orleans runtime.
@@ -1393,6 +1416,11 @@
         <member name="T:Orleans.Runtime.InvalidSchedulingContextException">
             <summary>
             Signifies that an operation was attempted on an invalid SchedulingContext.
+            </summary>
+        </member>
+        <member name="T:Orleans.Runtime.ClientNotAvailableException">
+            <summary>
+            Indicates that a client is not longer reachable.
             </summary>
         </member>
         <member name="T:Orleans.Runtime.GuidId">
@@ -3911,12 +3939,6 @@
             </summary>
             <returns>The code generator.</returns>
         </member>
-        <member name="M:Orleans.CodeGeneration.CodeGeneratorManager.LoadCodeGeneratorCache">
-            <summary>
-            Loads the code generator cache.
-            </summary>
-            <returns>The code generator cache, or <see langword="null"/> if none was loaded.</returns>
-        </member>
         <member name="T:Orleans.CodeGeneration.ICodeGeneratorCache">
             <summary>
             Methods for interacting with a cache for generated assemblies.
@@ -6054,6 +6076,12 @@
             <param name="queueAdapter"></param>
             <param name="getQueueMsgsTimerPeriod"></param>
             <param name="initQueueTimeout"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Orleans.Streams.PersistentStreamProviderConfig.WriteProperties(System.Collections.Generic.Dictionary{System.String,System.String})">
+            <summary>
+            Utility function to convert config to property bag for use in stream provider configuration
+            </summary>
             <returns></returns>
         </member>
         <member name="T:Orleans.Streams.DataNotAvailableException">

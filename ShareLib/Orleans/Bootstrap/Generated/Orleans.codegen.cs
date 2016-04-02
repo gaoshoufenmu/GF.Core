@@ -506,6 +506,9 @@ namespace Orleans
         private static readonly global::System.Reflection.FieldInfo field1 = typeof (global::Orleans.Streams.StreamSubscriptionHandleImpl<T>).@GetField("filterWrapper", (System.@Reflection.@BindingFlags.@Instance | System.@Reflection.@BindingFlags.@NonPublic | System.@Reflection.@BindingFlags.@Public));
         private static readonly global::System.Func<global::Orleans.Streams.StreamSubscriptionHandleImpl<T>, global::Orleans.Streams.IStreamFilterPredicateWrapper> getField1 = (global::System.Func<global::Orleans.Streams.StreamSubscriptionHandleImpl<T>, global::Orleans.Streams.IStreamFilterPredicateWrapper>)global::Orleans.Serialization.SerializationManager.@GetGetter(field1);
         private static readonly global::System.Action<global::Orleans.Streams.StreamSubscriptionHandleImpl<T>, global::Orleans.Streams.IStreamFilterPredicateWrapper> setField1 = (global::System.Action<global::Orleans.Streams.StreamSubscriptionHandleImpl<T>, global::Orleans.Streams.IStreamFilterPredicateWrapper>)global::Orleans.Serialization.SerializationManager.@GetReferenceSetter(field1);
+        private static readonly global::System.Reflection.FieldInfo field3 = typeof (global::Orleans.Streams.StreamSubscriptionHandleImpl<T>).@GetField("isRewindable", (System.@Reflection.@BindingFlags.@Instance | System.@Reflection.@BindingFlags.@NonPublic | System.@Reflection.@BindingFlags.@Public));
+        private static readonly global::System.Func<global::Orleans.Streams.StreamSubscriptionHandleImpl<T>, global::System.Boolean> getField3 = (global::System.Func<global::Orleans.Streams.StreamSubscriptionHandleImpl<T>, global::System.Boolean>)global::Orleans.Serialization.SerializationManager.@GetGetter(field3);
+        private static readonly global::System.Action<global::Orleans.Streams.StreamSubscriptionHandleImpl<T>, global::System.Boolean> setField3 = (global::System.Action<global::Orleans.Streams.StreamSubscriptionHandleImpl<T>, global::System.Boolean>)global::Orleans.Serialization.SerializationManager.@GetReferenceSetter(field3);
         private static readonly global::System.Reflection.FieldInfo field0 = typeof (global::Orleans.Streams.StreamSubscriptionHandleImpl<T>).@GetField("streamImpl", (System.@Reflection.@BindingFlags.@Instance | System.@Reflection.@BindingFlags.@NonPublic | System.@Reflection.@BindingFlags.@Public));
         private static readonly global::System.Func<global::Orleans.Streams.StreamSubscriptionHandleImpl<T>, global::Orleans.Streams.StreamImpl<T>> getField0 = (global::System.Func<global::Orleans.Streams.StreamSubscriptionHandleImpl<T>, global::Orleans.Streams.StreamImpl<T>>)global::Orleans.Serialization.SerializationManager.@GetGetter(field0);
         private static readonly global::System.Action<global::Orleans.Streams.StreamSubscriptionHandleImpl<T>, global::Orleans.Streams.StreamImpl<T>> setField0 = (global::System.Action<global::Orleans.Streams.StreamSubscriptionHandleImpl<T>, global::Orleans.Streams.StreamImpl<T>>)global::Orleans.Serialization.SerializationManager.@GetReferenceSetter(field0);
@@ -518,6 +521,7 @@ namespace Orleans
             global::Orleans.Streams.StreamSubscriptionHandleImpl<T> input = ((global::Orleans.Streams.StreamSubscriptionHandleImpl<T>)original);
             global::Orleans.Streams.StreamSubscriptionHandleImpl<T> result = (global::Orleans.Streams.StreamSubscriptionHandleImpl<T>)global::System.Runtime.Serialization.FormatterServices.@GetUninitializedObject(typeof (global::Orleans.Streams.StreamSubscriptionHandleImpl<T>));
             setField1(result, (global::Orleans.Streams.IStreamFilterPredicateWrapper)global::Orleans.Serialization.SerializationManager.@DeepCopyInner(getField1(input)));
+            setField3(result, getField3(input));
             setField0(result, getField0(input));
             setField2(result, getField2(input));
             global::Orleans.@Serialization.@SerializationContext.@Current.@RecordObject(original, result);
@@ -529,6 +533,7 @@ namespace Orleans
         {
             global::Orleans.Streams.StreamSubscriptionHandleImpl<T> input = (global::Orleans.Streams.StreamSubscriptionHandleImpl<T>)untypedInput;
             global::Orleans.Serialization.SerializationManager.@SerializeInner(getField1(input), stream, typeof (global::Orleans.Streams.IStreamFilterPredicateWrapper));
+            global::Orleans.Serialization.SerializationManager.@SerializeInner(getField3(input), stream, typeof (global::System.Boolean));
             global::Orleans.Serialization.SerializationManager.@SerializeInner(getField0(input), stream, typeof (global::Orleans.Streams.StreamImpl<T>));
             global::Orleans.Serialization.SerializationManager.@SerializeInner(getField2(input), stream, typeof (global::Orleans.Runtime.GuidId));
         }
@@ -539,6 +544,7 @@ namespace Orleans
             global::Orleans.Streams.StreamSubscriptionHandleImpl<T> result = (global::Orleans.Streams.StreamSubscriptionHandleImpl<T>)global::System.Runtime.Serialization.FormatterServices.@GetUninitializedObject(typeof (global::Orleans.Streams.StreamSubscriptionHandleImpl<T>));
             global::Orleans.@Serialization.@DeserializationContext.@Current.@RecordObject(result);
             setField1(result, (global::Orleans.Streams.IStreamFilterPredicateWrapper)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::Orleans.Streams.IStreamFilterPredicateWrapper), stream));
+            setField3(result, (global::System.Boolean)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.Boolean), stream));
             setField0(result, (global::Orleans.Streams.StreamImpl<T>)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::Orleans.Streams.StreamImpl<T>), stream));
             setField2(result, (global::Orleans.Runtime.GuidId)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::Orleans.Runtime.GuidId), stream));
             return (global::Orleans.Streams.StreamSubscriptionHandleImpl<T>)result;
@@ -616,32 +622,18 @@ namespace Orleans
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.2.0.0"), global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute, global::Orleans.CodeGeneration.SerializerAttribute(typeof (global::Orleans.Streams.PersistentStreamProviderConfig)), global::Orleans.CodeGeneration.RegisterSerializerAttribute]
     internal class OrleansCodeGenOrleans_Streams_PersistentStreamProviderConfigSerializer
     {
-        private static readonly global::System.Reflection.FieldInfo field4 = typeof (global::Orleans.Streams.PersistentStreamProviderConfig).@GetField("<BalancerType>k__BackingField", (System.@Reflection.@BindingFlags.@Instance | System.@Reflection.@BindingFlags.@NonPublic | System.@Reflection.@BindingFlags.@Public));
-        private static readonly global::System.Action<global::Orleans.Streams.PersistentStreamProviderConfig, global::Orleans.Streams.StreamQueueBalancerType> setField4 = (global::System.Action<global::Orleans.Streams.PersistentStreamProviderConfig, global::Orleans.Streams.StreamQueueBalancerType>)global::Orleans.Serialization.SerializationManager.@GetReferenceSetter(field4);
-        private static readonly global::System.Reflection.FieldInfo field0 = typeof (global::Orleans.Streams.PersistentStreamProviderConfig).@GetField("<GetQueueMsgsTimerPeriod>k__BackingField", (System.@Reflection.@BindingFlags.@Instance | System.@Reflection.@BindingFlags.@NonPublic | System.@Reflection.@BindingFlags.@Public));
-        private static readonly global::System.Action<global::Orleans.Streams.PersistentStreamProviderConfig, global::System.TimeSpan> setField0 = (global::System.Action<global::Orleans.Streams.PersistentStreamProviderConfig, global::System.TimeSpan>)global::Orleans.Serialization.SerializationManager.@GetReferenceSetter(field0);
-        private static readonly global::System.Reflection.FieldInfo field1 = typeof (global::Orleans.Streams.PersistentStreamProviderConfig).@GetField("<InitQueueTimeout>k__BackingField", (System.@Reflection.@BindingFlags.@Instance | System.@Reflection.@BindingFlags.@NonPublic | System.@Reflection.@BindingFlags.@Public));
-        private static readonly global::System.Action<global::Orleans.Streams.PersistentStreamProviderConfig, global::System.TimeSpan> setField1 = (global::System.Action<global::Orleans.Streams.PersistentStreamProviderConfig, global::System.TimeSpan>)global::Orleans.Serialization.SerializationManager.@GetReferenceSetter(field1);
-        private static readonly global::System.Reflection.FieldInfo field2 = typeof (global::Orleans.Streams.PersistentStreamProviderConfig).@GetField("<MaxEventDeliveryTime>k__BackingField", (System.@Reflection.@BindingFlags.@Instance | System.@Reflection.@BindingFlags.@NonPublic | System.@Reflection.@BindingFlags.@Public));
-        private static readonly global::System.Action<global::Orleans.Streams.PersistentStreamProviderConfig, global::System.TimeSpan> setField2 = (global::System.Action<global::Orleans.Streams.PersistentStreamProviderConfig, global::System.TimeSpan>)global::Orleans.Serialization.SerializationManager.@GetReferenceSetter(field2);
-        private static readonly global::System.Reflection.FieldInfo field5 = typeof (global::Orleans.Streams.PersistentStreamProviderConfig).@GetField("<PubSubType>k__BackingField", (System.@Reflection.@BindingFlags.@Instance | System.@Reflection.@BindingFlags.@NonPublic | System.@Reflection.@BindingFlags.@Public));
-        private static readonly global::System.Action<global::Orleans.Streams.PersistentStreamProviderConfig, global::Orleans.Streams.StreamPubSubType> setField5 = (global::System.Action<global::Orleans.Streams.PersistentStreamProviderConfig, global::Orleans.Streams.StreamPubSubType>)global::Orleans.Serialization.SerializationManager.@GetReferenceSetter(field5);
-        private static readonly global::System.Reflection.FieldInfo field6 = typeof (global::Orleans.Streams.PersistentStreamProviderConfig).@GetField("<SiloMaturityPeriod>k__BackingField", (System.@Reflection.@BindingFlags.@Instance | System.@Reflection.@BindingFlags.@NonPublic | System.@Reflection.@BindingFlags.@Public));
-        private static readonly global::System.Action<global::Orleans.Streams.PersistentStreamProviderConfig, global::System.TimeSpan> setField6 = (global::System.Action<global::Orleans.Streams.PersistentStreamProviderConfig, global::System.TimeSpan>)global::Orleans.Serialization.SerializationManager.@GetReferenceSetter(field6);
-        private static readonly global::System.Reflection.FieldInfo field3 = typeof (global::Orleans.Streams.PersistentStreamProviderConfig).@GetField("<StreamInactivityPeriod>k__BackingField", (System.@Reflection.@BindingFlags.@Instance | System.@Reflection.@BindingFlags.@NonPublic | System.@Reflection.@BindingFlags.@Public));
-        private static readonly global::System.Action<global::Orleans.Streams.PersistentStreamProviderConfig, global::System.TimeSpan> setField3 = (global::System.Action<global::Orleans.Streams.PersistentStreamProviderConfig, global::System.TimeSpan>)global::Orleans.Serialization.SerializationManager.@GetReferenceSetter(field3);
         [global::Orleans.CodeGeneration.CopierMethodAttribute]
         public static global::System.Object DeepCopier(global::System.Object original)
         {
             global::Orleans.Streams.PersistentStreamProviderConfig input = ((global::Orleans.Streams.PersistentStreamProviderConfig)original);
-            global::Orleans.Streams.PersistentStreamProviderConfig result = (global::Orleans.Streams.PersistentStreamProviderConfig)global::System.Runtime.Serialization.FormatterServices.@GetUninitializedObject(typeof (global::Orleans.Streams.PersistentStreamProviderConfig));
-            setField4(result, input.@BalancerType);
-            setField0(result, input.@GetQueueMsgsTimerPeriod);
-            setField1(result, input.@InitQueueTimeout);
-            setField2(result, input.@MaxEventDeliveryTime);
-            setField5(result, input.@PubSubType);
-            setField6(result, input.@SiloMaturityPeriod);
-            setField3(result, input.@StreamInactivityPeriod);
+            global::Orleans.Streams.PersistentStreamProviderConfig result = new global::Orleans.Streams.PersistentStreamProviderConfig();
+            result.@BalancerType = input.@BalancerType;
+            result.@GetQueueMsgsTimerPeriod = input.@GetQueueMsgsTimerPeriod;
+            result.@InitQueueTimeout = input.@InitQueueTimeout;
+            result.@MaxEventDeliveryTime = input.@MaxEventDeliveryTime;
+            result.@PubSubType = input.@PubSubType;
+            result.@SiloMaturityPeriod = input.@SiloMaturityPeriod;
+            result.@StreamInactivityPeriod = input.@StreamInactivityPeriod;
             global::Orleans.@Serialization.@SerializationContext.@Current.@RecordObject(original, result);
             return result;
         }
@@ -662,15 +654,15 @@ namespace Orleans
         [global::Orleans.CodeGeneration.DeserializerMethodAttribute]
         public static global::System.Object Deserializer(global::System.Type expected, global::Orleans.Serialization.BinaryTokenStreamReader stream)
         {
-            global::Orleans.Streams.PersistentStreamProviderConfig result = (global::Orleans.Streams.PersistentStreamProviderConfig)global::System.Runtime.Serialization.FormatterServices.@GetUninitializedObject(typeof (global::Orleans.Streams.PersistentStreamProviderConfig));
+            global::Orleans.Streams.PersistentStreamProviderConfig result = new global::Orleans.Streams.PersistentStreamProviderConfig();
             global::Orleans.@Serialization.@DeserializationContext.@Current.@RecordObject(result);
-            setField4(result, (global::Orleans.Streams.StreamQueueBalancerType)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::Orleans.Streams.StreamQueueBalancerType), stream));
-            setField0(result, (global::System.TimeSpan)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.TimeSpan), stream));
-            setField1(result, (global::System.TimeSpan)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.TimeSpan), stream));
-            setField2(result, (global::System.TimeSpan)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.TimeSpan), stream));
-            setField5(result, (global::Orleans.Streams.StreamPubSubType)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::Orleans.Streams.StreamPubSubType), stream));
-            setField6(result, (global::System.TimeSpan)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.TimeSpan), stream));
-            setField3(result, (global::System.TimeSpan)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.TimeSpan), stream));
+            result.@BalancerType = (global::Orleans.Streams.StreamQueueBalancerType)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::Orleans.Streams.StreamQueueBalancerType), stream);
+            result.@GetQueueMsgsTimerPeriod = (global::System.TimeSpan)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.TimeSpan), stream);
+            result.@InitQueueTimeout = (global::System.TimeSpan)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.TimeSpan), stream);
+            result.@MaxEventDeliveryTime = (global::System.TimeSpan)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.TimeSpan), stream);
+            result.@PubSubType = (global::Orleans.Streams.StreamPubSubType)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::Orleans.Streams.StreamPubSubType), stream);
+            result.@SiloMaturityPeriod = (global::System.TimeSpan)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.TimeSpan), stream);
+            result.@StreamInactivityPeriod = (global::System.TimeSpan)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.TimeSpan), stream);
             return (global::Orleans.Streams.PersistentStreamProviderConfig)result;
         }
 
