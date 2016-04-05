@@ -1940,17 +1940,17 @@ namespace Orleans
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.2.0.0"), global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute, global::Orleans.CodeGeneration.SerializerAttribute(typeof (global::Orleans.Runtime.Configuration.MessagingConfiguration)), global::Orleans.CodeGeneration.RegisterSerializerAttribute]
     internal class OrleansCodeGenOrleans_Runtime_Configuration_MessagingConfigurationSerializer
     {
-        private static readonly global::System.Reflection.FieldInfo field18 = typeof (global::Orleans.Runtime.Configuration.MessagingConfiguration).@GetField("<MessageLossInjectionRate>k__BackingField", (System.@Reflection.@BindingFlags.@Instance | System.@Reflection.@BindingFlags.@NonPublic | System.@Reflection.@BindingFlags.@Public));
+        private static readonly global::System.Reflection.FieldInfo field19 = typeof (global::Orleans.Runtime.Configuration.MessagingConfiguration).@GetField("<MessageLossInjectionRate>k__BackingField", (System.@Reflection.@BindingFlags.@Instance | System.@Reflection.@BindingFlags.@NonPublic | System.@Reflection.@BindingFlags.@Public));
+        private static readonly global::System.Func<global::Orleans.Runtime.Configuration.MessagingConfiguration, global::System.Double> getField19 = (global::System.Func<global::Orleans.Runtime.Configuration.MessagingConfiguration, global::System.Double>)global::Orleans.Serialization.SerializationManager.@GetGetter(field19);
+        private static readonly global::System.Action<global::Orleans.Runtime.Configuration.MessagingConfiguration, global::System.Double> setField19 = (global::System.Action<global::Orleans.Runtime.Configuration.MessagingConfiguration, global::System.Double>)global::Orleans.Serialization.SerializationManager.@GetReferenceSetter(field19);
+        private static readonly global::System.Reflection.FieldInfo field18 = typeof (global::Orleans.Runtime.Configuration.MessagingConfiguration).@GetField("<RejectionInjectionRate>k__BackingField", (System.@Reflection.@BindingFlags.@Instance | System.@Reflection.@BindingFlags.@NonPublic | System.@Reflection.@BindingFlags.@Public));
         private static readonly global::System.Func<global::Orleans.Runtime.Configuration.MessagingConfiguration, global::System.Double> getField18 = (global::System.Func<global::Orleans.Runtime.Configuration.MessagingConfiguration, global::System.Double>)global::Orleans.Serialization.SerializationManager.@GetGetter(field18);
         private static readonly global::System.Action<global::Orleans.Runtime.Configuration.MessagingConfiguration, global::System.Double> setField18 = (global::System.Action<global::Orleans.Runtime.Configuration.MessagingConfiguration, global::System.Double>)global::Orleans.Serialization.SerializationManager.@GetReferenceSetter(field18);
-        private static readonly global::System.Reflection.FieldInfo field17 = typeof (global::Orleans.Runtime.Configuration.MessagingConfiguration).@GetField("<RejectionInjectionRate>k__BackingField", (System.@Reflection.@BindingFlags.@Instance | System.@Reflection.@BindingFlags.@NonPublic | System.@Reflection.@BindingFlags.@Public));
-        private static readonly global::System.Func<global::Orleans.Runtime.Configuration.MessagingConfiguration, global::System.Double> getField17 = (global::System.Func<global::Orleans.Runtime.Configuration.MessagingConfiguration, global::System.Double>)global::Orleans.Serialization.SerializationManager.@GetGetter(field17);
-        private static readonly global::System.Action<global::Orleans.Runtime.Configuration.MessagingConfiguration, global::System.Double> setField17 = (global::System.Action<global::Orleans.Runtime.Configuration.MessagingConfiguration, global::System.Double>)global::Orleans.Serialization.SerializationManager.@GetReferenceSetter(field17);
-        private static readonly global::System.Reflection.FieldInfo field16 = typeof (global::Orleans.Runtime.Configuration.MessagingConfiguration).@GetField("<SerializationProviders>k__BackingField", (System.@Reflection.@BindingFlags.@Instance | System.@Reflection.@BindingFlags.@NonPublic | System.@Reflection.@BindingFlags.@Public));
-        private static readonly global::System.Action<global::Orleans.Runtime.Configuration.MessagingConfiguration, global::System.Collections.Generic.List<global::System.Reflection.TypeInfo>> setField16 = (global::System.Action<global::Orleans.Runtime.Configuration.MessagingConfiguration, global::System.Collections.Generic.List<global::System.Reflection.TypeInfo>>)global::Orleans.Serialization.SerializationManager.@GetReferenceSetter(field16);
-        private static readonly global::System.Reflection.FieldInfo field19 = typeof (global::Orleans.Runtime.Configuration.MessagingConfiguration).@GetField("isSiloConfig", (System.@Reflection.@BindingFlags.@Instance | System.@Reflection.@BindingFlags.@NonPublic | System.@Reflection.@BindingFlags.@Public));
-        private static readonly global::System.Func<global::Orleans.Runtime.Configuration.MessagingConfiguration, global::System.Boolean> getField19 = (global::System.Func<global::Orleans.Runtime.Configuration.MessagingConfiguration, global::System.Boolean>)global::Orleans.Serialization.SerializationManager.@GetGetter(field19);
-        private static readonly global::System.Action<global::Orleans.Runtime.Configuration.MessagingConfiguration, global::System.Boolean> setField19 = (global::System.Action<global::Orleans.Runtime.Configuration.MessagingConfiguration, global::System.Boolean>)global::Orleans.Serialization.SerializationManager.@GetReferenceSetter(field19);
+        private static readonly global::System.Reflection.FieldInfo field17 = typeof (global::Orleans.Runtime.Configuration.MessagingConfiguration).@GetField("<SerializationProviders>k__BackingField", (System.@Reflection.@BindingFlags.@Instance | System.@Reflection.@BindingFlags.@NonPublic | System.@Reflection.@BindingFlags.@Public));
+        private static readonly global::System.Action<global::Orleans.Runtime.Configuration.MessagingConfiguration, global::System.Collections.Generic.List<global::System.Reflection.TypeInfo>> setField17 = (global::System.Action<global::Orleans.Runtime.Configuration.MessagingConfiguration, global::System.Collections.Generic.List<global::System.Reflection.TypeInfo>>)global::Orleans.Serialization.SerializationManager.@GetReferenceSetter(field17);
+        private static readonly global::System.Reflection.FieldInfo field20 = typeof (global::Orleans.Runtime.Configuration.MessagingConfiguration).@GetField("isSiloConfig", (System.@Reflection.@BindingFlags.@Instance | System.@Reflection.@BindingFlags.@NonPublic | System.@Reflection.@BindingFlags.@Public));
+        private static readonly global::System.Func<global::Orleans.Runtime.Configuration.MessagingConfiguration, global::System.Boolean> getField20 = (global::System.Func<global::Orleans.Runtime.Configuration.MessagingConfiguration, global::System.Boolean>)global::Orleans.Serialization.SerializationManager.@GetGetter(field20);
+        private static readonly global::System.Action<global::Orleans.Runtime.Configuration.MessagingConfiguration, global::System.Boolean> setField20 = (global::System.Action<global::Orleans.Runtime.Configuration.MessagingConfiguration, global::System.Boolean>)global::Orleans.Serialization.SerializationManager.@GetReferenceSetter(field20);
         [global::Orleans.CodeGeneration.CopierMethodAttribute]
         public static global::System.Object DeepCopier(global::System.Object original)
         {
@@ -1959,6 +1959,7 @@ namespace Orleans
             result.@BufferPoolBufferSize = input.@BufferPoolBufferSize;
             result.@BufferPoolMaxSize = input.@BufferPoolMaxSize;
             result.@BufferPoolPreallocationSize = input.@BufferPoolPreallocationSize;
+            result.@ClientDropTimeout = input.@ClientDropTimeout;
             result.@ClientSenderBuckets = input.@ClientSenderBuckets;
             result.@DropExpiredMessages = input.@DropExpiredMessages;
             result.@GatewaySenderQueues = input.@GatewaySenderQueues;
@@ -1966,16 +1967,16 @@ namespace Orleans
             result.@MaxMessageBatchingSize = input.@MaxMessageBatchingSize;
             result.@MaxResendCount = input.@MaxResendCount;
             result.@MaxSocketAge = input.@MaxSocketAge;
+            setField19(result, getField19(input));
             setField18(result, getField18(input));
-            setField17(result, getField17(input));
             result.@ResendOnTimeout = input.@ResendOnTimeout;
             result.@ResponseTimeout = input.@ResponseTimeout;
-            setField16(result, (global::System.Collections.Generic.List<global::System.Reflection.TypeInfo>)global::Orleans.Serialization.SerializationManager.@DeepCopyInner(input.@SerializationProviders));
+            setField17(result, (global::System.Collections.Generic.List<global::System.Reflection.TypeInfo>)global::Orleans.Serialization.SerializationManager.@DeepCopyInner(input.@SerializationProviders));
             result.@SiloSenderQueues = input.@SiloSenderQueues;
             result.@UseJsonFallbackSerializer = input.@UseJsonFallbackSerializer;
             result.@UseMessageBatching = input.@UseMessageBatching;
             result.@UseStandardSerializer = input.@UseStandardSerializer;
-            setField19(result, getField19(input));
+            setField20(result, getField20(input));
             global::Orleans.@Serialization.@SerializationContext.@Current.@RecordObject(original, result);
             return result;
         }
@@ -1987,6 +1988,7 @@ namespace Orleans
             global::Orleans.Serialization.SerializationManager.@SerializeInner(input.@BufferPoolBufferSize, stream, typeof (global::System.Int32));
             global::Orleans.Serialization.SerializationManager.@SerializeInner(input.@BufferPoolMaxSize, stream, typeof (global::System.Int32));
             global::Orleans.Serialization.SerializationManager.@SerializeInner(input.@BufferPoolPreallocationSize, stream, typeof (global::System.Int32));
+            global::Orleans.Serialization.SerializationManager.@SerializeInner(input.@ClientDropTimeout, stream, typeof (global::System.TimeSpan));
             global::Orleans.Serialization.SerializationManager.@SerializeInner(input.@ClientSenderBuckets, stream, typeof (global::System.Int32));
             global::Orleans.Serialization.SerializationManager.@SerializeInner(input.@DropExpiredMessages, stream, typeof (global::System.Boolean));
             global::Orleans.Serialization.SerializationManager.@SerializeInner(input.@GatewaySenderQueues, stream, typeof (global::System.Int32));
@@ -1994,8 +1996,8 @@ namespace Orleans
             global::Orleans.Serialization.SerializationManager.@SerializeInner(input.@MaxMessageBatchingSize, stream, typeof (global::System.Int32));
             global::Orleans.Serialization.SerializationManager.@SerializeInner(input.@MaxResendCount, stream, typeof (global::System.Int32));
             global::Orleans.Serialization.SerializationManager.@SerializeInner(input.@MaxSocketAge, stream, typeof (global::System.TimeSpan));
+            global::Orleans.Serialization.SerializationManager.@SerializeInner(getField19(input), stream, typeof (global::System.Double));
             global::Orleans.Serialization.SerializationManager.@SerializeInner(getField18(input), stream, typeof (global::System.Double));
-            global::Orleans.Serialization.SerializationManager.@SerializeInner(getField17(input), stream, typeof (global::System.Double));
             global::Orleans.Serialization.SerializationManager.@SerializeInner(input.@ResendOnTimeout, stream, typeof (global::System.Boolean));
             global::Orleans.Serialization.SerializationManager.@SerializeInner(input.@ResponseTimeout, stream, typeof (global::System.TimeSpan));
             global::Orleans.Serialization.SerializationManager.@SerializeInner(input.@SerializationProviders, stream, typeof (global::System.Collections.Generic.List<global::System.Reflection.TypeInfo>));
@@ -2003,7 +2005,7 @@ namespace Orleans
             global::Orleans.Serialization.SerializationManager.@SerializeInner(input.@UseJsonFallbackSerializer, stream, typeof (global::System.Boolean));
             global::Orleans.Serialization.SerializationManager.@SerializeInner(input.@UseMessageBatching, stream, typeof (global::System.Boolean));
             global::Orleans.Serialization.SerializationManager.@SerializeInner(input.@UseStandardSerializer, stream, typeof (global::System.Boolean));
-            global::Orleans.Serialization.SerializationManager.@SerializeInner(getField19(input), stream, typeof (global::System.Boolean));
+            global::Orleans.Serialization.SerializationManager.@SerializeInner(getField20(input), stream, typeof (global::System.Boolean));
         }
 
         [global::Orleans.CodeGeneration.DeserializerMethodAttribute]
@@ -2014,6 +2016,7 @@ namespace Orleans
             result.@BufferPoolBufferSize = (global::System.Int32)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.Int32), stream);
             result.@BufferPoolMaxSize = (global::System.Int32)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.Int32), stream);
             result.@BufferPoolPreallocationSize = (global::System.Int32)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.Int32), stream);
+            result.@ClientDropTimeout = (global::System.TimeSpan)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.TimeSpan), stream);
             result.@ClientSenderBuckets = (global::System.Int32)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.Int32), stream);
             result.@DropExpiredMessages = (global::System.Boolean)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.Boolean), stream);
             result.@GatewaySenderQueues = (global::System.Int32)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.Int32), stream);
@@ -2021,16 +2024,16 @@ namespace Orleans
             result.@MaxMessageBatchingSize = (global::System.Int32)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.Int32), stream);
             result.@MaxResendCount = (global::System.Int32)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.Int32), stream);
             result.@MaxSocketAge = (global::System.TimeSpan)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.TimeSpan), stream);
+            setField19(result, (global::System.Double)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.Double), stream));
             setField18(result, (global::System.Double)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.Double), stream));
-            setField17(result, (global::System.Double)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.Double), stream));
             result.@ResendOnTimeout = (global::System.Boolean)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.Boolean), stream);
             result.@ResponseTimeout = (global::System.TimeSpan)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.TimeSpan), stream);
-            setField16(result, (global::System.Collections.Generic.List<global::System.Reflection.TypeInfo>)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.Collections.Generic.List<global::System.Reflection.TypeInfo>), stream));
+            setField17(result, (global::System.Collections.Generic.List<global::System.Reflection.TypeInfo>)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.Collections.Generic.List<global::System.Reflection.TypeInfo>), stream));
             result.@SiloSenderQueues = (global::System.Int32)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.Int32), stream);
             result.@UseJsonFallbackSerializer = (global::System.Boolean)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.Boolean), stream);
             result.@UseMessageBatching = (global::System.Boolean)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.Boolean), stream);
             result.@UseStandardSerializer = (global::System.Boolean)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.Boolean), stream);
-            setField19(result, (global::System.Boolean)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.Boolean), stream));
+            setField20(result, (global::System.Boolean)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.Boolean), stream));
             return (global::Orleans.Runtime.Configuration.MessagingConfiguration)result;
         }
 
@@ -2359,19 +2362,19 @@ namespace Orleans
         private static readonly global::System.Action<global::Orleans.Runtime.Configuration.GlobalConfiguration, global::Orleans.Runtime.Configuration.ConfigValue<global::System.Int32>> setField9 = (global::System.Action<global::Orleans.Runtime.Configuration.GlobalConfiguration, global::Orleans.Runtime.Configuration.ConfigValue<global::System.Int32>>)global::Orleans.Serialization.SerializationManager.@GetReferenceSetter(field9);
         private static readonly global::System.Reflection.FieldInfo field24 = typeof (global::Orleans.Runtime.Configuration.GlobalConfiguration).@GetField("<MaxStorageBusyRetries>k__BackingField", (System.@Reflection.@BindingFlags.@Instance | System.@Reflection.@BindingFlags.@NonPublic | System.@Reflection.@BindingFlags.@Public));
         private static readonly global::System.Action<global::Orleans.Runtime.Configuration.GlobalConfiguration, global::System.Int32> setField24 = (global::System.Action<global::Orleans.Runtime.Configuration.GlobalConfiguration, global::System.Int32>)global::Orleans.Serialization.SerializationManager.@GetReferenceSetter(field24);
-        private static readonly global::System.Reflection.FieldInfo field62 = typeof (global::Orleans.Runtime.Configuration.MessagingConfiguration).@GetField("<MessageLossInjectionRate>k__BackingField", (System.@Reflection.@BindingFlags.@Instance | System.@Reflection.@BindingFlags.@NonPublic | System.@Reflection.@BindingFlags.@Public));
-        private static readonly global::System.Func<global::Orleans.Runtime.Configuration.MessagingConfiguration, global::System.Double> getField62 = (global::System.Func<global::Orleans.Runtime.Configuration.MessagingConfiguration, global::System.Double>)global::Orleans.Serialization.SerializationManager.@GetGetter(field62);
-        private static readonly global::System.Action<global::Orleans.Runtime.Configuration.MessagingConfiguration, global::System.Double> setField62 = (global::System.Action<global::Orleans.Runtime.Configuration.MessagingConfiguration, global::System.Double>)global::Orleans.Serialization.SerializationManager.@GetReferenceSetter(field62);
+        private static readonly global::System.Reflection.FieldInfo field63 = typeof (global::Orleans.Runtime.Configuration.MessagingConfiguration).@GetField("<MessageLossInjectionRate>k__BackingField", (System.@Reflection.@BindingFlags.@Instance | System.@Reflection.@BindingFlags.@NonPublic | System.@Reflection.@BindingFlags.@Public));
+        private static readonly global::System.Func<global::Orleans.Runtime.Configuration.MessagingConfiguration, global::System.Double> getField63 = (global::System.Func<global::Orleans.Runtime.Configuration.MessagingConfiguration, global::System.Double>)global::Orleans.Serialization.SerializationManager.@GetGetter(field63);
+        private static readonly global::System.Action<global::Orleans.Runtime.Configuration.MessagingConfiguration, global::System.Double> setField63 = (global::System.Action<global::Orleans.Runtime.Configuration.MessagingConfiguration, global::System.Double>)global::Orleans.Serialization.SerializationManager.@GetReferenceSetter(field63);
         private static readonly global::System.Reflection.FieldInfo field37 = typeof (global::Orleans.Runtime.Configuration.GlobalConfiguration).@GetField("<PerformDeadlockDetection>k__BackingField", (System.@Reflection.@BindingFlags.@Instance | System.@Reflection.@BindingFlags.@NonPublic | System.@Reflection.@BindingFlags.@Public));
         private static readonly global::System.Func<global::Orleans.Runtime.Configuration.GlobalConfiguration, global::System.Boolean> getField37 = (global::System.Func<global::Orleans.Runtime.Configuration.GlobalConfiguration, global::System.Boolean>)global::Orleans.Serialization.SerializationManager.@GetGetter(field37);
         private static readonly global::System.Action<global::Orleans.Runtime.Configuration.GlobalConfiguration, global::System.Boolean> setField37 = (global::System.Action<global::Orleans.Runtime.Configuration.GlobalConfiguration, global::System.Boolean>)global::Orleans.Serialization.SerializationManager.@GetReferenceSetter(field37);
-        private static readonly global::System.Reflection.FieldInfo field61 = typeof (global::Orleans.Runtime.Configuration.MessagingConfiguration).@GetField("<RejectionInjectionRate>k__BackingField", (System.@Reflection.@BindingFlags.@Instance | System.@Reflection.@BindingFlags.@NonPublic | System.@Reflection.@BindingFlags.@Public));
-        private static readonly global::System.Func<global::Orleans.Runtime.Configuration.MessagingConfiguration, global::System.Double> getField61 = (global::System.Func<global::Orleans.Runtime.Configuration.MessagingConfiguration, global::System.Double>)global::Orleans.Serialization.SerializationManager.@GetGetter(field61);
-        private static readonly global::System.Action<global::Orleans.Runtime.Configuration.MessagingConfiguration, global::System.Double> setField61 = (global::System.Action<global::Orleans.Runtime.Configuration.MessagingConfiguration, global::System.Double>)global::Orleans.Serialization.SerializationManager.@GetReferenceSetter(field61);
+        private static readonly global::System.Reflection.FieldInfo field62 = typeof (global::Orleans.Runtime.Configuration.MessagingConfiguration).@GetField("<RejectionInjectionRate>k__BackingField", (System.@Reflection.@BindingFlags.@Instance | System.@Reflection.@BindingFlags.@NonPublic | System.@Reflection.@BindingFlags.@Public));
+        private static readonly global::System.Func<global::Orleans.Runtime.Configuration.MessagingConfiguration, global::System.Double> getField62 = (global::System.Func<global::Orleans.Runtime.Configuration.MessagingConfiguration, global::System.Double>)global::Orleans.Serialization.SerializationManager.@GetGetter(field62);
+        private static readonly global::System.Action<global::Orleans.Runtime.Configuration.MessagingConfiguration, global::System.Double> setField62 = (global::System.Action<global::Orleans.Runtime.Configuration.MessagingConfiguration, global::System.Double>)global::Orleans.Serialization.SerializationManager.@GetReferenceSetter(field62);
         private static readonly global::System.Reflection.FieldInfo field1 = typeof (global::Orleans.Runtime.Configuration.GlobalConfiguration).@GetField("<SeedNodes>k__BackingField", (System.@Reflection.@BindingFlags.@Instance | System.@Reflection.@BindingFlags.@NonPublic | System.@Reflection.@BindingFlags.@Public));
         private static readonly global::System.Action<global::Orleans.Runtime.Configuration.GlobalConfiguration, global::System.Collections.Generic.IList<global::System.Net.IPEndPoint>> setField1 = (global::System.Action<global::Orleans.Runtime.Configuration.GlobalConfiguration, global::System.Collections.Generic.IList<global::System.Net.IPEndPoint>>)global::Orleans.Serialization.SerializationManager.@GetReferenceSetter(field1);
-        private static readonly global::System.Reflection.FieldInfo field60 = typeof (global::Orleans.Runtime.Configuration.MessagingConfiguration).@GetField("<SerializationProviders>k__BackingField", (System.@Reflection.@BindingFlags.@Instance | System.@Reflection.@BindingFlags.@NonPublic | System.@Reflection.@BindingFlags.@Public));
-        private static readonly global::System.Action<global::Orleans.Runtime.Configuration.MessagingConfiguration, global::System.Collections.Generic.List<global::System.Reflection.TypeInfo>> setField60 = (global::System.Action<global::Orleans.Runtime.Configuration.MessagingConfiguration, global::System.Collections.Generic.List<global::System.Reflection.TypeInfo>>)global::Orleans.Serialization.SerializationManager.@GetReferenceSetter(field60);
+        private static readonly global::System.Reflection.FieldInfo field61 = typeof (global::Orleans.Runtime.Configuration.MessagingConfiguration).@GetField("<SerializationProviders>k__BackingField", (System.@Reflection.@BindingFlags.@Instance | System.@Reflection.@BindingFlags.@NonPublic | System.@Reflection.@BindingFlags.@Public));
+        private static readonly global::System.Action<global::Orleans.Runtime.Configuration.MessagingConfiguration, global::System.Collections.Generic.List<global::System.Reflection.TypeInfo>> setField61 = (global::System.Action<global::Orleans.Runtime.Configuration.MessagingConfiguration, global::System.Collections.Generic.List<global::System.Reflection.TypeInfo>>)global::Orleans.Serialization.SerializationManager.@GetReferenceSetter(field61);
         private static readonly global::System.Reflection.FieldInfo field33 = typeof (global::Orleans.Runtime.Configuration.GlobalConfiguration).@GetField("UseMockReminderTable", (System.@Reflection.@BindingFlags.@Instance | System.@Reflection.@BindingFlags.@NonPublic | System.@Reflection.@BindingFlags.@Public));
         private static readonly global::System.Func<global::Orleans.Runtime.Configuration.GlobalConfiguration, global::System.Boolean> getField33 = (global::System.Func<global::Orleans.Runtime.Configuration.GlobalConfiguration, global::System.Boolean>)global::Orleans.Serialization.SerializationManager.@GetGetter(field33);
         private static readonly global::System.Action<global::Orleans.Runtime.Configuration.GlobalConfiguration, global::System.Boolean> setField33 = (global::System.Action<global::Orleans.Runtime.Configuration.GlobalConfiguration, global::System.Boolean>)global::Orleans.Serialization.SerializationManager.@GetReferenceSetter(field33);
@@ -2381,9 +2384,9 @@ namespace Orleans
         private static readonly global::System.Reflection.FieldInfo field42 = typeof (global::Orleans.Runtime.Configuration.GlobalConfiguration).@GetField("dataConnectionStringForReminders", (System.@Reflection.@BindingFlags.@Instance | System.@Reflection.@BindingFlags.@NonPublic | System.@Reflection.@BindingFlags.@Public));
         private static readonly global::System.Func<global::Orleans.Runtime.Configuration.GlobalConfiguration, global::System.String> getField42 = (global::System.Func<global::Orleans.Runtime.Configuration.GlobalConfiguration, global::System.String>)global::Orleans.Serialization.SerializationManager.@GetGetter(field42);
         private static readonly global::System.Action<global::Orleans.Runtime.Configuration.GlobalConfiguration, global::System.String> setField42 = (global::System.Action<global::Orleans.Runtime.Configuration.GlobalConfiguration, global::System.String>)global::Orleans.Serialization.SerializationManager.@GetReferenceSetter(field42);
-        private static readonly global::System.Reflection.FieldInfo field63 = typeof (global::Orleans.Runtime.Configuration.MessagingConfiguration).@GetField("isSiloConfig", (System.@Reflection.@BindingFlags.@Instance | System.@Reflection.@BindingFlags.@NonPublic | System.@Reflection.@BindingFlags.@Public));
-        private static readonly global::System.Func<global::Orleans.Runtime.Configuration.MessagingConfiguration, global::System.Boolean> getField63 = (global::System.Func<global::Orleans.Runtime.Configuration.MessagingConfiguration, global::System.Boolean>)global::Orleans.Serialization.SerializationManager.@GetGetter(field63);
-        private static readonly global::System.Action<global::Orleans.Runtime.Configuration.MessagingConfiguration, global::System.Boolean> setField63 = (global::System.Action<global::Orleans.Runtime.Configuration.MessagingConfiguration, global::System.Boolean>)global::Orleans.Serialization.SerializationManager.@GetReferenceSetter(field63);
+        private static readonly global::System.Reflection.FieldInfo field64 = typeof (global::Orleans.Runtime.Configuration.MessagingConfiguration).@GetField("isSiloConfig", (System.@Reflection.@BindingFlags.@Instance | System.@Reflection.@BindingFlags.@NonPublic | System.@Reflection.@BindingFlags.@Public));
+        private static readonly global::System.Func<global::Orleans.Runtime.Configuration.MessagingConfiguration, global::System.Boolean> getField64 = (global::System.Func<global::Orleans.Runtime.Configuration.MessagingConfiguration, global::System.Boolean>)global::Orleans.Serialization.SerializationManager.@GetGetter(field64);
+        private static readonly global::System.Action<global::Orleans.Runtime.Configuration.MessagingConfiguration, global::System.Boolean> setField64 = (global::System.Action<global::Orleans.Runtime.Configuration.MessagingConfiguration, global::System.Boolean>)global::Orleans.Serialization.SerializationManager.@GetReferenceSetter(field64);
         private static readonly global::System.Reflection.FieldInfo field28 = typeof (global::Orleans.Runtime.Configuration.GlobalConfiguration).@GetField("livenessServiceType", (System.@Reflection.@BindingFlags.@Instance | System.@Reflection.@BindingFlags.@NonPublic | System.@Reflection.@BindingFlags.@Public));
         private static readonly global::System.Func<global::Orleans.Runtime.Configuration.GlobalConfiguration, global::Orleans.Runtime.Configuration.GlobalConfiguration.LivenessProviderType> getField28 = (global::System.Func<global::Orleans.Runtime.Configuration.GlobalConfiguration, global::Orleans.Runtime.Configuration.GlobalConfiguration.LivenessProviderType>)global::Orleans.Serialization.SerializationManager.@GetGetter(field28);
         private static readonly global::System.Action<global::Orleans.Runtime.Configuration.GlobalConfiguration, global::Orleans.Runtime.Configuration.GlobalConfiguration.LivenessProviderType> setField28 = (global::System.Action<global::Orleans.Runtime.Configuration.GlobalConfiguration, global::Orleans.Runtime.Configuration.GlobalConfiguration.LivenessProviderType>)global::Orleans.Serialization.SerializationManager.@GetReferenceSetter(field28);
@@ -2403,6 +2406,7 @@ namespace Orleans
             result.@BufferPoolPreallocationSize = input.@BufferPoolPreallocationSize;
             result.@CacheSize = input.@CacheSize;
             result.@CacheTTLExtensionFactor = input.@CacheTTLExtensionFactor;
+            result.@ClientDropTimeout = input.@ClientDropTimeout;
             result.@ClientRegistrationRefresh = input.@ClientRegistrationRefresh;
             result.@ClientSenderBuckets = input.@ClientSenderBuckets;
             setField19(result, getField19(input));
@@ -2428,7 +2432,7 @@ namespace Orleans
             setField24(result, input.@MaxStorageBusyRetries);
             result.@MaximumCacheTTL = input.@MaximumCacheTTL;
             result.@MembershipTableAssembly = input.@MembershipTableAssembly;
-            setField62(result, getField62(input));
+            setField63(result, getField63(input));
             result.@MockReminderTableTimeout = input.@MockReminderTableTimeout;
             result.@NumMissedProbesLimit = input.@NumMissedProbesLimit;
             result.@NumMissedTableIAmAliveLimit = input.@NumMissedTableIAmAliveLimit;
@@ -2438,12 +2442,12 @@ namespace Orleans
             setField37(result, getField37(input));
             result.@ProbeTimeout = input.@ProbeTimeout;
             result.@ProviderConfigurations = (global::System.Collections.Generic.IDictionary<global::System.String, global::Orleans.Runtime.Configuration.ProviderCategoryConfiguration>)global::Orleans.Serialization.SerializationManager.@DeepCopyInner(input.@ProviderConfigurations);
-            setField61(result, getField61(input));
+            setField62(result, getField62(input));
             result.@ReminderTableAssembly = input.@ReminderTableAssembly;
             result.@ResendOnTimeout = input.@ResendOnTimeout;
             result.@ResponseTimeout = input.@ResponseTimeout;
             setField1(result, (global::System.Collections.Generic.IList<global::System.Net.IPEndPoint>)global::Orleans.Serialization.SerializationManager.@DeepCopyInner(input.@SeedNodes));
-            setField60(result, (global::System.Collections.Generic.List<global::System.Reflection.TypeInfo>)global::Orleans.Serialization.SerializationManager.@DeepCopyInner(input.@SerializationProviders));
+            setField61(result, (global::System.Collections.Generic.List<global::System.Reflection.TypeInfo>)global::Orleans.Serialization.SerializationManager.@DeepCopyInner(input.@SerializationProviders));
             result.@ServiceId = (global::System.Guid)global::Orleans.Serialization.SerializationManager.@DeepCopyInner(input.@ServiceId);
             result.@SiloSenderQueues = input.@SiloSenderQueues;
             result.@Subnet = (global::System.Byte[])global::Orleans.Serialization.SerializationManager.@DeepCopyInner(input.@Subnet);
@@ -2456,7 +2460,7 @@ namespace Orleans
             setField33(result, getField33(input));
             setField43(result, getField43(input));
             setField42(result, getField42(input));
-            setField63(result, getField63(input));
+            setField64(result, getField64(input));
             setField28(result, getField28(input));
             setField31(result, getField31(input));
             global::Orleans.@Serialization.@SerializationContext.@Current.@RecordObject(original, result);
@@ -2475,6 +2479,7 @@ namespace Orleans
             global::Orleans.Serialization.SerializationManager.@SerializeInner(input.@BufferPoolPreallocationSize, stream, typeof (global::System.Int32));
             global::Orleans.Serialization.SerializationManager.@SerializeInner(input.@CacheSize, stream, typeof (global::System.Int32));
             global::Orleans.Serialization.SerializationManager.@SerializeInner(input.@CacheTTLExtensionFactor, stream, typeof (global::System.Double));
+            global::Orleans.Serialization.SerializationManager.@SerializeInner(input.@ClientDropTimeout, stream, typeof (global::System.TimeSpan));
             global::Orleans.Serialization.SerializationManager.@SerializeInner(input.@ClientRegistrationRefresh, stream, typeof (global::System.TimeSpan));
             global::Orleans.Serialization.SerializationManager.@SerializeInner(input.@ClientSenderBuckets, stream, typeof (global::System.Int32));
             global::Orleans.Serialization.SerializationManager.@SerializeInner(getField19(input), stream, typeof (global::System.TimeSpan));
@@ -2500,7 +2505,7 @@ namespace Orleans
             global::Orleans.Serialization.SerializationManager.@SerializeInner(input.@MaxStorageBusyRetries, stream, typeof (global::System.Int32));
             global::Orleans.Serialization.SerializationManager.@SerializeInner(input.@MaximumCacheTTL, stream, typeof (global::System.TimeSpan));
             global::Orleans.Serialization.SerializationManager.@SerializeInner(input.@MembershipTableAssembly, stream, typeof (global::System.String));
-            global::Orleans.Serialization.SerializationManager.@SerializeInner(getField62(input), stream, typeof (global::System.Double));
+            global::Orleans.Serialization.SerializationManager.@SerializeInner(getField63(input), stream, typeof (global::System.Double));
             global::Orleans.Serialization.SerializationManager.@SerializeInner(input.@MockReminderTableTimeout, stream, typeof (global::System.TimeSpan));
             global::Orleans.Serialization.SerializationManager.@SerializeInner(input.@NumMissedProbesLimit, stream, typeof (global::System.Int32));
             global::Orleans.Serialization.SerializationManager.@SerializeInner(input.@NumMissedTableIAmAliveLimit, stream, typeof (global::System.Int32));
@@ -2510,7 +2515,7 @@ namespace Orleans
             global::Orleans.Serialization.SerializationManager.@SerializeInner(getField37(input), stream, typeof (global::System.Boolean));
             global::Orleans.Serialization.SerializationManager.@SerializeInner(input.@ProbeTimeout, stream, typeof (global::System.TimeSpan));
             global::Orleans.Serialization.SerializationManager.@SerializeInner(input.@ProviderConfigurations, stream, typeof (global::System.Collections.Generic.IDictionary<global::System.String, global::Orleans.Runtime.Configuration.ProviderCategoryConfiguration>));
-            global::Orleans.Serialization.SerializationManager.@SerializeInner(getField61(input), stream, typeof (global::System.Double));
+            global::Orleans.Serialization.SerializationManager.@SerializeInner(getField62(input), stream, typeof (global::System.Double));
             global::Orleans.Serialization.SerializationManager.@SerializeInner(input.@ReminderTableAssembly, stream, typeof (global::System.String));
             global::Orleans.Serialization.SerializationManager.@SerializeInner(input.@ResendOnTimeout, stream, typeof (global::System.Boolean));
             global::Orleans.Serialization.SerializationManager.@SerializeInner(input.@ResponseTimeout, stream, typeof (global::System.TimeSpan));
@@ -2528,7 +2533,7 @@ namespace Orleans
             global::Orleans.Serialization.SerializationManager.@SerializeInner(getField33(input), stream, typeof (global::System.Boolean));
             global::Orleans.Serialization.SerializationManager.@SerializeInner(getField43(input), stream, typeof (global::System.String));
             global::Orleans.Serialization.SerializationManager.@SerializeInner(getField42(input), stream, typeof (global::System.String));
-            global::Orleans.Serialization.SerializationManager.@SerializeInner(getField63(input), stream, typeof (global::System.Boolean));
+            global::Orleans.Serialization.SerializationManager.@SerializeInner(getField64(input), stream, typeof (global::System.Boolean));
             global::Orleans.Serialization.SerializationManager.@SerializeInner(getField28(input), stream, typeof (global::Orleans.Runtime.Configuration.GlobalConfiguration.LivenessProviderType));
             global::Orleans.Serialization.SerializationManager.@SerializeInner(getField31(input), stream, typeof (global::Orleans.Runtime.Configuration.GlobalConfiguration.ReminderServiceProviderType));
         }
@@ -2546,6 +2551,7 @@ namespace Orleans
             result.@BufferPoolPreallocationSize = (global::System.Int32)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.Int32), stream);
             result.@CacheSize = (global::System.Int32)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.Int32), stream);
             result.@CacheTTLExtensionFactor = (global::System.Double)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.Double), stream);
+            result.@ClientDropTimeout = (global::System.TimeSpan)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.TimeSpan), stream);
             result.@ClientRegistrationRefresh = (global::System.TimeSpan)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.TimeSpan), stream);
             result.@ClientSenderBuckets = (global::System.Int32)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.Int32), stream);
             setField19(result, (global::System.TimeSpan)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.TimeSpan), stream));
@@ -2571,7 +2577,7 @@ namespace Orleans
             setField24(result, (global::System.Int32)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.Int32), stream));
             result.@MaximumCacheTTL = (global::System.TimeSpan)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.TimeSpan), stream);
             result.@MembershipTableAssembly = (global::System.String)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.String), stream);
-            setField62(result, (global::System.Double)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.Double), stream));
+            setField63(result, (global::System.Double)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.Double), stream));
             result.@MockReminderTableTimeout = (global::System.TimeSpan)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.TimeSpan), stream);
             result.@NumMissedProbesLimit = (global::System.Int32)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.Int32), stream);
             result.@NumMissedTableIAmAliveLimit = (global::System.Int32)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.Int32), stream);
@@ -2581,12 +2587,12 @@ namespace Orleans
             setField37(result, (global::System.Boolean)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.Boolean), stream));
             result.@ProbeTimeout = (global::System.TimeSpan)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.TimeSpan), stream);
             result.@ProviderConfigurations = (global::System.Collections.Generic.IDictionary<global::System.String, global::Orleans.Runtime.Configuration.ProviderCategoryConfiguration>)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.Collections.Generic.IDictionary<global::System.String, global::Orleans.Runtime.Configuration.ProviderCategoryConfiguration>), stream);
-            setField61(result, (global::System.Double)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.Double), stream));
+            setField62(result, (global::System.Double)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.Double), stream));
             result.@ReminderTableAssembly = (global::System.String)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.String), stream);
             result.@ResendOnTimeout = (global::System.Boolean)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.Boolean), stream);
             result.@ResponseTimeout = (global::System.TimeSpan)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.TimeSpan), stream);
             setField1(result, (global::System.Collections.Generic.IList<global::System.Net.IPEndPoint>)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.Collections.Generic.IList<global::System.Net.IPEndPoint>), stream));
-            setField60(result, (global::System.Collections.Generic.List<global::System.Reflection.TypeInfo>)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.Collections.Generic.List<global::System.Reflection.TypeInfo>), stream));
+            setField61(result, (global::System.Collections.Generic.List<global::System.Reflection.TypeInfo>)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.Collections.Generic.List<global::System.Reflection.TypeInfo>), stream));
             result.@ServiceId = (global::System.Guid)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.Guid), stream);
             result.@SiloSenderQueues = (global::System.Int32)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.Int32), stream);
             result.@Subnet = (global::System.Byte[])global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.Byte[]), stream);
@@ -2599,7 +2605,7 @@ namespace Orleans
             setField33(result, (global::System.Boolean)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.Boolean), stream));
             setField43(result, (global::System.String)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.String), stream));
             setField42(result, (global::System.String)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.String), stream));
-            setField63(result, (global::System.Boolean)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.Boolean), stream));
+            setField64(result, (global::System.Boolean)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.Boolean), stream));
             setField28(result, (global::Orleans.Runtime.Configuration.GlobalConfiguration.LivenessProviderType)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::Orleans.Runtime.Configuration.GlobalConfiguration.LivenessProviderType), stream));
             setField31(result, (global::Orleans.Runtime.Configuration.GlobalConfiguration.ReminderServiceProviderType)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::Orleans.Runtime.Configuration.GlobalConfiguration.ReminderServiceProviderType), stream));
             return (global::Orleans.Runtime.Configuration.GlobalConfiguration)result;

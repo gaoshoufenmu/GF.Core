@@ -285,6 +285,11 @@
              If this attribute is not specified, then Math.Pow(2, 13) is used.
             </summary>
         </member>
+        <member name="P:Orleans.Runtime.Configuration.IMessagingConfiguration.ClientDropTimeout">
+            <summary>
+             This is the period of time a gateway will wait before dropping a disconnected client.
+            </summary>
+        </member>
         <member name="P:Orleans.Runtime.Configuration.IMessagingConfiguration.UseStandardSerializer">
             <summary>
             The UseStandardSerializer attribute, if provided and set to "true", forces the use of the standard .NET serializer instead
@@ -5648,6 +5653,11 @@
              a faulted state.  Work on faulted subscriptions should be abandoned.
             </summary>
         </member>
+        <member name="M:Orleans.Streams.IQueueFlowController.GetMaxAddCount">
+            <summary>
+            The limit of the maximum number of items that can be added
+            </summary>
+        </member>
         <member name="M:Orleans.Streams.AsyncObservableExtensions.SubscribeAsync``1(Orleans.Streams.IAsyncObservable{``0},System.Func{``0,Orleans.Streams.StreamSequenceToken,System.Threading.Tasks.Task},System.Func{System.Exception,System.Threading.Tasks.Task},System.Func{System.Threading.Tasks.Task})">
             <summary>
             Subscribe a consumer to this observable using delegates.
@@ -6093,11 +6103,6 @@
             <summary>
             The stream queue mapper is responsible for mapping ring ranges from the load balancing ring provider to stream queues.
             Implementation must be thread safe.
-            </summary>
-        </member>
-        <member name="P:Orleans.Streams.IQueueCache.MaxAddCount">
-            <summary>
-            The limit of the maximum number of items that can be added to the cache in a single AddToCache operation.
             </summary>
         </member>
         <member name="M:Orleans.Streams.IQueueCache.AddToCache(System.Collections.Generic.IList{Orleans.Streams.IBatchContainer})">
@@ -7132,7 +7137,12 @@
             Uninitializes client runtime.
             </summary>
         </member>
-        <member name="M:Orleans.GrainClient.InternalUninitialize">
+        <member name="M:Orleans.GrainClient.HardKill">
+            <summary>
+            Test hook to uninitialize client without cleanup
+            </summary>
+        </member>
+        <member name="M:Orleans.GrainClient.InternalUninitialize(System.Boolean)">
             <summary>
             This is the lock free version of uninitilize so we can share 
             it between the public method and error paths inside initialize.
