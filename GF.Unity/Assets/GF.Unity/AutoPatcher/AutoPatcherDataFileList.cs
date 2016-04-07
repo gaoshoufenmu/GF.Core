@@ -66,6 +66,7 @@ public class AutoPatcherDataFileList
                     }
                 }
 
+                mRetryCount = 0;
                 mWWW = null;
             }
             else
