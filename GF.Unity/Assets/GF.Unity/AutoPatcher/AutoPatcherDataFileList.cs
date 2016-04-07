@@ -17,6 +17,7 @@ public class AutoPatcherDataFileList
     Queue<DataFile> mQueDataFile;
     DataFile mCurrentDataFile;
     byte[] mBuffer = new byte[1024 * 1024];
+    int mRetryCount = 0;
 
     //-------------------------------------------------------------------------    
     public bool Finished { get { return mQueDataFile.Count == 0 && mWWW == null; } }
@@ -64,13 +65,24 @@ public class AutoPatcherDataFileList
                         ms.WriteTo(fs);
                     }
                 }
+
+                mWWW = null;
             }
             else
             {
                 EbLog.Error(mWWW.error);
-            }
 
-            mWWW = null;
+                mRetryCount++;
+                if (mRetryCount > 3)
+                {
+                    mRetryCount = 0;
+                    mWWW = null;
+                }
+                else
+                {
+                    mWWW = new WWW(mCurrentDataFile.datafile_remote_url);
+                }
+            }
         }
         else
         {
