@@ -6,199 +6,278 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Xml;
 
-public class EditorGF : EditorWindow
+public class EditorGf : EditorWindow
 {
     //-------------------------------------------------------------------------
     static MD5 mMD5;
     static string mBundleVersion;
     static string mDataVersion;
-    static string mResourcesPath;
+    static string mAndroidBundleVersion;
+    static string mAndroidDataVersion;
+    static string mIOSBundleVersion;
+    static string mIOSDataVersion;
+    static string mPCBundleVersion;
+    static string mPCDataVersion;
     static string mTargetPath;
-    static bool mCopyOrDelete;
-    static string mDataVersionKey = "DataVersionKey";
-    static string mResourcesPathKey = "ResourcesPathKey";
-    static string mTargetPathKey = "TargetPathKey";
+    static string mAssetBundleResourcesPath;
     static string mNotPackAssetPath;
-    string mPackInfoTextName = "PackInfo.txt";
-    string mDataTargetPath;
-    List<string> mDoNotPackFileExtention = new List<string> { ".meta" };
+    static string mRealTargetPath;
+    static string mABTargetPath;
+    static string mAssetPath;
+    static BuildTarget mInitBuildTarget;
+    static BuildTarget mCurrentBuildTarget;
+    static List<BuildTarget> mListNeedBuildPlatform;
+    static Queue<BuildTarget> mQueueNeedBuildPlatform;
+    static string mPatchInfoPath;
+    static List<string> mDoNotPackFileExtention = new List<string> { ".meta", ".DS_Store" };
+
     const string mNotPackAsset = "NotPackAsset";
+    const string mAssetBundleDirectory = "NeedPackAsset";
+    const string mAssetBundleTargetDirectory = "ABPatch";
+    const string mABPathInfoResourceDirectory = "GF.Unity\\AutoPatcherInfo";
+    const string mPatchiInfoName = "ABPatchInfo.xml";
+
+    string mPackInfoTextName = "DataFileList.txt";
+    string mDataTargetPath;
+    bool mCurrentIsBuidAndroid = false;
+    bool mCurrentIsBuidIOS = false;
+    bool mCurrentIsBuidPC = false;
+    bool mBuidAndroid = false;
+    bool mBuidIOS = false;
+    bool mBuidPC = false;
+    List<string> mListAllABFile = new List<string>();
+
 
     //-------------------------------------------------------------------------
     [MenuItem("GF/AutoPatcher")]
-    static void autoPatcher()
+    static void AutoPatcher()
     {
-        var ui_wnd = EditorWindow.GetWindow<UiWndAutoPatcher>("自动更新");
+        _checkPath();
+        _initCurrentBuildTarget();
+
+        if (!Directory.Exists(mABTargetPath))
+        {
+            EditorGfInitProjectInfo test = GetWindow<EditorGfInitProjectInfo>("初始化项目信息");
+
+            test.copyPatchInfo(mABTargetPath,
+                mAssetPath + mABPathInfoResourceDirectory);
+            return;
+        }
+
+        EditorGf dragon_pack = (EditorGf)EditorWindow.GetWindow(typeof(EditorGf));
+        _checkPatchData();
+        mMD5 = new MD5CryptoServiceProvider();
+        mListNeedBuildPlatform = new List<BuildTarget>();
+        mQueueNeedBuildPlatform = new Queue<BuildTarget>();
     }
 
     //-------------------------------------------------------------------------
-    [MenuItem("GF/BuildAssetBundles ver5.3")]
-    static void BuildAssetBundles()
+    static void _initCurrentBuildTarget()
     {
-        string p = Path.Combine(Application.persistentDataPath, "../Dragon/");
-        string path_root = Path.GetFullPath(p);
-
-        Caching.CleanCache();
-
-        List<string> list_file = new List<string>(100);
-        string[] arr_file = Directory.GetFiles("Assets/NeedPackAsset/Actor/Prefab/");
-        foreach (var i in arr_file)
-        {
-            if (!i.EndsWith(".prefab")) continue;
-            list_file.Add(i);
-        }
-
-        string path_actor = path_root + "Android/Actor/";
-        if (!Directory.Exists(path_actor))
-        {
-            Directory.CreateDirectory(path_actor);
-        }
-
-        foreach (var i in list_file)
-        {
-            var names = AssetDatabase.GetDependencies(i);
-
-            AssetBundleBuild abb;
-            abb.assetBundleName = Path.GetFileNameWithoutExtension(i) + ".assetbundle";
-            abb.assetNames = new string[names.Length];
-            abb.assetBundleVariant = "";
-            int asset_index = 0;
-            foreach (var j in names)
-            {
-                Debug.Log("Asset: " + j);
-                if (j.EndsWith(".cs")) continue;
-                abb.assetNames[asset_index++] = j;
-            }
-
-            AssetBundleBuild[] arr_abb = new AssetBundleBuild[1];
-            arr_abb[0] = abb;
-            BuildPipeline.BuildAssetBundles(
-            path_actor,
-            arr_abb,
-            BuildAssetBundleOptions.ForceRebuildAssetBundle,
-            BuildTarget.Android);
-        }
-    }
-
-    //-------------------------------------------------------------------------
-    [MenuItem("GF/ChangeLocalVersionConfig")]
-    static void ChangeLocalVersionConfig()
-    {
-        TextAsset config = Resources.Load<TextAsset>("Config/VersionInfoConfig");
-        XmlDocument xml = new XmlDocument();
-        xml.LoadXml(config.text);
-
-        string platform = "";
-        XmlNode node_info = null;
-
-#if UNITY_STANDALONE_WIN
-        platform = "VersionInfoPC";
-        node_info = xml.SelectSingleNode("VersionInfoConfig/" + platform);
+#if UNITY_IPHONE || UNITY_IOS
+        mInitBuildTarget = BuildTarget.iOS;
 #elif UNITY_ANDROID
-        platform = "VersionInfoAndroid";
-        node_info = xml.SelectSingleNode("VersionInfoConfig/" + platform);
-#elif UNITY_IPHONE
-        platform = "VersionInfoIOS";
-        node_info= xml.SelectSingleNode("VersionInfoConfig/"+platform);  
+            mInitBuildTarget = BuildTarget.Android;
+#elif UNITY_STANDALONE_WIN
+        mInitBuildTarget = BuildTarget.StandaloneWindows;
 #endif
+        mCurrentBuildTarget = mInitBuildTarget;
+    }
 
-        string bundle_version = node_info.Attributes["BundleVersion"].Value;
-        string new_bundle_version = (int.Parse(bundle_version.Replace(".", "")) + 1).ToString();
-        new_bundle_version = new_bundle_version.Insert(1, ".").Insert(4, ".");
-        string data_version = node_info.Attributes["DataVersion"].Value;
-        string[] texts = File.ReadAllLines(AssetDatabase.GetAssetPath(config));
-        string[] new_texts = new string[texts.Length];
-        for (int i = 0; i < texts.Length; i++)
+    //-------------------------------------------------------------------------
+    static void _checkPath()
+    {
+        string current_dir = System.Environment.CurrentDirectory;
+        mAssetPath = current_dir + "\\Assets\\";
+        mAssetBundleResourcesPath = mAssetPath + mAssetBundleDirectory;
+        mNotPackAssetPath = mAssetPath + mNotPackAsset;
+
+        mABTargetPath = Path.Combine(current_dir, mAssetBundleTargetDirectory);
+        //mABTargetPath = current_dir + mAssetBundleTargetDirectory;
+        mPatchInfoPath = Path.Combine(mABTargetPath, mPatchiInfoName);// + "\\" + mPatchiInfoName;
+        //Debug.LogError("mRealTargetPath:: " + mRealTargetPath);      
+    }
+
+    //-------------------------------------------------------------------------
+    void _getCurrentTargetPath()
+    {
+        if (mCurrentBuildTarget == BuildTarget.Android)
         {
-            string str = texts[i];
-            if (str.Contains(platform))
-            {
-                str = str.Replace(bundle_version, new_bundle_version);
-            }
-            new_texts[i] = str;
+            mTargetPath = mABTargetPath + "\\ANDROID\\";
         }
-        File.WriteAllLines(AssetDatabase.GetAssetPath(config), new_texts);
-
-        Debug.Log("修改完成");
+        else if (mCurrentBuildTarget == BuildTarget.iOS)
+        {
+            mTargetPath = mABTargetPath + "\\IOS\\";
+        }
+        else if (mCurrentBuildTarget == BuildTarget.StandaloneWindows)
+        {
+            mTargetPath = mABTargetPath + "\\PC\\";
+        }
     }
 
     //-------------------------------------------------------------------------
     void OnGUI()
     {
-        mBundleVersion = PlayerSettings.bundleVersion;
+        EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("程序包版本号:", mBundleVersion);
-        mDataVersion = EditorGUILayout.TextField("AssetBundle版本号:", mDataVersion);
-        mResourcesPath = EditorGUILayout.TextField("资源所在路径:", mResourcesPath);
-        mTargetPath = EditorGUILayout.TextField("目标路径:", mTargetPath);
-        mCopyOrDelete = EditorGUILayout.Toggle("复制或删除本地资源", mCopyOrDelete);
+        bool add_bundleversion = GUILayout.Button("程序包版本号加一");
+        if (add_bundleversion)
+        {
+            _changeBundleData(true);
+        }
+        bool minus_bundleversion = GUILayout.Button("程序包版本号减一");
+        if (minus_bundleversion)
+        {
+            _changeBundleData(false);
+        }
+        EditorGUILayout.EndHorizontal();
+
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("资源版本号:", mDataVersion);
+        bool add_dataeversion = GUILayout.Button("资源版本号加一");
+        if (add_dataeversion)
+        {
+            _changeDataData(true);
+        }
+        bool minus_dataeversion = GUILayout.Button("资源版本号减一");
+        if (minus_dataeversion)
+        {
+            _changeDataData(false);
+        }
+        EditorGUILayout.EndHorizontal();
+
+        EditorGUILayout.LabelField("资源所在路径:", mAssetBundleResourcesPath);
+        EditorGUILayout.LabelField("目标路径:", mTargetPath);
+
+        EditorGUILayout.BeginHorizontal();
+        mBuidAndroid = EditorGUILayout.Toggle("是否打AndroidAB", mBuidAndroid);
+        if (mCurrentIsBuidAndroid != mBuidAndroid)
+        {
+            mCurrentIsBuidAndroid = mBuidAndroid;
+            _checkIfNeePackPlatform(mCurrentIsBuidAndroid, BuildTarget.Android);
+        }
+        mBuidIOS = EditorGUILayout.Toggle("是否打IOSAB", mBuidIOS);
+        if (mCurrentIsBuidIOS != mBuidIOS)
+        {
+            mCurrentIsBuidIOS = mBuidIOS;
+            _checkIfNeePackPlatform(mCurrentIsBuidIOS, BuildTarget.iOS);
+        }
+        mBuidPC = EditorGUILayout.Toggle("是否打PCAB", mBuidPC);
+        if (mCurrentIsBuidPC != mBuidPC)
+        {
+            mCurrentIsBuidPC = mBuidPC;
+            _checkIfNeePackPlatform(mCurrentIsBuidPC, BuildTarget.StandaloneWindows);
+        }
+        EditorGUILayout.EndHorizontal();
+
+        EditorGUILayout.BeginHorizontal();
+        bool copy_asset = GUILayout.Button("复制AB到本地", GUILayout.Width(200));
+        if (copy_asset)
+        {
+            _copyOrDeleteToClient(true);
+        }
+        bool delete_asset = GUILayout.Button("删除本地AB", GUILayout.Width(200));
+        if (delete_asset)
+        {
+            _copyOrDeleteToClient(false);
+        }
+        EditorGUILayout.EndHorizontal();
+
         bool check_path = GUILayout.Button("重设路径", GUILayout.Width(200));
         if (check_path)
         {
             _checkPath();
+            _checkPatchData();
         }
 
         bool click_build_asset = GUILayout.Button("打AssetBundle包(压缩)", GUILayout.Width(200));
         if (click_build_asset)
         {
-            _packAssetBundleCompress();
-        }
-
-        bool click_btn = GUILayout.Button("处理存在的AssetBundle包", GUILayout.Width(200));
-        if (click_btn)
-        {
-            _packResources();
-        }
-
-        bool clear_local_version = GUILayout.Button("清理本地保存的数据版本", GUILayout.Width(200));
-        if (clear_local_version)
-        {
-            //PlayerPrefs.DeleteKey(VersionConfig.mDataVersionKey);
+            _startBuild();
         }
     }
 
     //-------------------------------------------------------------------------
-    void _packResources()
+    void _checkIfNeePackPlatform(bool is_currentneed, BuildTarget build_target)
     {
-        PlayerPrefs.SetString(mDataVersionKey, mDataVersion);
-        PlayerPrefs.SetString(mResourcesPathKey, mResourcesPath);
-        PlayerPrefs.SetString(mTargetPathKey, mTargetPath);
-        mDataTargetPath = mTargetPath + "/DataVersion_" + mDataVersion;
-
-        if (Directory.Exists(mResourcesPath))
+        if (is_currentneed)
         {
-            if (!Directory.Exists(mTargetPath))
-            {
-                Directory.CreateDirectory(mTargetPath);
-            }
-
-            if (!Directory.Exists(mDataTargetPath))
-            {
-                Directory.CreateDirectory(mDataTargetPath);
-            }
-
-            StreamWriter sw;
-            string info = mDataTargetPath + "/" + mPackInfoTextName;
-
-            if (!File.Exists(info))
-            {
-                sw = File.CreateText(info);
-            }
-            else
-            {
-                sw = new StreamWriter(info);
-            }
-
-            using (sw)
-            {
-                _checkPackInfo(sw, mResourcesPath);
-            }
-
-            ShowNotification(new GUIContent("打包完成!"));
+            _setNeedPackPlatform(build_target);
         }
         else
         {
-            Debug.LogError("不存在该资源文件夹");
+            _removeNeedPackPlatform(build_target);
         }
+    }
+
+    //-------------------------------------------------------------------------
+    void _setNeedPackPlatform(BuildTarget build_target)
+    {
+        if (!mListNeedBuildPlatform.Contains(build_target))
+        {
+            mListNeedBuildPlatform.Add(build_target);
+        }
+    }
+
+    //-------------------------------------------------------------------------
+    void _removeNeedPackPlatform(BuildTarget build_target)
+    {
+        if (mListNeedBuildPlatform.Contains(build_target))
+        {
+            mListNeedBuildPlatform.Remove(build_target);
+        }
+    }
+
+    //-------------------------------------------------------------------------
+    void _startBuild()
+    {
+        foreach (var i in mListNeedBuildPlatform)
+        {
+            mQueueNeedBuildPlatform.Enqueue(i);
+        }
+
+        mListNeedBuildPlatform.Clear();
+
+        _startCurrentBuild();
+    }
+
+    //-------------------------------------------------------------------------
+    void _startCurrentBuild()
+    {
+        if (mQueueNeedBuildPlatform.Count > 0)
+        {
+            mCurrentBuildTarget = mQueueNeedBuildPlatform.Dequeue();
+            _packAssetBundleCompress();
+        }
+        else
+        {
+            ShowNotification(new GUIContent("打包完成!"));
+
+            EditorUserBuildSettings.SwitchActiveBuildTarget(mInitBuildTarget);
+        }
+    }
+
+    //-------------------------------------------------------------------------
+    void _packResources(string pack_infopath)
+    {
+        StreamWriter sw;
+        string info = pack_infopath + "\\" + mPackInfoTextName;
+
+        if (!File.Exists(info))
+        {
+            sw = File.CreateText(info);
+        }
+        else
+        {
+            sw = new StreamWriter(info);
+        }
+
+        using (sw)
+        {
+            _checkPackInfo(sw, pack_infopath);
+        }
+
+        _startCurrentBuild();
     }
 
     //-------------------------------------------------------------------------
@@ -207,46 +286,28 @@ public class EditorGF : EditorWindow
         string[] files = Directory.GetFiles(path);
         foreach (var i in files)
         {
+            string directory_name = Path.GetDirectoryName(i);
+            directory_name = directory_name.Substring(directory_name.LastIndexOf("\\") + 1);
+            string file_name = Path.GetFileName(i);
+            string file_namewithoutex = Path.GetFileNameWithoutExtension(i);
+            if (file_name.Equals(mPackInfoTextName) || file_name.Equals(directory_name) || file_namewithoutex.Equals(directory_name))
+            {
+                continue;
+            }
+
             string file_extension = Path.GetExtension(i);
             if (mDoNotPackFileExtention.Contains(file_extension))
             {
                 continue;
             }
 
-            string file_name = Path.GetFileName(i);
             string file_directory = Path.GetDirectoryName(i);
-            string target_path = file_directory.Replace(mResourcesPath, "");
+            string target_path = file_directory.Replace(mRealTargetPath, "");
             target_path = target_path.Replace(@"\", "/");
             string file_path = i;
-            bool is_apk = false;
-
-            if (file_extension.Equals(".apk"))
-            {
-                is_apk = true;
-                file_path = file_directory + mBundleVersion + file_extension;
-                if (!File.Exists(file_path))
-                {
-                    FileInfo file_info = new FileInfo(i);
-                    file_info.MoveTo(file_path);
-                }
-                file_name = mBundleVersion + file_extension;
-                File.Copy(file_path, mTargetPath + "/" + target_path + "/" + file_name, true);
-            }
-            else
-            {
-                string target_p = mDataTargetPath + "/" + target_path;
-                if (!Directory.Exists(target_p))
-                {
-                    Directory.CreateDirectory(target_p);
-                }
-
-                File.Copy(file_path, target_p + "/" + file_name, true);
-            }
-
-            if (!is_apk)
             {
                 StringBuilder sb = new StringBuilder();
-                sb.Append(target_path + "/" + file_name + " ");
+                sb.Append(target_path + "\\" + file_name + " ");
 
                 using (FileStream sr = File.OpenRead(file_path))
                 {
@@ -269,167 +330,191 @@ public class EditorGF : EditorWindow
     }
 
     //-------------------------------------------------------------------------
-    void _copyOrDeleteToClient(string file_path, string directory_name, string file_name)
+    void _copyOrDeleteToClient(bool is_copy)
     {
         string persistent_data_path =
 #if UNITY_STANDALONE_WIN && UNITY_EDITOR
-        Application.persistentDataPath + "/Pc" + directory_name;
+        Application.persistentDataPath + "\\PC\\";
 #elif UNITY_ANDROID && UNITY_EDITOR
-        Application.persistentDataPath + "/Android" + directory_name;
-#elif UNITY_IPHONE&& UNITY_EDITOR
-        Application.persistentDataPath  + "/iOS" + directory_name;
-#else
-        Application.persistentDataPath + directory_name;
+        Application.persistentDataPath + "\\ANDROID\\";
+#elif UNITY_IPHONE && UNITY_EDITOR
+        Application.persistentDataPath + "\\IOS\\";
 #endif
 
-        if (!Directory.Exists(persistent_data_path))
+        if (is_copy)
         {
-            Directory.CreateDirectory(persistent_data_path);
-        }
+            if (!Directory.Exists(persistent_data_path))
+            {
+                Directory.CreateDirectory(persistent_data_path);
+            }
 
-        persistent_data_path += "/" + file_name;
-
-        if (mCopyOrDelete)
-        {
-            File.Copy(file_path, persistent_data_path, true);
+            try
+            {
+                copyFile(mRealTargetPath, persistent_data_path, mRealTargetPath);
+                ShowNotification(new GUIContent("复制AB到本地成功!"));
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError(e.Message);
+            }
         }
         else
         {
-            if (File.Exists(persistent_data_path))
+            try
             {
-                File.Delete(persistent_data_path);
+                _deleteFile(persistent_data_path);
+                ShowNotification(new GUIContent("删除本地AB成功!"));
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError(e.Message);
             }
         }
     }
 
     //-------------------------------------------------------------------------
-    static void _checkPath()
+    void _deleteFile(string directory_path)
     {
-        string current_dir = System.Environment.CurrentDirectory;
-        mNotPackAssetPath = current_dir + "/Assets/" + mNotPackAsset;
-        string split_sign = "";
-#if UNITY_ANDROID
-        split_sign = @"\";
-#elif UNITY_IPHONE
-        split_sign= @"/";
-#endif
-        current_dir = current_dir.Substring(0, current_dir.LastIndexOf(split_sign));
-        if (PlayerPrefs.HasKey(mDataVersionKey))
+        if (Directory.Exists(directory_path))
         {
-            mDataVersion = PlayerPrefs.GetString(mDataVersionKey);
-
-            if (string.IsNullOrEmpty(mDataVersion))
+            string[] files = Directory.GetFiles(directory_path);
+            foreach (var i in files)
             {
-                mDataVersion = "1.00.000";
+                File.Delete(i);
             }
 
-            string data_version = (int.Parse(mDataVersion.Replace(".", "")) + 1).ToString();
-            data_version = data_version.Insert(1, ".").Insert(4, ".");
-            mDataVersion = data_version;
-        }
-        else
-        {
-            mDataVersion = "1.00.000";
-        }
+            string[] directorys = Directory.GetDirectories(directory_path);
 
-        mResourcesPath =
-#if UNITY_STANDALONE_WIN
-        current_dir + "/ClientDataSources/PC";
-#elif UNITY_ANDROID
-        current_dir + "/ClientDataSources/ANDROID";
-#elif UNITY_IPHONE
-        current_dir + "/ClientDataSources/IOS";
-#endif
+            foreach (var i in directorys)
+            {
+                _deleteFile(i);
+            }
 
-        mTargetPath =
-#if UNITY_STANDALONE_WIN
-        current_dir + "/ClientDataServerUse/PC";
-#elif UNITY_ANDROID
-        current_dir + "/ClientDataServerUse/ANDROID";
-#elif UNITY_IPHONE
-        current_dir + "/ClientDataServerUse/IOS";
-#endif
+            Directory.Delete(directory_path);
+        }
     }
 
     //-------------------------------------------------------------------------
     void _packAssetBundleCompress()
     {
-        Object[] selection = Selection.GetFiltered(typeof(Object), SelectionMode.DeepAssets);
-        string source_path_first = AssetDatabase.GetAssetPath(selection[0]);
-        string path_root = "";
-        if (File.Exists(source_path_first))
+        EditorUserBuildSettings.SwitchActiveBuildTarget(mCurrentBuildTarget);
+
+        _getCurrentTargetPath();
+        _checkPatchData();
+
+        _deleteFile(mTargetPath);
+
+        Caching.CleanCache();
+
+        _getAllFiles(mAssetBundleResourcesPath);
+
+        if (!Directory.Exists(mRealTargetPath))
         {
-            string directory_name = Path.GetDirectoryName(source_path_first);
-            if (directory_name.Contains("Assets"))
-            {
-                directory_name = directory_name.Replace("Assets", "");
-            }
-            directory_name = directory_name.Substring(0, directory_name.IndexOf('/'));
-            path_root = mResourcesPath + directory_name;
-            if (Directory.Exists(path_root))
-            {
-                string[] directorys = Directory.GetDirectories(path_root);
-                foreach (var i in directorys)
-                {
-                    Directory.Delete(i, true);
-                }
-            }
+            Directory.CreateDirectory(mRealTargetPath);
         }
 
-        foreach (var obj in selection)
+        foreach (var obj in mListAllABFile)
         {
-            string source_path = AssetDatabase.GetAssetPath(obj);
-            if (File.Exists(source_path))
+            if (File.Exists(obj))
             {
-                string directory_name = Path.GetDirectoryName(source_path);
-                if (directory_name.Contains("Assets"))
+                string path = Path.GetFullPath(obj);
+                path = path.Replace(mAssetPath, "");
+                path = mRealTargetPath + "\\" + path;
+                string obj_dir = path.Replace(Path.GetFileName(obj), "");
+                if (!Directory.Exists(obj_dir))
                 {
-                    directory_name = directory_name.Replace("Assets", "");
+                    Directory.CreateDirectory(obj_dir);
                 }
-                string path = mResourcesPath + directory_name;
-                if (!Directory.Exists(path))
+                var names = AssetDatabase.GetDependencies(obj);
+
+                AssetBundleBuild abb;
+                abb.assetBundleName = Path.GetFileNameWithoutExtension(obj) + ".ab";
+                abb.assetBundleVariant = "";
+                int asset_index = 0;
+                List<string> list_needbuildassetname = new List<string>();
+                list_needbuildassetname.Add(obj.Replace(mAssetPath, "Assets\\"));
+                foreach (var j in names)
                 {
-                    Directory.CreateDirectory(path);
+                    //Debug.Log("Asset: " + j);
+                    if (j.EndsWith(".cs") || j.EndsWith(".ttf")) continue;
+                    if (list_needbuildassetname.Contains(j))
+                    {
+                        continue;
+                    }
+                    list_needbuildassetname.Add(j);
+                }
+                abb.assetNames = new string[list_needbuildassetname.Count];
+
+                foreach (var i in list_needbuildassetname)
+                {
+                    abb.assetNames[asset_index++] = i;
                 }
 
-                path += "/" + obj.name + ".assetbundle";
+                AssetBundleBuild[] arr_abb = new AssetBundleBuild[1];
+                arr_abb[0] = abb;
 
-#if UNITY_STANDALONE_WIN
-                _buildAssetBundleCompressed(null, obj, path, BuildTarget.StandaloneWindows64, false);
-#elif UNITY_IPHONE
-                _buildAssetBundleCompressed(null, obj, path, BuildTarget.iPhone, false);
-#elif UNITY_ANDROID
-                _buildAssetBundleCompressed(null, obj, path, BuildTarget.Android, false);
-#endif
+                _buildAssetBundleCompressed(arr_abb, obj_dir, mCurrentBuildTarget, false);
+                //#if UNITY_STANDALONE_WIN
+                //                _buildAssetBundleCompressed(arr_abb, obj_dir, BuildTarget.StandaloneWindows64, false);
+                //#elif UNITY_IOS||UNITY_IPHONE
+                //                _buildAssetBundleCompressed(arr_abb, obj_dir, BuildTarget.iOS, false);
+                //#elif UNITY_ANDROID
+                //                _buildAssetBundleCompressed(arr_abb, obj_dir, BuildTarget.Android, false);
+                //#endif
             }
         }
 
         if (Directory.Exists(mNotPackAssetPath))
         {
-            _copyFile(mNotPackAssetPath);
+            copyFile(mNotPackAssetPath, mRealTargetPath, mAssetPath);
         }
 
         Debug.Log("裸资源复制完毕!");
+
+        _packResources(mRealTargetPath);
     }
 
     //-------------------------------------------------------------------------
-    static void _buildAssetBundleCompressed(Object[] selection, Object singele_obj, string path, BuildTarget target, bool build_all = true)
+    static void _buildAssetBundleCompressed(AssetBundleBuild[] arr_abb, string path, BuildTarget target, bool build_all = true)
     {
-        //if (build_all)
-        //{
-        //    BuildPipeline.BuildAssetBundle(Selection.activeObject, selection, path,
-        //      BuildAssetBundleOptions.CollectDependencies | BuildAssetBundleOptions.CompleteAssets, target);
-        //}
-        //else
-        //{
-        //    BuildPipeline.BuildAssetBundle(singele_obj, null, path, BuildAssetBundleOptions.CollectDependencies, target);
-        //}
+        if (build_all)
+        {
+            //BuildPipeline.BuildAssetBundle(Selection.activeObject, selection, path,
+            //  BuildAssetBundleOptions.CollectDependencies | BuildAssetBundleOptions.CompleteAssets, target);
+        }
+        else
+        {
+            BuildPipeline.BuildAssetBundles(path, arr_abb, BuildAssetBundleOptions.ForceRebuildAssetBundle, target);
+        }
 
-        //EbLog.Note("Build AssetBundle BuildTarget=" + target);
+        EbLog.Note("Build AssetBundle BuildTarget=" + target);
     }
 
     //-------------------------------------------------------------------------
-    void _copyFile(string path)
+    void _getAllFiles(string directory_path)
+    {
+        string[] ab_file = Directory.GetFiles(directory_path);
+        foreach (var i in ab_file)
+        {
+            string extension = Path.GetExtension(i);
+            //Debug.LogError(i + "   " + extension);
+            if (mDoNotPackFileExtention.Contains(extension))
+            {
+                continue;
+            }
+
+            mListAllABFile.Add(i);
+        }
+
+        string[] directorys = Directory.GetDirectories(directory_path);
+        foreach (var i in directorys)
+        {
+            _getAllFiles(i);
+        }
+    }
+
+    //-------------------------------------------------------------------------
+    public static void copyFile(string path, string target_rootpath, string need_replacepath)
     {
         string[] files = Directory.GetFiles(path);
         foreach (var i in files)
@@ -445,25 +530,275 @@ public class EditorGF : EditorWindow
                 continue;
             }
 
-            string current_dir = System.Environment.CurrentDirectory;
-            string asset_path = current_dir + "/Assets/";
             string file_name = Path.GetFileName(i);
             string file_directory = Path.GetDirectoryName(i);
-            string target_path = file_directory.Replace(asset_path, "");
-            target_path = target_path.Replace(@"\", "/");
+            string target_path = file_directory.Replace(need_replacepath, "");
             string file_path = i;
-            string target_p = mResourcesPath + "/" + target_path;
+            string target_p = target_rootpath + "\\" + target_path;
             if (!Directory.Exists(target_p))
             {
                 Directory.CreateDirectory(target_p);
             }
-            File.Copy(file_path, target_p + "/" + file_name, true);
+            File.Copy(file_path, target_p + "\\" + file_name, true);
         }
 
         string[] directorys = Directory.GetDirectories(path);
         foreach (var i in directorys)
         {
-            _copyFile(i);
+            copyFile(i, target_rootpath, need_replacepath);
         }
+    }
+
+    //-------------------------------------------------------------------------
+    static void _checkPatchData()
+    {
+        XmlDocument abpath_xml = new XmlDocument();
+        abpath_xml.Load(mPatchInfoPath);
+
+        XmlElement root = null;
+        root = abpath_xml.DocumentElement;
+
+        foreach (XmlElement i in root.ChildNodes)
+        {
+            if (i.Name.Equals("BundleData"))
+            {
+                mAndroidBundleVersion = i.GetAttribute("BDAndroid");
+                mIOSBundleVersion = i.GetAttribute("BDIOS");
+                mPCBundleVersion = i.GetAttribute("BDWindowsPC");
+                if (mCurrentBuildTarget == BuildTarget.iOS)
+                {
+                    mBundleVersion = mIOSBundleVersion;
+                }
+                else if (mCurrentBuildTarget == BuildTarget.Android)
+                {
+                    mBundleVersion = mAndroidBundleVersion;
+                }
+                else if (mCurrentBuildTarget == BuildTarget.StandaloneWindows)
+                {
+                    mBundleVersion = mPCBundleVersion;
+                }
+            }
+            else if (i.Name.Equals("DataData"))
+            {
+                mAndroidDataVersion = i.GetAttribute("DDAndroid");
+                mIOSDataVersion = i.GetAttribute("DDIOS");
+                mPCDataVersion = i.GetAttribute("DDWindowsPC");
+                if (mCurrentBuildTarget == BuildTarget.iOS)
+                {
+                    mDataVersion = mIOSDataVersion;
+                }
+                else if (mCurrentBuildTarget == BuildTarget.Android)
+                {
+                    mDataVersion = mAndroidDataVersion;
+                }
+                else if (mCurrentBuildTarget == BuildTarget.StandaloneWindows)
+                {
+                    mDataVersion = mPCDataVersion;
+                }
+            }
+        }
+
+        string bundle_version = mBundleVersion;
+        if (mCurrentBuildTarget == BuildTarget.Android)
+        {
+            bundle_version = bundle_version.Replace(".", "");
+            PlayerSettings.bundleIdentifier = mBundleVersion;
+        }
+        else if (mCurrentBuildTarget == BuildTarget.iOS)
+        {
+            PlayerSettings.bundleIdentifier = "com." + PlayerSettings.companyName + "." + PlayerSettings.productName;
+        }
+        PlayerSettings.bundleVersion = bundle_version;
+        mRealTargetPath = mTargetPath + "DataVersion_" + mDataVersion;
+    }
+
+    //-------------------------------------------------------------------------
+    public static void changeBundleData(string new_bundle, bool change_allplatform = false)
+    {
+        _checkPatchData();
+        string ab_pathinfo = mABTargetPath + "\\" + mPatchiInfoName;
+        string file = "";
+        using (StreamReader sr = new StreamReader(ab_pathinfo))
+        {
+            file = sr.ReadToEnd();
+            string replace_oldvalue = "";
+            string replace_newvalue = "";
+            if (change_allplatform)
+            {
+                replace_oldvalue = "BDIOS=\"" + mIOSBundleVersion + "\"";
+                replace_newvalue = "BDIOS=\"" + new_bundle + "\"";
+                file = file.Replace(replace_oldvalue, replace_newvalue);
+
+                replace_oldvalue = "BDAndroid=\"" + mAndroidBundleVersion + "\"";
+                replace_newvalue = "BDAndroid=\"" + new_bundle + "\"";
+                file = file.Replace(replace_oldvalue, replace_newvalue);
+
+                replace_oldvalue = "BDWindowsPC=\"" + mPCBundleVersion + "\"";
+                replace_newvalue = "BDWindowsPC=\"" + new_bundle + "\"";
+                file = file.Replace(replace_oldvalue, replace_newvalue);
+            }
+            else
+            {
+#if UNITY_IPHONE || UNITY_IOS
+            replace_oldvalue = "BDIOS=\"" + mBundleVersion + "\"";
+            replace_newvalue = "BDIOS=\"" + new_bundle + "\"";
+#elif UNITY_ANDROID
+            replace_oldvalue = "BDAndroid=\"" + mBundleVersion + "\"";
+            replace_newvalue = "BDAndroid=\"" + new_bundle + "\"";
+#elif UNITY_STANDALONE_WIN
+                replace_oldvalue = "BDWindowsPC=\"" + mDataVersion + "\"";
+                replace_newvalue = "BDWindowsPC=\"" + new_bundle + "\"";
+#endif
+                file = file.Replace(replace_oldvalue, replace_newvalue);
+            }
+        }
+
+        using (StreamWriter sw = new StreamWriter(ab_pathinfo))
+        {
+            sw.Write(file);
+        }
+
+        _checkPatchData();
+    }
+
+    //-------------------------------------------------------------------------
+    public static void changeDataData(string new_data, bool change_allplatform = false)
+    {
+        _checkPatchData();
+        string ab_pathinfo = mABTargetPath + "\\" + mPatchiInfoName;
+        string file = "";
+        using (StreamReader sr = new StreamReader(ab_pathinfo))
+        {
+            file = sr.ReadToEnd();
+            string replace_oldvalue = "";
+            string replace_newvalue = "";
+            if (change_allplatform)
+            {
+                replace_oldvalue = "DDIOS=\"" + mIOSDataVersion + "\"";
+                replace_newvalue = "DDIOS=\"" + new_data + "\"";
+                file = file.Replace(replace_oldvalue, replace_newvalue);
+
+                replace_oldvalue = "DDAndroid=\"" + mAndroidDataVersion + "\"";
+                replace_newvalue = "DDAndroid=\"" + new_data + "\"";
+                file = file.Replace(replace_oldvalue, replace_newvalue);
+
+                replace_oldvalue = "DDWindowsPC=\"" + mPCDataVersion + "\"";
+                replace_newvalue = "DDWindowsPC=\"" + new_data + "\"";
+                file = file.Replace(replace_oldvalue, replace_newvalue);
+            }
+            else
+            {
+#if UNITY_IPHONE || UNITY_IOS
+            replace_oldvalue = "DDIOS=\"" + mDataVersion + "\"";
+            replace_newvalue = "DDIOS=\"" + new_data + "\"";
+#elif UNITY_ANDROID
+            replace_oldvalue = "DDAndroid=\"" + mDataVersion + "\"";
+            replace_newvalue = "DDAndroid=\"" + new_data + "\"";
+#elif UNITY_STANDALONE_WIN
+                replace_oldvalue = "DDWindowsPC=\"" + mDataVersion + "\"";
+                replace_newvalue = "DDWindowsPC=\"" + new_data + "\"";
+#endif
+                file = file.Replace(replace_oldvalue, replace_newvalue);
+            }
+        }
+
+        using (StreamWriter sw = new StreamWriter(ab_pathinfo))
+        {
+            sw.Write(file);
+        }
+
+        _checkPatchData();
+    }
+
+    //-------------------------------------------------------------------------
+    void _changeBundleData(bool add)
+    {
+        int bundle = int.Parse(mBundleVersion.Replace(".", ""));
+        if (add)
+        {
+            bundle += 1;
+        }
+        else
+        {
+            bundle -= 1;
+        }
+        string bundle_version = bundle.ToString();
+        bundle_version = bundle_version.Insert(1, ".").Insert(4, ".");
+        changeBundleData(bundle_version);
+        //        string ab_pathinfo = mABTargetPath + "\\" + mPatchiInfoName;
+        //        string file = "";
+        //        using (StreamReader sr = new StreamReader(ab_pathinfo))
+        //        {
+        //            file = sr.ReadToEnd();
+
+        //            string replace_oldvalue = "";
+        //            string replace_newvalue = "";
+        //#if UNITY_IPHONE || UNITY_IOS
+        //            replace_oldvalue = "BDIOS=\"" + mBundleVersion + "\"";
+        //            replace_newvalue = "BDIOS=\"" + bundle_version + "\"";
+        //#elif UNITY_ANDROID
+        //            replace_oldvalue = "BDAndroid=\"" + mBundleVersion + "\"";
+        //            replace_newvalue = "BDAndroid=\"" + bundle_version + "\"";
+        //#endif
+        //            file = file.Replace(replace_oldvalue, replace_newvalue);
+        //        }
+
+        //        using (StreamWriter sw = new StreamWriter(ab_pathinfo))
+        //        {
+        //            sw.Write(file);
+        //        }
+
+        //        _checkPatchData();
+    }
+
+    //-------------------------------------------------------------------------
+    void _changeDataData(bool add)
+    {
+        int data = int.Parse(mDataVersion.Replace(".", ""));
+        if (add)
+        {
+            data += 1;
+        }
+        else
+        {
+            data -= 1;
+        }
+        string data_version = data.ToString();
+        data_version = data_version.Insert(1, ".").Insert(4, ".");
+        changeDataData(data_version);
+        //        string ab_pathinfo = mABTargetPath + "\\" + mPatchiInfoName;
+        //        string file = "";
+        //        using (StreamReader sr = new StreamReader(ab_pathinfo))
+        //        {
+        //            file = sr.ReadToEnd();
+        //            int data = int.Parse(mDataVersion.Replace(".", ""));
+        //            if (add)
+        //            {
+        //                data += 1;
+        //            }
+        //            else
+        //            {
+        //                data -= 1;
+        //            }
+        //            string data_version = data.ToString();
+        //            data_version = data_version.Insert(1, ".").Insert(4, ".");
+        //            string replace_oldvalue = "";
+        //            string replace_newvalue = "";
+        //#if UNITY_IPHONE || UNITY_IOS
+        //            replace_oldvalue = "DDIOS=\"" + mDataVersion + "\"";
+        //            replace_newvalue = "DDIOS=\"" + data_version + "\"";
+        //#elif UNITY_ANDROID
+        //            replace_oldvalue = "DDAndroid=\"" + mDataVersion + "\"";
+        //            replace_newvalue = "DDAndroid=\"" + data_version + "\"";
+        //#endif
+        //            file = file.Replace(replace_oldvalue, replace_newvalue);
+        //        }
+
+        //        using (StreamWriter sw = new StreamWriter(ab_pathinfo))
+        //        {
+        //            sw.Write(file);
+        //        }
+
+        //        _checkPatchData();
     }
 }
