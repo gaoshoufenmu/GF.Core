@@ -77,7 +77,7 @@ public class EditorGf : EditorWindow
 #if UNITY_IPHONE || UNITY_IOS
         mInitBuildTarget = BuildTarget.iOS;
 #elif UNITY_ANDROID
-            mInitBuildTarget = BuildTarget.Android;
+        mInitBuildTarget = BuildTarget.Android;
 #elif UNITY_STANDALONE_WIN
         mInitBuildTarget = BuildTarget.StandaloneWindows;
 #endif
@@ -354,7 +354,7 @@ public class EditorGf : EditorWindow
 
             string file_directory = Path.GetDirectoryName(i);
             string target_path = file_directory.Replace(mRealTargetPath, "");
-            target_path = target_path.Replace(@"\", "/");
+            //target_path = target_path.Replace(@"\", "/");
             string file_path = i;
             {
                 StringBuilder sb = new StringBuilder();
@@ -483,7 +483,7 @@ public class EditorGf : EditorWindow
                 abb.assetBundleVariant = "";
                 int asset_index = 0;
                 List<string> list_needbuildassetname = new List<string>();
-                list_needbuildassetname.Add(obj.Replace(mAssetPath, "Assets\\"));
+                //list_needbuildassetname.Add(obj.Replace(mAssetPath, "Assets\\"));
                 foreach (var j in names)
                 {
                     //Debug.Log("Asset: " + j);
@@ -517,7 +517,7 @@ public class EditorGf : EditorWindow
 
         if (Directory.Exists(mRowAssetPath))
         {
-            copyFile(mRowAssetPath, mRealTargetPath, mAssetPath);
+            copyFile(mRowAssetPath, mRealTargetPath, "Assets/");
         }
 
         Debug.Log("裸资源复制完毕!");
@@ -702,8 +702,8 @@ public class EditorGf : EditorWindow
             replace_oldvalue = "BDIOS=\"" + mBundleVersion + "\"";
             replace_newvalue = "BDIOS=\"" + new_bundle + "\"";
 #elif UNITY_ANDROID
-            replace_oldvalue = "BDAndroid=\"" + mBundleVersion + "\"";
-            replace_newvalue = "BDAndroid=\"" + new_bundle + "\"";
+                replace_oldvalue = "BDAndroid=\"" + mBundleVersion + "\"";
+                replace_newvalue = "BDAndroid=\"" + new_bundle + "\"";
 #elif UNITY_STANDALONE_WIN
                 replace_oldvalue = "BDWindowsPC=\"" + mDataVersion + "\"";
                 replace_newvalue = "BDWindowsPC=\"" + new_bundle + "\"";
@@ -751,8 +751,8 @@ public class EditorGf : EditorWindow
             replace_oldvalue = "DDIOS=\"" + mDataVersion + "\"";
             replace_newvalue = "DDIOS=\"" + new_data + "\"";
 #elif UNITY_ANDROID
-            replace_oldvalue = "DDAndroid=\"" + mDataVersion + "\"";
-            replace_newvalue = "DDAndroid=\"" + new_data + "\"";
+                replace_oldvalue = "DDAndroid=\"" + mDataVersion + "\"";
+                replace_newvalue = "DDAndroid=\"" + new_data + "\"";
 #elif UNITY_STANDALONE_WIN
                 replace_oldvalue = "DDWindowsPC=\"" + mDataVersion + "\"";
                 replace_newvalue = "DDWindowsPC=\"" + new_data + "\"";
