@@ -11,29 +11,14 @@ public class EditorGfInitProjectInfo : EditorWindow
     string mProductName;
     string mBundleVersion;
     string mDataVersion;
+    string mPatchInfoTargetDirectory;
+    string mPatchInfoResouceDirectory;
 
     //-------------------------------------------------------------------------
-    public void copyPatchInfo(string path_infotargetdirectory, string patch_inforesoucedirectory)
+    public void copyPatchInfo(string patch_infotargetdirectory, string patch_inforesoucedirectory)
     {
-        try
-        {
-            Directory.CreateDirectory(path_infotargetdirectory);
-        }
-        catch (Exception e)
-        {
-            _deleteDirectory(path_infotargetdirectory);
-            Debug.LogError("EditorGfInitProjectInfo::CreateDirectory::Error::" + e.Message);
-        }
-
-        try
-        {
-            EditorGf.copyFile(patch_inforesoucedirectory, path_infotargetdirectory, patch_inforesoucedirectory);
-        }
-        catch (Exception e)
-        {
-            _deleteDirectory(path_infotargetdirectory);
-            Debug.LogError("EditorGfInitProjectInfo::copyFile::Error::" + e.Message);
-        }
+        mPatchInfoTargetDirectory = patch_infotargetdirectory;
+        mPatchInfoResouceDirectory = patch_inforesoucedirectory;
     }
 
     //-------------------------------------------------------------------------
@@ -79,6 +64,26 @@ public class EditorGfInitProjectInfo : EditorWindow
     //-------------------------------------------------------------------------
     void _initProject()
     {
+        try
+        {
+            Directory.CreateDirectory(mPatchInfoTargetDirectory);
+        }
+        catch (Exception e)
+        {
+            _deleteDirectory(mPatchInfoTargetDirectory);
+            Debug.LogError("EditorGfInitProjectInfo::CreateDirectory::Error::" + e.Message);
+        }
+
+        try
+        {
+            EditorGf.copyFile(mPatchInfoResouceDirectory, mPatchInfoTargetDirectory, mPatchInfoResouceDirectory);
+        }
+        catch (Exception e)
+        {
+            _deleteDirectory(mPatchInfoTargetDirectory);
+            Debug.LogError("EditorGfInitProjectInfo::copyFile::Error::" + e.Message);
+        }
+
         PlayerSettings.companyName = mComponyName;
         PlayerSettings.productName = mProductName;
         EditorGf.changeBundleData(mBundleVersion, true);

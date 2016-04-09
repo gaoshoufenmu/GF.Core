@@ -20,7 +20,7 @@ public class EditorGf : EditorWindow
     static string mPCDataVersion;
     static string mTargetPath;
     static string mAssetBundleResourcesPath;
-    static string mNotPackAssetPath;
+    static string mRowAssetPath;
     static string mRealTargetPath;
     static string mABTargetPath;
     static string mAssetPath;
@@ -31,8 +31,8 @@ public class EditorGf : EditorWindow
     static string mPatchInfoPath;
     static List<string> mDoNotPackFileExtention = new List<string> { ".meta", ".DS_Store" };
 
-    const string mNotPackAsset = "NotPackAsset";
-    const string mAssetBundleDirectory = "NeedPackAsset";
+    //const string mNotPackAsset = "NotPackAsset";
+    //const string mAssetBundleDirectory = "NeedPackAsset";
     const string mAssetBundleTargetDirectory = "ABPatch";
     const string mABPathInfoResourceDirectory = "GF.Unity\\AutoPatcherInfo";
     const string mPatchiInfoName = "ABPatchInfo.xml";
@@ -89,8 +89,6 @@ public class EditorGf : EditorWindow
     {
         string current_dir = System.Environment.CurrentDirectory;
         mAssetPath = current_dir + "\\Assets\\";
-        mAssetBundleResourcesPath = mAssetPath + mAssetBundleDirectory;
-        mNotPackAssetPath = mAssetPath + mNotPackAsset;
 
         mABTargetPath = Path.Combine(current_dir, mAssetBundleTargetDirectory);
         //mABTargetPath = current_dir + mAssetBundleTargetDirectory;
@@ -119,7 +117,7 @@ public class EditorGf : EditorWindow
     void OnGUI()
     {
         EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField("程序包版本号:", mBundleVersion);
+        EditorGUILayout.LabelField("当前平台程序包版本号:", mBundleVersion);
         bool add_bundleversion = GUILayout.Button("程序包版本号加一");
         if (add_bundleversion)
         {
@@ -133,7 +131,7 @@ public class EditorGf : EditorWindow
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField("资源版本号:", mDataVersion);
+        EditorGUILayout.LabelField("当前平台资源版本号:", mDataVersion);
         bool add_dataeversion = GUILayout.Button("资源版本号加一");
         if (add_dataeversion)
         {
@@ -146,7 +144,40 @@ public class EditorGf : EditorWindow
         }
         EditorGUILayout.EndHorizontal();
 
-        EditorGUILayout.LabelField("资源所在路径:", mAssetBundleResourcesPath);
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("AB资源所在路径:");
+        Rect ab_resourcesrect = EditorGUILayout.GetControlRect(GUILayout.Width(500));
+        mAssetBundleResourcesPath = EditorGUI.TextField(ab_resourcesrect, mAssetBundleResourcesPath);
+        if ((Event.current.type == EventType.DragUpdated ||
+          Event.current.type == EventType.DragExited) &&
+          ab_resourcesrect.Contains(Event.current.mousePosition))
+        {
+            string path = DragAndDrop.paths[0];
+            if (!string.IsNullOrEmpty(path))
+            {
+                DragAndDrop.AcceptDrag();
+                mAssetBundleResourcesPath = path;
+            }
+        }
+        EditorGUILayout.EndHorizontal();
+
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("裸资源所在路径:");
+        Rect ab_rowrect = EditorGUILayout.GetControlRect(GUILayout.Width(500));
+        mRowAssetPath = EditorGUI.TextField(ab_rowrect, mRowAssetPath);
+        if ((Event.current.type == EventType.DragUpdated ||
+          Event.current.type == EventType.DragExited) &&
+          ab_rowrect.Contains(Event.current.mousePosition))
+        {
+            string path = DragAndDrop.paths[0];
+            if (!string.IsNullOrEmpty(path))
+            {
+                DragAndDrop.AcceptDrag();
+                mRowAssetPath = path;
+            }
+        }
+        EditorGUILayout.EndHorizontal();
+
         EditorGUILayout.LabelField("目标路径:", mTargetPath);
 
         EditorGUILayout.BeginHorizontal();
@@ -171,24 +202,24 @@ public class EditorGf : EditorWindow
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.BeginHorizontal();
-        bool copy_asset = GUILayout.Button("复制AB到本地", GUILayout.Width(200));
+        bool copy_asset = GUILayout.Button("复制AB资源到persistentPath", GUILayout.Width(200));
         if (copy_asset)
         {
             _copyOrDeleteToClient(true);
         }
-        bool delete_asset = GUILayout.Button("删除本地AB", GUILayout.Width(200));
+        bool delete_asset = GUILayout.Button("删除persistentPath中的AB资源", GUILayout.Width(200));
         if (delete_asset)
         {
             _copyOrDeleteToClient(false);
         }
         EditorGUILayout.EndHorizontal();
 
-        bool check_path = GUILayout.Button("重设路径", GUILayout.Width(200));
-        if (check_path)
-        {
-            _checkPath();
-            _checkPatchData();
-        }
+        //bool check_path = GUILayout.Button("重设路径", GUILayout.Width(200));
+        //if (check_path)
+        //{
+        //    _checkPath();
+        //    _checkPatchData();
+        //}
 
         bool click_build_asset = GUILayout.Button("打AssetBundle包(压缩)", GUILayout.Width(200));
         if (click_build_asset)
@@ -196,6 +227,24 @@ public class EditorGf : EditorWindow
             _startBuild();
         }
     }
+
+    ////-------------------------------------------------------------------------
+    //string _checkDragText(Rect rect)
+    //{
+    //    string path = "";
+    //    if ((Event.current.type == EventType.DragUpdated ||
+    //        Event.current.type == EventType.DragExited) &&
+    //        rect.Contains(Event.current.mousePosition))
+    //    {
+    //        path = DragAndDrop.paths[0];
+    //        if (!string.IsNullOrEmpty(path))
+    //        {
+    //            DragAndDrop.AcceptDrag();
+    //        }
+    //    }
+
+    //    return path;
+    //}
 
     //-------------------------------------------------------------------------
     void _checkIfNeePackPlatform(bool is_currentneed, BuildTarget build_target)
@@ -254,6 +303,8 @@ public class EditorGf : EditorWindow
             ShowNotification(new GUIContent("打包完成!"));
 
             EditorUserBuildSettings.SwitchActiveBuildTarget(mInitBuildTarget);
+            changeAssetBundleResourcePath();
+            changeRowResourcePath();
         }
     }
 
@@ -464,9 +515,9 @@ public class EditorGf : EditorWindow
             }
         }
 
-        if (Directory.Exists(mNotPackAssetPath))
+        if (Directory.Exists(mRowAssetPath))
         {
-            copyFile(mNotPackAssetPath, mRealTargetPath, mAssetPath);
+            copyFile(mRowAssetPath, mRealTargetPath, mAssetPath);
         }
 
         Debug.Log("裸资源复制完毕!");
@@ -596,6 +647,14 @@ public class EditorGf : EditorWindow
                     mDataVersion = mPCDataVersion;
                 }
             }
+            else if (i.Name.Equals("AssetBundleResourcePath"))
+            {
+                mAssetBundleResourcesPath = i.GetAttribute("ABValue");//mAssetPath + mAssetBundleDirectory;
+            }
+            else if (i.Name.Equals("RawResourcePath"))
+            {
+                mRowAssetPath = i.GetAttribute("RawValue");//mAssetPath + mNotPackAsset;
+            }
         }
 
         string bundle_version = mBundleVersion;
@@ -711,6 +770,64 @@ public class EditorGf : EditorWindow
     }
 
     //-------------------------------------------------------------------------
+    public static void changeAssetBundleResourcePath()
+    {
+        string file = "";
+        using (StreamReader sr = new StreamReader(mPatchInfoPath))
+        {
+            file = sr.ReadToEnd();
+            string ab_value = "ABValue=\"";
+            int replace_index = file.IndexOf(ab_value) + ab_value.Length;
+            string left_file = file.Substring(replace_index);
+            string replace_oldvalue = left_file.Substring(0, left_file.IndexOf("\""));
+            string replace_newvalue = mAssetBundleResourcesPath;
+
+            if (string.IsNullOrEmpty(replace_oldvalue))
+            {
+                file = file.Insert(replace_index, replace_newvalue);
+            }
+            else
+            {
+                file = file.Replace(replace_oldvalue, replace_newvalue);
+            }
+        }
+
+        using (StreamWriter sw = new StreamWriter(mPatchInfoPath))
+        {
+            sw.Write(file);
+        }
+    }
+
+    //-------------------------------------------------------------------------
+    public static void changeRowResourcePath()
+    {
+        string file = "";
+        using (StreamReader sr = new StreamReader(mPatchInfoPath))
+        {
+            file = sr.ReadToEnd();
+            string ab_value = "RawValue=\"";
+            int replace_index = file.IndexOf(ab_value) + ab_value.Length;
+            string left_file = file.Substring(replace_index);
+            string replace_oldvalue = left_file.Substring(0, left_file.IndexOf("\""));
+            string replace_newvalue = mRowAssetPath;
+
+            if (string.IsNullOrEmpty(replace_oldvalue))
+            {
+                file = file.Insert(replace_index, replace_newvalue);
+            }
+            else
+            {
+                file = file.Replace(replace_oldvalue, replace_newvalue);
+            }
+        }
+
+        using (StreamWriter sw = new StreamWriter(mPatchInfoPath))
+        {
+            sw.Write(file);
+        }
+    }
+
+    //-------------------------------------------------------------------------
     void _changeBundleData(bool add)
     {
         int bundle = int.Parse(mBundleVersion.Replace(".", ""));
@@ -725,30 +842,6 @@ public class EditorGf : EditorWindow
         string bundle_version = bundle.ToString();
         bundle_version = bundle_version.Insert(1, ".").Insert(4, ".");
         changeBundleData(bundle_version);
-        //        string ab_pathinfo = mABTargetPath + "\\" + mPatchiInfoName;
-        //        string file = "";
-        //        using (StreamReader sr = new StreamReader(ab_pathinfo))
-        //        {
-        //            file = sr.ReadToEnd();
-
-        //            string replace_oldvalue = "";
-        //            string replace_newvalue = "";
-        //#if UNITY_IPHONE || UNITY_IOS
-        //            replace_oldvalue = "BDIOS=\"" + mBundleVersion + "\"";
-        //            replace_newvalue = "BDIOS=\"" + bundle_version + "\"";
-        //#elif UNITY_ANDROID
-        //            replace_oldvalue = "BDAndroid=\"" + mBundleVersion + "\"";
-        //            replace_newvalue = "BDAndroid=\"" + bundle_version + "\"";
-        //#endif
-        //            file = file.Replace(replace_oldvalue, replace_newvalue);
-        //        }
-
-        //        using (StreamWriter sw = new StreamWriter(ab_pathinfo))
-        //        {
-        //            sw.Write(file);
-        //        }
-
-        //        _checkPatchData();
     }
 
     //-------------------------------------------------------------------------
@@ -766,39 +859,5 @@ public class EditorGf : EditorWindow
         string data_version = data.ToString();
         data_version = data_version.Insert(1, ".").Insert(4, ".");
         changeDataData(data_version);
-        //        string ab_pathinfo = mABTargetPath + "\\" + mPatchiInfoName;
-        //        string file = "";
-        //        using (StreamReader sr = new StreamReader(ab_pathinfo))
-        //        {
-        //            file = sr.ReadToEnd();
-        //            int data = int.Parse(mDataVersion.Replace(".", ""));
-        //            if (add)
-        //            {
-        //                data += 1;
-        //            }
-        //            else
-        //            {
-        //                data -= 1;
-        //            }
-        //            string data_version = data.ToString();
-        //            data_version = data_version.Insert(1, ".").Insert(4, ".");
-        //            string replace_oldvalue = "";
-        //            string replace_newvalue = "";
-        //#if UNITY_IPHONE || UNITY_IOS
-        //            replace_oldvalue = "DDIOS=\"" + mDataVersion + "\"";
-        //            replace_newvalue = "DDIOS=\"" + data_version + "\"";
-        //#elif UNITY_ANDROID
-        //            replace_oldvalue = "DDAndroid=\"" + mDataVersion + "\"";
-        //            replace_newvalue = "DDAndroid=\"" + data_version + "\"";
-        //#endif
-        //            file = file.Replace(replace_oldvalue, replace_newvalue);
-        //        }
-
-        //        using (StreamWriter sw = new StreamWriter(ab_pathinfo))
-        //        {
-        //            sw.Write(file);
-        //        }
-
-        //        _checkPatchData();
     }
 }
