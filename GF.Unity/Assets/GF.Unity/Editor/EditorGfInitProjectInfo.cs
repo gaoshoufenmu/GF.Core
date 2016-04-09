@@ -17,6 +17,7 @@ public class EditorGfInitProjectInfo : EditorWindow
     //-------------------------------------------------------------------------
     public void copyPatchInfo(string patch_infotargetdirectory, string patch_inforesoucedirectory)
     {
+
         mPatchInfoTargetDirectory = patch_infotargetdirectory;
         mPatchInfoResouceDirectory = patch_inforesoucedirectory;
     }
