@@ -18,10 +18,10 @@ public class EditorGf : EditorWindow
     static string mIOSDataVersion;
     static string mPCBundleVersion;
     static string mPCDataVersion;
-    static string mTargetPath;
+    static string mTargetPlatformRootPath;
     static string mAssetBundleResourcesPath;
     static string mRowAssetPath;
-    static string mRealTargetPath;
+    static string mTargetPath;
     static string mABTargetPath;
     static string mAssetPath;
     static BuildTarget mInitBuildTarget;
@@ -65,6 +65,7 @@ public class EditorGf : EditorWindow
         }
 
         EditorGf dragon_pack = (EditorGf)EditorWindow.GetWindow(typeof(EditorGf));
+        _getCurrentTargetPath();
         _checkPatchData();
         mMD5 = new MD5CryptoServiceProvider();
         mListNeedBuildPlatform = new List<BuildTarget>();
@@ -97,19 +98,19 @@ public class EditorGf : EditorWindow
     }
 
     //-------------------------------------------------------------------------
-    void _getCurrentTargetPath()
+    static void _getCurrentTargetPath()
     {
         if (mCurrentBuildTarget == BuildTarget.Android)
         {
-            mTargetPath = mABTargetPath + "\\ANDROID\\";
+            mTargetPlatformRootPath = mABTargetPath + "\\ANDROID\\";
         }
         else if (mCurrentBuildTarget == BuildTarget.iOS)
         {
-            mTargetPath = mABTargetPath + "\\IOS\\";
+            mTargetPlatformRootPath = mABTargetPath + "\\IOS\\";
         }
         else if (mCurrentBuildTarget == BuildTarget.StandaloneWindows)
         {
-            mTargetPath = mABTargetPath + "\\PC\\";
+            mTargetPlatformRootPath = mABTargetPath + "\\PC\\";
         }
     }
 
@@ -178,7 +179,7 @@ public class EditorGf : EditorWindow
         }
         EditorGUILayout.EndHorizontal();
 
-        EditorGUILayout.LabelField("目标路径:", mTargetPath);
+        EditorGUILayout.LabelField("目标路径:", mTargetPlatformRootPath);
 
         EditorGUILayout.BeginHorizontal();
         mBuidAndroid = EditorGUILayout.Toggle("是否打AndroidAB", mBuidAndroid);
@@ -353,7 +354,7 @@ public class EditorGf : EditorWindow
             }
 
             string file_directory = Path.GetDirectoryName(i);
-            string target_path = file_directory.Replace(mRealTargetPath, "");
+            string target_path = file_directory.Replace(mTargetPath, "");
             //target_path = target_path.Replace(@"\", "/");
             string file_path = i;
             {
@@ -387,7 +388,7 @@ public class EditorGf : EditorWindow
 #if UNITY_STANDALONE_WIN && UNITY_EDITOR
         Application.persistentDataPath + "\\PC\\";
 #elif UNITY_ANDROID && UNITY_EDITOR
-        Application.persistentDataPath + "\\ANDROID\\";
+ Application.persistentDataPath + "\\ANDROID\\";
 #elif UNITY_IPHONE && UNITY_EDITOR
         Application.persistentDataPath + "\\IOS\\";
 #endif
@@ -401,7 +402,7 @@ public class EditorGf : EditorWindow
 
             try
             {
-                copyFile(mRealTargetPath, persistent_data_path, mRealTargetPath);
+                copyFile(mTargetPath, persistent_data_path, mTargetPath);
                 ShowNotification(new GUIContent("复制AB到本地成功!"));
             }
             catch (System.Exception e)
@@ -453,15 +454,15 @@ public class EditorGf : EditorWindow
         _getCurrentTargetPath();
         _checkPatchData();
 
-        _deleteFile(mTargetPath);
+        _deleteFile(mTargetPlatformRootPath);
 
         Caching.CleanCache();
 
         _getAllFiles(mAssetBundleResourcesPath);
 
-        if (!Directory.Exists(mRealTargetPath))
+        if (!Directory.Exists(mTargetPath))
         {
-            Directory.CreateDirectory(mRealTargetPath);
+            Directory.CreateDirectory(mTargetPath);
         }
 
         foreach (var obj in mListAllABFile)
@@ -470,7 +471,7 @@ public class EditorGf : EditorWindow
             {
                 string path = Path.GetFullPath(obj);
                 path = path.Replace(mAssetPath, "");
-                path = mRealTargetPath + "\\" + path;
+                path = mTargetPath + "\\" + path;
                 string obj_dir = path.Replace(Path.GetFileName(obj), "");
                 if (!Directory.Exists(obj_dir))
                 {
@@ -517,12 +518,12 @@ public class EditorGf : EditorWindow
 
         if (Directory.Exists(mRowAssetPath))
         {
-            copyFile(mRowAssetPath, mRealTargetPath, "Assets/");
+            copyFile(mRowAssetPath, mTargetPath, "Assets/");
         }
 
         Debug.Log("裸资源复制完毕!");
 
-        _packResources(mRealTargetPath);
+        _packResources(mTargetPath);
     }
 
     //-------------------------------------------------------------------------
@@ -668,7 +669,7 @@ public class EditorGf : EditorWindow
             PlayerSettings.bundleIdentifier = "com." + PlayerSettings.companyName + "." + PlayerSettings.productName;
         }
         PlayerSettings.bundleVersion = bundle_version;
-        mRealTargetPath = mTargetPath + "DataVersion_" + mDataVersion;
+        mTargetPath = mTargetPlatformRootPath + "DataVersion_" + mDataVersion;
     }
 
     //-------------------------------------------------------------------------
