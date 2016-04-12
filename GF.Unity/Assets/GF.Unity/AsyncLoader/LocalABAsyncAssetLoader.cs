@@ -19,7 +19,8 @@ public class LocalABAsyncAssetLoader : IAsyncAssetLoader
 
         if (mAssetBundleCreateRequest == null)
         {
-            is_done = true;
+            is_done = false;
+            destoryAssetLoad();
         }
         else
         {
@@ -121,7 +122,7 @@ public class LocalABAsyncAssetLoader : IAsyncAssetLoader
     {
         AsyncAssetLoaderMgr.Instant.destroyAsyncAssetLoader(AssetPath);
 
-        if (mAssetBundleCreateRequest.assetBundle != null)
+        if (mAssetBundleCreateRequest != null && mAssetBundleCreateRequest.assetBundle != null)
         {
             mAssetBundleCreateRequest.assetBundle.Unload(false);
         }

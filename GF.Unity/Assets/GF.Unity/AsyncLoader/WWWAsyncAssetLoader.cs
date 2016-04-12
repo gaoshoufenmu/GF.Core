@@ -18,7 +18,8 @@ public class WWWAsyncAssetLoader : IAsyncAssetLoader
         bool is_done = false;
         if (mAsyncAssetWWW == null)
         {
-            is_done = true;
+            is_done = false;
+            destoryAssetLoad();
         }
         else
         {
