@@ -401,7 +401,7 @@ public class EditorGf : EditorWindow
             }
 
             try
-            {
+            {                
                 copyFile(mTargetPath, persistent_data_path, mTargetPath);
                 ShowNotification(new GUIContent("复制AB到本地成功!"));
             }
