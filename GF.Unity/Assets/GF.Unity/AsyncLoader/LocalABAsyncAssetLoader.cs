@@ -9,7 +9,7 @@ public class LocalABAsyncAssetLoader : IAsyncAssetLoader
     //-------------------------------------------------------------------------
     public LocalABAsyncAssetLoader() : base()
     {
-        MapRequestLoadAssetInfo = new Dictionary<UnityEngine.Object, RequestLoadAssetInfo>();
+        MapRequestLoadAssetInfo = new Dictionary<AsyncAssetLoadGroup, List<RequestLoadAssetInfo>>();
     }
 
     //-------------------------------------------------------------------------
@@ -57,22 +57,22 @@ public class LocalABAsyncAssetLoader : IAsyncAssetLoader
         return load_error;
     }
 
-    //-------------------------------------------------------------------------
-    public override void cancelAssetLoad(UnityEngine.Object canel_object)
-    {
-        if (MapRequestLoadAssetInfo.ContainsKey(canel_object))
-        {
-            MapRequestLoadAssetInfo.Remove(canel_object);
-        }
+    ////-------------------------------------------------------------------------
+    //public override void cancelAssetLoad(UnityEngine.Object canel_object)
+    //{
+    //    //if (MapRequestLoadAssetInfo.ContainsKey(canel_object))
+    //    //{
+    //    //    MapRequestLoadAssetInfo.Remove(canel_object);
+    //    //}
 
-        if (MapRequestLoadAssetInfo.Count == 0 && mAssetBundleCreateRequest != null)
-        {
-            destoryAssetLoad();
-        }
-    }
+    //    //if (MapRequestLoadAssetInfo.Count == 0 && mAssetBundleCreateRequest != null)
+    //    //{
+    //    //    destoryAssetLoad();
+    //    //}
+    //}
 
     //-------------------------------------------------------------------------
-    public override void createAssetLoad(string asset_path, string asset_name, UnityEngine.Object need_assetobj, Action<UnityEngine.Object> loaded_action)
+    public override void createAssetLoad(string asset_path, string asset_name, AsyncAssetLoadGroup async_assetloadgroup, Action<UnityEngine.Object> loaded_action)
     {
         AssetPath = asset_path;
 
@@ -80,7 +80,18 @@ public class LocalABAsyncAssetLoader : IAsyncAssetLoader
         request_loadassetinfo.AssetName = asset_name;
         //request_loadassetinfo.IsCancel = false;
         request_loadassetinfo.LoadedAction = loaded_action;
-        MapRequestLoadAssetInfo[need_assetobj] = request_loadassetinfo;
+
+        List<RequestLoadAssetInfo> list_requestloadasssetinfo = null;
+        MapRequestLoadAssetInfo.TryGetValue(async_assetloadgroup, out list_requestloadasssetinfo);
+
+        if (list_requestloadasssetinfo == null)
+        {
+            list_requestloadasssetinfo = new List<RequestLoadAssetInfo>();
+        }
+
+        list_requestloadasssetinfo.Add(request_loadassetinfo);
+
+        MapRequestLoadAssetInfo[async_assetloadgroup] = list_requestloadasssetinfo;
 
         if (mAssetBundleCreateRequest == null)
         {
@@ -101,14 +112,22 @@ public class LocalABAsyncAssetLoader : IAsyncAssetLoader
 
         foreach (var i in MapRequestLoadAssetInfo)
         {
-            UnityEngine.Object load_asset = ab.LoadAsset(i.Value.AssetName);
-            if (must_copyasset)
+            if (i.Key.IsCancel)
             {
-                i.Value.LoadedAction(GameObject.Instantiate(load_asset));
+                continue;
             }
-            else
+
+            foreach (var asset_loadrequest in i.Value)
             {
-                i.Value.LoadedAction(load_asset);
+                UnityEngine.Object load_asset = ab.LoadAsset(asset_loadrequest.AssetName);
+                if (must_copyasset)
+                {
+                    asset_loadrequest.LoadedAction(GameObject.Instantiate(load_asset));
+                }
+                else
+                {
+                    asset_loadrequest.LoadedAction(load_asset);
+                }
             }
         }
 

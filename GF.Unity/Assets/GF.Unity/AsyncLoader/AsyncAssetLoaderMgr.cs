@@ -49,9 +49,14 @@ public class AsyncAssetLoaderMgr
     }
 
     //-------------------------------------------------------------------------
-    public void createAsynAssetLoader(_eAsyncAssetLoadType async_assetloadtype, string asset_path,
-        string asset_name, UnityEngine.Object need_assetobj, Action<UnityEngine.Object> loaded_action)
+    public AsyncAssetLoadGroup createAsynAssetLoader(_eAsyncAssetLoadType async_assetloadtype, string asset_path,
+        string asset_name, Action<UnityEngine.Object> loaded_action, AsyncAssetLoadGroup async_assetloadgroup = null)
     {
+        if (async_assetloadgroup == null)
+        {
+            async_assetloadgroup = new AsyncAssetLoadGroup();
+        }
+
         IAsyncAssetLoader asynce_assetloader = null;
         mMapIAsyncAssetLoader.TryGetValue(asset_path, out asynce_assetloader);
         if (asynce_assetloader == null)
@@ -69,19 +74,21 @@ public class AsyncAssetLoaderMgr
             }
         }
 
-        asynce_assetloader.createAssetLoad(asset_path, asset_name, need_assetobj, loaded_action);
+        asynce_assetloader.createAssetLoad(asset_path, asset_name, async_assetloadgroup, loaded_action);
 
         mMapIAsyncAssetLoader[asset_path] = asynce_assetloader;
+
+        return async_assetloadgroup;
     }
 
-    //-------------------------------------------------------------------------
-    public void cancelAsyncAssetLoader(string asset_path, UnityEngine.Object canel_object)
-    {
-        if (mMapIAsyncAssetLoader.ContainsKey(asset_path))
-        {
-            mMapIAsyncAssetLoader[asset_path].cancelAssetLoad(canel_object);
-        }
-    }
+    ////-------------------------------------------------------------------------
+    //public void cancelAsyncAssetLoader(string asset_path, UnityEngine.Object canel_object)
+    //{
+    //    if (mMapIAsyncAssetLoader.ContainsKey(asset_path))
+    //    {
+    //        mMapIAsyncAssetLoader[asset_path].cancelAssetLoad(canel_object);
+    //    }
+    //}
 
     //-------------------------------------------------------------------------
     public void destroyAsyncAssetLoader(string asset_path)

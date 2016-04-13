@@ -7,16 +7,16 @@ public abstract class IAsyncAssetLoader
 {
     //-------------------------------------------------------------------------    
     public string AssetPath { get; set; }
-    public Dictionary<UnityEngine.Object, RequestLoadAssetInfo> MapRequestLoadAssetInfo { get; set; }
+    public Dictionary<AsyncAssetLoadGroup, List<RequestLoadAssetInfo>> MapRequestLoadAssetInfo { get; set; }
 
     //-------------------------------------------------------------------------
     public IAsyncAssetLoader() { }
 
     //-------------------------------------------------------------------------
-    public abstract void createAssetLoad(string asset_path, string asset_name, UnityEngine.Object need_assetobj, Action<UnityEngine.Object> loaded_action);
+    public abstract void createAssetLoad(string asset_path, string asset_name, AsyncAssetLoadGroup async_assetloadgroup, Action<UnityEngine.Object> loaded_action);
 
-    //-------------------------------------------------------------------------
-    public abstract void cancelAssetLoad(UnityEngine.Object canel_object);
+    ////-------------------------------------------------------------------------
+    //public abstract void cancelAssetLoad(UnityEngine.Object canel_object);
 
     //-------------------------------------------------------------------------
     public abstract void checkAssetLoadDone();
