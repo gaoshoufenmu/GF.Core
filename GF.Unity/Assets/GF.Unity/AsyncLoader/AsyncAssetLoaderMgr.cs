@@ -4,7 +4,6 @@ using System.Collections.Generic;
 public class AsyncAssetLoaderMgr
 {
     //-------------------------------------------------------------------------
-    static AsyncAssetLoaderMgr mAsyncAssetLoaderMgr;
     Dictionary<string, IAsyncAssetLoader> mMapIAsyncAssetLoader;
     Dictionary<string, IAsyncAssetLoader> mMapNeedRemoveAssetLoader;
 
@@ -16,17 +15,9 @@ public class AsyncAssetLoaderMgr
     }
 
     //-------------------------------------------------------------------------
-    public static AsyncAssetLoaderMgr Instant
+    public AsyncAssetLoadGroup createAsyncAssetLoadGroup()
     {
-        get
-        {
-            if (mAsyncAssetLoaderMgr == null)
-            {
-                mAsyncAssetLoaderMgr = new AsyncAssetLoaderMgr();
-            }
-
-            return mAsyncAssetLoaderMgr;
-        }
+        return new AsyncAssetLoadGroup(this);
     }
 
     //-------------------------------------------------------------------------
@@ -49,14 +40,19 @@ public class AsyncAssetLoaderMgr
     }
 
     //-------------------------------------------------------------------------
-    public AsyncAssetLoadGroup createAsynAssetLoader(_eAsyncAssetLoadType async_assetloadtype, string asset_path,
-        string asset_name, Action<UnityEngine.Object> loaded_action, AsyncAssetLoadGroup async_assetloadgroup = null)
+    public void _destroyAsyncAssetLoader(string asset_path)
     {
-        if (async_assetloadgroup == null)
+        if (mMapIAsyncAssetLoader.ContainsKey(asset_path))
         {
-            async_assetloadgroup = new AsyncAssetLoadGroup();
+            mMapNeedRemoveAssetLoader[asset_path] = mMapIAsyncAssetLoader[asset_path];
         }
+    }
 
+    //-------------------------------------------------------------------------
+    public void _asyncLoadAsset(_eAsyncAssetLoadType async_assetloadtype,
+        string asset_path, string asset_name,
+        Action<UnityEngine.Object> loaded_action, AsyncAssetLoadGroup group)
+    {
         IAsyncAssetLoader asynce_assetloader = null;
         mMapIAsyncAssetLoader.TryGetValue(asset_path, out asynce_assetloader);
         if (asynce_assetloader == null)
@@ -64,40 +60,19 @@ public class AsyncAssetLoaderMgr
             switch (async_assetloadtype)
             {
                 case _eAsyncAssetLoadType.WWW:
-                    asynce_assetloader = new WWWAsyncAssetLoader();
+                    asynce_assetloader = new WWWAsyncAssetLoader(this);
                     break;
                 case _eAsyncAssetLoadType.LoacalAB:
-                    asynce_assetloader = new LocalABAsyncAssetLoader();
+                    asynce_assetloader = new LocalABAsyncAssetLoader(this);
                     break;
                 default:
                     break;
             }
         }
 
-        asynce_assetloader.createAssetLoad(asset_path, asset_name, async_assetloadgroup, loaded_action);
+        asynce_assetloader.createAssetLoad(asset_path, asset_name, group, loaded_action);
 
         mMapIAsyncAssetLoader[asset_path] = asynce_assetloader;
-
-        return async_assetloadgroup;
-    }
-
-    ////-------------------------------------------------------------------------
-    //public void cancelAsyncAssetLoader(string asset_path, UnityEngine.Object canel_object)
-    //{
-    //    if (mMapIAsyncAssetLoader.ContainsKey(asset_path))
-    //    {
-    //        mMapIAsyncAssetLoader[asset_path].cancelAssetLoad(canel_object);
-    //    }
-    //}
-
-    //-------------------------------------------------------------------------
-    public void destroyAsyncAssetLoader(string asset_path)
-    {
-        if (mMapIAsyncAssetLoader.ContainsKey(asset_path))
-        {
-            mMapNeedRemoveAssetLoader[asset_path] = mMapIAsyncAssetLoader[asset_path];
-            //mMapIAsyncAssetLoader.Remove(asset_path);
-        }
     }
 }
 

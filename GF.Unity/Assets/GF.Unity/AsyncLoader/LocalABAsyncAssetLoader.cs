@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class LocalABAsyncAssetLoader : IAsyncAssetLoader
 {
+    //-------------------------------------------------------------------------
     AssetBundleCreateRequest mAssetBundleCreateRequest;
 
     //-------------------------------------------------------------------------
-    public LocalABAsyncAssetLoader() : base()
+    public LocalABAsyncAssetLoader(AsyncAssetLoaderMgr mgr)
+        : base(mgr)
     {
         MapRequestLoadAssetInfo = new Dictionary<AsyncAssetLoadGroup, List<RequestLoadAssetInfo>>();
     }
@@ -20,7 +22,7 @@ public class LocalABAsyncAssetLoader : IAsyncAssetLoader
         if (mAssetBundleCreateRequest == null)
         {
             is_done = false;
-            destoryAssetLoad();
+            destory();
         }
         else
         {
@@ -36,7 +38,7 @@ public class LocalABAsyncAssetLoader : IAsyncAssetLoader
             else
             {
                 Debug.LogError(assetLoadError());
-                destoryAssetLoad();
+                destory();
             }
         }
     }
@@ -57,20 +59,6 @@ public class LocalABAsyncAssetLoader : IAsyncAssetLoader
         return load_error;
     }
 
-    ////-------------------------------------------------------------------------
-    //public override void cancelAssetLoad(UnityEngine.Object canel_object)
-    //{
-    //    //if (MapRequestLoadAssetInfo.ContainsKey(canel_object))
-    //    //{
-    //    //    MapRequestLoadAssetInfo.Remove(canel_object);
-    //    //}
-
-    //    //if (MapRequestLoadAssetInfo.Count == 0 && mAssetBundleCreateRequest != null)
-    //    //{
-    //    //    destoryAssetLoad();
-    //    //}
-    //}
-
     //-------------------------------------------------------------------------
     public override void createAssetLoad(string asset_path, string asset_name, AsyncAssetLoadGroup async_assetloadgroup, Action<UnityEngine.Object> loaded_action)
     {
@@ -78,7 +66,6 @@ public class LocalABAsyncAssetLoader : IAsyncAssetLoader
 
         RequestLoadAssetInfo request_loadassetinfo = new RequestLoadAssetInfo();
         request_loadassetinfo.AssetName = asset_name;
-        //request_loadassetinfo.IsCancel = false;
         request_loadassetinfo.LoadedAction = loaded_action;
 
         List<RequestLoadAssetInfo> list_requestloadasssetinfo = null;
@@ -132,14 +119,13 @@ public class LocalABAsyncAssetLoader : IAsyncAssetLoader
         }
 
         MapRequestLoadAssetInfo.Clear();
-        //MapRequestLoadAssetInfo = null;
-        destoryAssetLoad();
+        destory();
     }
 
     //-------------------------------------------------------------------------
-    internal override void destoryAssetLoad()
+    internal override void destory()
     {
-        AsyncAssetLoaderMgr.Instant.destroyAsyncAssetLoader(AssetPath);
+        AsyncAssetLoaderMgr._destroyAsyncAssetLoader(AssetPath);
 
         if (mAssetBundleCreateRequest != null && mAssetBundleCreateRequest.assetBundle != null)
         {

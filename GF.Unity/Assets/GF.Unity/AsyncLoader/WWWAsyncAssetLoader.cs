@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class WWWAsyncAssetLoader : IAsyncAssetLoader
 {
+    //-------------------------------------------------------------------------
     WWW mAsyncAssetWWW;
 
     //-------------------------------------------------------------------------
-    public WWWAsyncAssetLoader() : base()
+    public WWWAsyncAssetLoader(AsyncAssetLoaderMgr mgr)
+        : base(mgr)
     {
         MapRequestLoadAssetInfo = new Dictionary<AsyncAssetLoadGroup, List<RequestLoadAssetInfo>>();
     }
@@ -19,7 +21,7 @@ public class WWWAsyncAssetLoader : IAsyncAssetLoader
         if (mAsyncAssetWWW == null)
         {
             is_done = false;
-            destoryAssetLoad();
+            destory();
         }
         else
         {
@@ -35,7 +37,7 @@ public class WWWAsyncAssetLoader : IAsyncAssetLoader
             else
             {
                 Debug.LogError(assetLoadError());
-                destoryAssetLoad();
+                destory();
             }
         }
     }
@@ -55,20 +57,6 @@ public class WWWAsyncAssetLoader : IAsyncAssetLoader
 
         return load_error;
     }
-
-    ////-------------------------------------------------------------------------
-    //public override void cancelAssetLoad(UnityEngine.Object canel_object)
-    //{
-    //    if (MapRequestLoadAssetInfo.ContainsKey(canel_object))
-    //    {
-    //        MapRequestLoadAssetInfo.Remove(canel_object);
-    //    }
-
-    //    if (MapRequestLoadAssetInfo.Count == 0 && mAsyncAssetWWW != null)
-    //    {
-    //        destoryAssetLoad();
-    //    }
-    //}
 
     //-------------------------------------------------------------------------
     public override void createAssetLoad(string asset_path, string asset_name, AsyncAssetLoadGroup async_assetloadgroup, Action<UnityEngine.Object> loaded_action)
@@ -128,14 +116,13 @@ public class WWWAsyncAssetLoader : IAsyncAssetLoader
         }
 
         MapRequestLoadAssetInfo.Clear();
-        //MapRequestLoadAssetInfo = null;
-        destoryAssetLoad();
+        destory();
     }
 
     //-------------------------------------------------------------------------
-    internal override void destoryAssetLoad()
+    internal override void destory()
     {
-        AsyncAssetLoaderMgr.Instant.destroyAsyncAssetLoader(AssetPath);
+        AsyncAssetLoaderMgr._destroyAsyncAssetLoader(AssetPath);
 
         mAsyncAssetWWW.Dispose();
         mAsyncAssetWWW = null;
