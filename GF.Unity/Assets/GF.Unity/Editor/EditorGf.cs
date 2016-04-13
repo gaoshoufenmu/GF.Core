@@ -34,7 +34,7 @@ public class EditorGf : EditorWindow
     //const string mNotPackAsset = "NotPackAsset";
     //const string mAssetBundleDirectory = "NeedPackAsset";
     const string mAssetBundleTargetDirectory = "ABPatch";
-    const string mABPathInfoResourceDirectory = "GF.Unity\\AutoPatcherInfo";
+    const string mABPathInfoResourceDirectory = "GF.Unity/AutoPatcherInfo";
     const string mPatchiInfoName = "ABPatchInfo.xml";
 
     string mPackInfoTextName = "DataFileList.txt";
@@ -89,11 +89,13 @@ public class EditorGf : EditorWindow
     static void _checkPath()
     {
         string current_dir = System.Environment.CurrentDirectory;
-        mAssetPath = current_dir + "\\Assets\\";
+        current_dir = current_dir.Replace(@"\", "/");
+        mAssetPath = current_dir + "/Assets/";
 
         mABTargetPath = Path.Combine(current_dir, mAssetBundleTargetDirectory);
-        //mABTargetPath = current_dir + mAssetBundleTargetDirectory;
-        mPatchInfoPath = Path.Combine(mABTargetPath, mPatchiInfoName);// + "\\" + mPatchiInfoName;
+        mABTargetPath = mABTargetPath.Replace(@"\", "/");
+        mPatchInfoPath = Path.Combine(mABTargetPath, mPatchiInfoName);
+        mPatchInfoPath = mPatchInfoPath.Replace(@"\", "/");
         //Debug.LogError("mRealTargetPath:: " + mRealTargetPath);      
     }
 
@@ -102,15 +104,15 @@ public class EditorGf : EditorWindow
     {
         if (mCurrentBuildTarget == BuildTarget.Android)
         {
-            mTargetPlatformRootPath = mABTargetPath + "\\ANDROID\\";
+            mTargetPlatformRootPath = mABTargetPath + "/ANDROID/";
         }
         else if (mCurrentBuildTarget == BuildTarget.iOS)
         {
-            mTargetPlatformRootPath = mABTargetPath + "\\IOS\\";
+            mTargetPlatformRootPath = mABTargetPath + "/IOS/";
         }
         else if (mCurrentBuildTarget == BuildTarget.StandaloneWindows)
         {
-            mTargetPlatformRootPath = mABTargetPath + "\\PC\\";
+            mTargetPlatformRootPath = mABTargetPath + "/PC/";
         }
     }
 
@@ -313,7 +315,7 @@ public class EditorGf : EditorWindow
     void _packResources(string pack_infopath)
     {
         StreamWriter sw;
-        string info = pack_infopath + "\\" + mPackInfoTextName;
+        string info = pack_infopath + "/" + mPackInfoTextName;
 
         if (!File.Exists(info))
         {
@@ -339,7 +341,8 @@ public class EditorGf : EditorWindow
         foreach (var i in files)
         {
             string directory_name = Path.GetDirectoryName(i);
-            directory_name = directory_name.Substring(directory_name.LastIndexOf("\\") + 1);
+            directory_name = directory_name.Replace(@"\", "/");
+            directory_name = directory_name.Substring(directory_name.LastIndexOf("/") + 1);
             string file_name = Path.GetFileName(i);
             string file_namewithoutex = Path.GetFileNameWithoutExtension(i);
             if (file_name.Equals(mPackInfoTextName) || file_name.Equals(directory_name) || file_namewithoutex.Equals(directory_name))
@@ -355,11 +358,11 @@ public class EditorGf : EditorWindow
 
             string file_directory = Path.GetDirectoryName(i);
             string target_path = file_directory.Replace(mTargetPath, "");
-            //target_path = target_path.Replace(@"\", "/");
+            target_path = target_path.Replace(@"\", "/");
             string file_path = i;
             {
                 StringBuilder sb = new StringBuilder();
-                sb.Append(target_path + "\\" + file_name + " ");
+                sb.Append(target_path + "/" + file_name + " ");
 
                 using (FileStream sr = File.OpenRead(file_path))
                 {
@@ -386,13 +389,13 @@ public class EditorGf : EditorWindow
     {
         string persistent_data_path =
 #if UNITY_STANDALONE_WIN && UNITY_EDITOR
-        Application.persistentDataPath + "\\PC\\";
+        Application.persistentDataPath + "/PC/";
 #elif UNITY_ANDROID && UNITY_EDITOR
- Application.persistentDataPath + "\\ANDROID\\";
+ Application.persistentDataPath + "/ANDROID/";
 #elif UNITY_IPHONE && UNITY_EDITOR
-        Application.persistentDataPath + "\\IOS\\";
+        Application.persistentDataPath + "/IOS/";
 #endif
-
+        persistent_data_path = persistent_data_path.Replace(@"\", "/");
         if (is_copy)
         {
             if (!Directory.Exists(persistent_data_path))
@@ -401,7 +404,7 @@ public class EditorGf : EditorWindow
             }
 
             try
-            {                
+            {
                 copyFile(mTargetPath, persistent_data_path, mTargetPath);
                 ShowNotification(new GUIContent("复制AB到本地成功!"));
             }
@@ -470,8 +473,9 @@ public class EditorGf : EditorWindow
             if (File.Exists(obj))
             {
                 string path = Path.GetFullPath(obj);
+                path = path.Replace(@"\", "/");
                 path = path.Replace(mAssetPath, "");
-                path = mTargetPath + "\\" + path;
+                path = mTargetPath + "/" + path;
                 string obj_dir = path.Replace(Path.GetFileName(obj), "");
                 if (!Directory.Exists(obj_dir))
                 {
@@ -484,7 +488,7 @@ public class EditorGf : EditorWindow
                 abb.assetBundleVariant = "";
                 int asset_index = 0;
                 List<string> list_needbuildassetname = new List<string>();
-                //list_needbuildassetname.Add(obj.Replace(mAssetPath, "Assets\\"));
+                //list_needbuildassetname.Add(obj.Replace(mAssetPath, "Assets/"));
                 foreach (var j in names)
                 {
                     //Debug.Log("Asset: " + j);
@@ -584,14 +588,15 @@ public class EditorGf : EditorWindow
 
             string file_name = Path.GetFileName(i);
             string file_directory = Path.GetDirectoryName(i);
+            file_directory = file_directory.Replace(@"\", "/");
             string target_path = file_directory.Replace(need_replacepath, "");
             string file_path = i;
-            string target_p = target_rootpath + "\\" + target_path;
+            string target_p = target_rootpath + "/" + target_path;
             if (!Directory.Exists(target_p))
             {
                 Directory.CreateDirectory(target_p);
             }
-            File.Copy(file_path, target_p + "\\" + file_name, true);
+            File.Copy(file_path, target_p + "/" + file_name, true);
         }
 
         string[] directorys = Directory.GetDirectories(path);
@@ -676,7 +681,7 @@ public class EditorGf : EditorWindow
     public static void changeBundleData(string new_bundle, bool change_allplatform = false)
     {
         _checkPatchData();
-        string ab_pathinfo = mABTargetPath + "\\" + mPatchiInfoName;
+        string ab_pathinfo = mABTargetPath + "/" + mPatchiInfoName;
         string file = "";
         using (StreamReader sr = new StreamReader(ab_pathinfo))
         {
@@ -725,7 +730,7 @@ public class EditorGf : EditorWindow
     public static void changeDataData(string new_data, bool change_allplatform = false)
     {
         _checkPatchData();
-        string ab_pathinfo = mABTargetPath + "\\" + mPatchiInfoName;
+        string ab_pathinfo = mABTargetPath + "/" + mPatchiInfoName;
         string file = "";
         using (StreamReader sr = new StreamReader(ab_pathinfo))
         {
