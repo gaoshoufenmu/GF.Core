@@ -8,7 +8,7 @@ public class AsyncAssetLoaderMgr
     Dictionary<string, IAsyncAssetLoader> mMapNeedRemoveAssetLoader;
 
     //-------------------------------------------------------------------------
-    private AsyncAssetLoaderMgr()
+    public AsyncAssetLoaderMgr()
     {
         mMapIAsyncAssetLoader = new Dictionary<string, IAsyncAssetLoader>();
         mMapNeedRemoveAssetLoader = new Dictionary<string, IAsyncAssetLoader>();
