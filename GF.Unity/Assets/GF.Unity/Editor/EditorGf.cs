@@ -663,17 +663,8 @@ public class EditorGf : EditorWindow
             }
         }
 
-        string bundle_version = mBundleVersion;
-        if (mCurrentBuildTarget == BuildTarget.Android)
-        {
-            bundle_version = bundle_version.Replace(".", "");
-            PlayerSettings.bundleIdentifier = mBundleVersion;
-        }
-        else if (mCurrentBuildTarget == BuildTarget.iOS)
-        {
-            PlayerSettings.bundleIdentifier = "com." + PlayerSettings.companyName + "." + PlayerSettings.productName;
-        }
-        PlayerSettings.bundleVersion = bundle_version;
+        PlayerSettings.bundleIdentifier = "com." + PlayerSettings.companyName + "." + PlayerSettings.productName;
+        PlayerSettings.bundleVersion = mBundleVersion;
         mTargetPath = mTargetPlatformRootPath + "DataVersion_" + mDataVersion;
     }
 

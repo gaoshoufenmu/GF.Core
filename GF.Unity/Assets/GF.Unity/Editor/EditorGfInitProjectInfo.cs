@@ -34,12 +34,12 @@ public class EditorGfInitProjectInfo : EditorWindow
     void OnGUI()
     {
         EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField("公司名(将会拼接IOS版本BundleIndentifier):");
+        EditorGUILayout.LabelField("公司名(将会拼接BundleIndentifier):");
         mComponyName = EditorGUILayout.TextField(mComponyName);
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField("产品名(将会拼接IOS版本BundleIndentifier):");
+        EditorGUILayout.LabelField("产品名(将会拼接BundleIndentifier):");
         mProductName = EditorGUILayout.TextField(mProductName);
         EditorGUILayout.EndHorizontal();
 
