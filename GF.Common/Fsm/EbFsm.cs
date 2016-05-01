@@ -201,47 +201,21 @@ namespace GF.Common
 
                     string next_state_name = state._onEvent(ev);
 
+                    if (string.IsNullOrEmpty(next_state_name)) continue;
+
                     EbState next_state = null;
                     if (mMapState.ContainsKey(next_state_name))
                     {
                         next_state = mMapState[next_state_name];
                     }
 
-                    if (null == next_state) break;
+                    if (next_state == null) break;
 
-                    while (mQueCurrentState.Count > 0)
-                    {
-                        EbState s = mQueCurrentState[mQueCurrentState.Count - 1];
+                    EbState p = next_state._getParentState();
 
-                        if (next_state == s)
-                        {
-                            break;
-                        }
-                        else if (_isDirectLine(s, next_state))
-                        {
-                            mQueTmpState.Clear();
+                    _exitChildState(p);
 
-                            EbState p = next_state;
-                            do
-                            {
-                                mQueTmpState.Add(p);
-                                p = p._getParentState();
-                            } while (p != s);
-
-                            while (mQueTmpState.Count > 0)
-                            {
-                                EbState q = mQueTmpState[0];
-                                q.enter();
-                                mQueCurrentState.Add(q);
-                                mQueTmpState.RemoveAt(0);
-                            }
-                        }
-                        else
-                        {
-                            s.exit();
-                            mQueCurrentState.RemoveAt(mQueCurrentState.Count - 1);
-                        }
-                    }
+                    _enterState(next_state);
 
                     break;
                 }
@@ -266,6 +240,44 @@ namespace GF.Common
             }
 
             return false;
+        }
+
+        //---------------------------------------------------------------------
+        void _enterState(EbState next_state)
+        {
+            next_state.enter();
+            mQueCurrentState.Add(next_state);
+
+            var map_childstate = next_state._getMapChildState();
+            foreach (var i in map_childstate)
+            {
+                if (i.Value == null) continue;
+
+                foreach (var s in i.Value)
+                {
+                    if (s._isInitState())
+                    {
+                        _enterState(s);
+                        break;
+                    }
+                }
+            }
+        }
+
+        //---------------------------------------------------------------------
+        void _exitChildState(EbState cur_state)
+        {
+            if (mQueCurrentState.Count == 0) return;
+
+            EbState s = mQueCurrentState[mQueCurrentState.Count - 1];
+            if (s != cur_state)
+            {
+                s.exit();
+
+                mQueCurrentState.Remove(s);
+
+                _exitChildState(cur_state);
+            }
         }
     }
 }
