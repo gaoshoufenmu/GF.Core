@@ -12,6 +12,7 @@ namespace GF.Common
         List<EbState> mQueCurrentState = new List<EbState>();
         List<EbState> mQueTmpState = new List<EbState>();
         bool mbRattleOn = false;
+        bool mbDestroy = false;
 
         //---------------------------------------------------------------------
         public EbFsm()
@@ -173,6 +174,8 @@ namespace GF.Common
         //---------------------------------------------------------------------
         void _releaseFsm()
         {
+            mbDestroy = true;
+
             while (mQueCurrentState.Count > 0)
             {
                 EbState s = mQueCurrentState[mQueCurrentState.Count - 1];
@@ -184,7 +187,7 @@ namespace GF.Common
         //---------------------------------------------------------------------
         void _rattleOn()
         {
-            if (mbRattleOn) return;
+            if (mbRattleOn || mbDestroy) return;
             mbRattleOn = true;
 
             while (mQueEvent.Count > 0)
@@ -202,6 +205,7 @@ namespace GF.Common
                     string next_state_name = state._onEvent(ev);
 
                     if (string.IsNullOrEmpty(next_state_name)) continue;
+                    if (mbDestroy) break;
 
                     EbState next_state = null;
                     if (mMapState.ContainsKey(next_state_name))

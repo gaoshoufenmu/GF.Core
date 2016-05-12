@@ -255,7 +255,7 @@
             An explicit map of type CLR viz database type conversions.
             </summary>
         </member>
-        <member name="M:Orleans.SqlUtils.DbExtensions.CreateParameter``1(System.Data.IDbCommand,System.Data.ParameterDirection,System.String,``0,System.Nullable{System.Int32})">
+        <member name="M:Orleans.SqlUtils.DbExtensions.CreateParameter``1(System.Data.IDbCommand,System.Data.ParameterDirection,System.String,``0,System.Nullable{System.Int32},System.Nullable{System.Data.DbType})">
             <summary>
             Creates a new SQL parameter using the given arguments.
             </summary>
@@ -265,6 +265,20 @@
             <param name="parameterName">The name of the parameter.</param>
             <param name="value">The value of the parameter.</param>
             <param name="size">The size of the parameter value.</param>
+            <param name="dbType">the <see cref="T:System.Data.DbType"/> of the parameter.</param>
+            <returns>A parameter created using the given arguments.</returns>
+        </member>
+        <member name="M:Orleans.SqlUtils.DbExtensions.AddParameter``1(System.Data.IDbCommand,System.String,``0,System.Data.ParameterDirection,System.Nullable{System.Int32},System.Nullable{System.Data.DbType})">
+            <summary>
+            Creates and adds a new SQL parameter to the command.
+            </summary>
+            <typeparam name="T">The type of the parameter.</typeparam>
+            <param name="command">The command to use to create the parameter.</param>
+            <param name="direction">The direction of the parameter.</param>
+            <param name="parameterName">The name of the parameter.</param>
+            <param name="value">The value of the parameter.</param>
+            <param name="size">The size of the parameter value.</param>
+            <param name="dbType">the <see cref="T:System.Data.DbType"/> of the parameter.</param>
             <returns>A parameter created using the given arguments.</returns>
         </member>
         <member name="M:Orleans.SqlUtils.DbExtensions.GetValueOrDefault``1(System.Data.IDataRecord,System.String,``0)">
@@ -324,13 +338,14 @@
             <exception cref="T:System.IndexOutOfRangeException"/>
             <remarks>This function throws if the given <see paramref="fieldName"/> does not exist.</remarks>        
         </member>
-        <member name="M:Orleans.SqlUtils.DbExtensions.GetValueAsync``1(System.Data.Common.DbDataReader,System.String)">
+        <member name="M:Orleans.SqlUtils.DbExtensions.GetValueAsync``1(System.Data.Common.DbDataReader,System.String,System.Threading.CancellationToken)">
             <summary>
             Returns a value with the given <see paramref="fieldName"/>.
             </summary>
             <typeparam name="TValue">The type of value to retrieve.</typeparam>
             <param name="record">The record from which to retrieve the value.</param>
             <param name="fieldName">The name of the field.</param>
+            <param name="cancellationToken">The cancellation token. Defaults to <see cref="P:System.Threading.CancellationToken.None"/>.</param>
             <returns>Value in the given field indicated by <see paramref="fieldName"/>.</returns>
             <exception cref="T:System.IndexOutOfRangeException"/>
             <remarks>This function throws if the given <see paramref="fieldName"/> does not exist.</remarks>        
@@ -379,32 +394,6 @@
             <summary>
             The description of the loaded factory, set by a database connector vendor.
             </summary>
-        </member>
-        <member name="T:Orleans.SqlUtils.DictionaryExtensions">
-            <summary>
-            Extensions methods to work with dictionaries.
-            </summary>
-        </member>
-        <member name="M:Orleans.SqlUtils.DictionaryExtensions.GetValueOrDefault``2(System.Collections.Generic.IDictionary{``0,``1},``0)">
-            <summary>
-            Gets the value or a default for the given type if not found.
-            </summary>
-            <typeparam name="TKey">The type of a key with which to search for.</typeparam>
-            <typeparam name="TValue">The type of a value which to return.</typeparam>
-            <param name="dictionary">The dictionary from which to search from.</param>
-            <param name="key">The key with which to search.</param>
-            <returns>The found object or <em>default(TValue)</em>.</returns>
-        </member>
-        <member name="M:Orleans.SqlUtils.DictionaryExtensions.GetValueOrDefault``2(System.Collections.Generic.IDictionary{``0,``1},``0,System.Func{``1})">
-            <summary>
-            Gets the value or a default for the given type if not found.
-            </summary>
-            <typeparam name="TKey">The type of a key with which to search for.</typeparam>
-            <typeparam name="TValue">The type of a value which to return.</typeparam>
-            <param name="dictionary">The dictionary from which to search from.</param>
-            <param name="key">The key with which to search.</param>
-            <param name="defaultProvider">A provider for a default value if the value was not found.</param>
-            <returns>The found object or value as defined by <see paramref="defaultProvider"/>.</returns>
         </member>
         <member name="T:Orleans.SqlUtils.IRelationalStorage">
             <summary>
@@ -783,20 +772,8 @@
             <param name="invariantName">The invariant name of the connector for this database.</param>
             <param name="connectionString">The connection string this database should use for database operations.</param>
         </member>
-        <member name="P:Orleans.SqlUtils.RelationalStorage.SupportsCommandCancellation">
-            <summary>
-            A cached value if the underlying ADO.NET provider supports cancellation or not.        
-            </summary>
-        </member>
-        <member name="P:Orleans.SqlUtils.RelationalStorage.IsSynchronousAdoNetImplementation">
-            <summary>
-            If the underlying ADO.NET implementation is natively asynchronous
-            (the ADO.NET Db*.XXXAsync classes are overriden) or not.
-            </summary>
-        </member>
         <member name="T:Orleans.SqlUtils.RelationalOrleansQueries">
             <summary>
-            <remarks>This is public only to be usable to the statistics providers. Not intended for public use otherwise.</remarks>
             A class for all relational storages that support all systems stores : membership, reminders and statistics
             </summary>    
         </member>
@@ -811,17 +788,17 @@
             table that will be updated with multiple values. The other ones are updated with one value only.
             </summary>
         </member>
-        <member name="F:Orleans.SqlUtils.RelationalOrleansQueries.orleansQueries">
+        <member name="F:Orleans.SqlUtils.RelationalOrleansQueries.dbStoredQueries">
             <summary>
             the orleans functional queries
             </summary>
         </member>
-        <member name="M:Orleans.SqlUtils.RelationalOrleansQueries.#ctor(Orleans.SqlUtils.IRelationalStorage,Orleans.SqlUtils.RelationalOrleansQueries.OrleansQueries)">
+        <member name="M:Orleans.SqlUtils.RelationalOrleansQueries.#ctor(Orleans.SqlUtils.IRelationalStorage,OrleansSQLUtils.Storage.DbStoredQueries)">
             <summary>
             Constructor
             </summary>
             <param name="storage">the underlying relational storage</param>
-            <param name="orleansQueries">Orleans functional queries</param>
+            <param name="dbStoredQueries">Orleans functional queries</param>
         </member>
         <member name="M:Orleans.SqlUtils.RelationalOrleansQueries.CreateInstance(System.String,System.String)">
             <summary>
@@ -831,13 +808,6 @@
             <param name="invariantName">The invariant name of the connector for this database.</param>
             <param name="connectionString">The connection string this database should use for database operations.</param>
         </member>
-        <member name="M:Orleans.SqlUtils.RelationalOrleansQueries.CreateInstance(Orleans.SqlUtils.IRelationalStorage)">
-            <summary>
-            Creates an instance of a database of type <see cref="T:Orleans.SqlUtils.RelationalOrleansQueries"/> and Initializes Orleans queries from the database. 
-            Orleans uses only these queries and the variables therein, nothing more.
-            </summary>
-            <param name="storage">the underlying storage instance</param>
-        </member>
         <member name="M:Orleans.SqlUtils.RelationalOrleansQueries.UpsertSiloMetricsAsync(System.String,System.String,System.Net.IPEndPoint,Orleans.Runtime.SiloAddress,System.String,Orleans.Runtime.ISiloPerformanceMetrics)">
             <summary>
             Either inserts or updates a silo metrics row.
@@ -846,7 +816,7 @@
             <param name="siloId">The silo ID.</param>
             <param name="gateway">The gateway information.</param>
             <param name="siloAddress">The silo address information.</param>
-            <param name="hostName">The hostname.</param>
+            <param name="hostName">The host name.</param>
             <param name="siloMetrics">The silo metrics to be either updated or inserted.</param>
             <returns></returns>
         </member>
@@ -856,12 +826,12 @@
             </summary>
             <param name="deploymentId">The deployment ID.</param>
             <param name="clientId">The client ID.</param>
-            <param name="clientAddress">The client address information.</param>
+            <param name="address">The client address information.</param>
             <param name="hostName">The hostname.</param>
             <param name="clientMetrics">The client metrics to be either updated or inserted.</param>
             <returns></returns>
         </member>
-        <member name="M:Orleans.SqlUtils.RelationalOrleansQueries.InsertStatisticsCountersAsync(System.String,System.String,System.String,System.String,System.Collections.Generic.IEnumerable{Orleans.Runtime.ICounter})">
+        <member name="M:Orleans.SqlUtils.RelationalOrleansQueries.InsertStatisticsCountersAsync(System.String,System.String,System.String,System.String,System.Collections.Generic.List{Orleans.Runtime.ICounter})">
             <summary>
             Inserts the given statistics counters to the Orleans database.
             </summary>
@@ -910,7 +880,7 @@
         </member>
         <member name="M:Orleans.SqlUtils.RelationalOrleansQueries.DeleteReminderRowAsync(System.String,Orleans.Runtime.GrainReference,System.String,System.String)">
             <summary>
-            
+            Deletes a reminder
             </summary>
             <param name="serviceId">Service ID.</param>
             <param name="grainRef"></param>
@@ -920,7 +890,7 @@
         </member>
         <member name="M:Orleans.SqlUtils.RelationalOrleansQueries.DeleteReminderRowsAsync(System.String)">
             <summary>
-            deletes all reminders rows of a service id
+            Deletes all reminders rows of a service id.
             </summary>
             <param name="serviceId"></param>
             <returns></returns>
@@ -932,15 +902,15 @@
             <param name="deploymentId">The deployment for which to query the gateways.</param>
             <returns>The gateways for the silo.</returns>
         </member>
-        <member name="M:Orleans.SqlUtils.RelationalOrleansQueries.MembershipDataAsync(System.String,Orleans.Runtime.SiloAddress)">
+        <member name="M:Orleans.SqlUtils.RelationalOrleansQueries.MembershipReadRowAsync(System.String,Orleans.Runtime.SiloAddress)">
             <summary>
             Queries Orleans membership data.
             </summary>
             <param name="deploymentId">The deployment for which to query data.</param>
-            <param name="key">Silo data used as parameters in the query.</param>
+            <param name="siloAddress">Silo data used as parameters in the query.</param>
             <returns>Membership table data.</returns>
         </member>
-        <member name="M:Orleans.SqlUtils.RelationalOrleansQueries.AllMembershipDataAsync(System.String)">
+        <member name="M:Orleans.SqlUtils.RelationalOrleansQueries.MembershipReadAllAsync(System.String)">
             <summary>
             returns all membership data for a deployment id
             </summary>
@@ -954,135 +924,39 @@
             <param name="deploymentId"></param>
             <returns></returns>
         </member>
-        <member name="M:Orleans.SqlUtils.RelationalOrleansQueries.UpdateIAmAliveTimeAsync(System.String,Orleans.MembershipEntry)">
+        <member name="M:Orleans.SqlUtils.RelationalOrleansQueries.UpdateIAmAliveTimeAsync(System.String,Orleans.Runtime.SiloAddress,System.DateTime)">
             <summary>
             Updates IAmAlive for a silo
             </summary>
             <param name="deploymentId"></param>
-            <param name="membershipEntry"></param>
+            <param name="siloAddress"></param>
+            <param name="iAmAliveTime"></param>
             <returns></returns>
         </member>
-        <member name="M:Orleans.SqlUtils.RelationalOrleansQueries.InsertMembershipVersionRowAsync(System.String,System.Int32)">
+        <member name="M:Orleans.SqlUtils.RelationalOrleansQueries.InsertMembershipVersionRowAsync(System.String)">
             <summary>
             Inserts a version row if one does not already exist.
             </summary>
             <param name="deploymentId">The deployment for which to query data.</param>
-            <param name="version">The version information to insert.</param>
             <returns><em>TRUE</em> if a row was inserted. <em>FALSE</em> otherwise.</returns>
         </member>
-        <member name="M:Orleans.SqlUtils.RelationalOrleansQueries.InsertMembershipRowAsync(System.String,Orleans.MembershipEntry,Orleans.TableVersion)">
+        <member name="M:Orleans.SqlUtils.RelationalOrleansQueries.InsertMembershipRowAsync(System.String,Orleans.MembershipEntry,System.String)">
             <summary>
             Inserts a membership row if one does not already exist.
             </summary>
             <param name="deploymentId">The deployment with which to insert row.</param>
             <param name="membershipEntry">The membership entry data to insert.</param>
-            <param name="version">The version data to insert.</param>
+            <param name="etag">The table expected version etag.</param>
             <returns><em>TRUE</em> if insert succeeds. <em>FALSE</em> otherwise.</returns>
         </member>
-        <member name="M:Orleans.SqlUtils.RelationalOrleansQueries.UpdateMembershipRowAsync(System.String,System.String,Orleans.MembershipEntry,Orleans.TableVersion)">
+        <member name="M:Orleans.SqlUtils.RelationalOrleansQueries.UpdateMembershipRowAsync(System.String,Orleans.MembershipEntry,System.String)">
             <summary>
             Updates membership row data.
             </summary>
             <param name="deploymentId">The deployment with which to insert row.</param>
-            <param name="etag">The etag of which to use to check if the membership data being updated is not stale.</param>
             <param name="membershipEntry">The membership data to used to update database.</param>
-            <param name="version">The membership version used to update database.</param>
+            <param name="etag">The table expected version etag.</param>
             <returns><em>TRUE</em> if update SUCCEEDS. <em>FALSE</em> ot</returns>
-        </member>
-        <member name="T:Orleans.SqlUtils.RelationalOrleansQueries.OrleansQueries">
-            <summary>
-            this class is populated via reflection
-            </summary>
-        </member>
-        <member name="F:Orleans.SqlUtils.RelationalOrleansQueries.OrleansQueries.ActiveGatewaysQueryKey">
-            <summary>
-            A query template to retrieve gateway URIs.
-            </summary>        
-        </member>
-        <member name="F:Orleans.SqlUtils.RelationalOrleansQueries.OrleansQueries.MembershipReadRowKey">
-            <summary>
-            A query template to retrieve a single row of membership data.
-            </summary>        
-        </member>
-        <member name="F:Orleans.SqlUtils.RelationalOrleansQueries.OrleansQueries.MembershipReadAllKey">
-            <summary>
-            A query template to retrieve all membership data.
-            </summary>        
-        </member>
-        <member name="F:Orleans.SqlUtils.RelationalOrleansQueries.OrleansQueries.InsertMembershipVersionKey">
-            <summary>
-            A query template to insert a membership version row.
-            </summary>
-        </member>
-        <member name="F:Orleans.SqlUtils.RelationalOrleansQueries.OrleansQueries.UpdateIAmAlivetimeKey">
-            <summary>
-            A query template to update "I Am Alive Time".
-            </summary>
-        </member>
-        <member name="F:Orleans.SqlUtils.RelationalOrleansQueries.OrleansQueries.InsertMembershipKey">
-            <summary>
-            A query template to insert a membership row.
-            </summary>
-        </member>
-        <member name="F:Orleans.SqlUtils.RelationalOrleansQueries.OrleansQueries.UpdateMembershipKey">
-            <summary>
-            A query template to update a membership row.
-            </summary>
-        </member>
-        <member name="F:Orleans.SqlUtils.RelationalOrleansQueries.OrleansQueries.DeleteMembershipTableEntriesKey">
-            <summary>
-            A query template to delete membersip entries.
-            </summary>
-        </member>
-        <member name="F:Orleans.SqlUtils.RelationalOrleansQueries.OrleansQueries.ReadReminderRowsKey">
-            <summary>
-            A query template to read reminder entries.
-            </summary>
-        </member>
-        <member name="F:Orleans.SqlUtils.RelationalOrleansQueries.OrleansQueries.ReadRangeRows1Key">
-            <summary>
-            A query template to read reminder entries with ranges.
-            </summary>
-        </member>
-        <member name="F:Orleans.SqlUtils.RelationalOrleansQueries.OrleansQueries.ReadRangeRows2Key">
-            <summary>
-            A query template to read reminder entries with ranges.
-            </summary>
-        </member>
-        <member name="F:Orleans.SqlUtils.RelationalOrleansQueries.OrleansQueries.ReadReminderRowKey">
-            <summary>
-            A query template to read a reminder entry with ranges.
-            </summary>
-        </member>
-        <member name="F:Orleans.SqlUtils.RelationalOrleansQueries.OrleansQueries.UpsertReminderRowKey">
-            <summary>
-            A query template to upsert a reminder row.
-            </summary>
-        </member>
-        <member name="F:Orleans.SqlUtils.RelationalOrleansQueries.OrleansQueries.InsertOrleansStatisticsKey">
-            <summary>
-            A query template to insert Orleans statistics.
-            </summary>
-        </member>
-        <member name="F:Orleans.SqlUtils.RelationalOrleansQueries.OrleansQueries.UpsertReportClientMetricsKey">
-            <summary>
-            A query template to insert or update an Orleans client metrics key.
-            </summary>
-        </member>
-        <member name="F:Orleans.SqlUtils.RelationalOrleansQueries.OrleansQueries.UpsertSiloMetricsKey">
-            <summary>
-            A query template to insert or update an Orleans silo metrics key.
-            </summary>
-        </member>
-        <member name="F:Orleans.SqlUtils.RelationalOrleansQueries.OrleansQueries.DeleteReminderRowKey">
-            <summary>
-            A query template to delete a reminder row.
-            </summary>
-        </member>
-        <member name="F:Orleans.SqlUtils.RelationalOrleansQueries.OrleansQueries.DeleteReminderRowsKey">
-            <summary>
-            A query template to delete all reminder rows.
-            </summary>
         </member>
         <member name="T:Orleans.SqlUtils.RelationalStorageExtensions">
             <summary>
@@ -1112,6 +986,17 @@
             <param name="onlyOnceColumns">If given, SQL parameter values for the given <typeparamref name="T"/> property types are generated only once. Effective only when <paramref name="useSqlParams"/> is <em>TRUE</em>.</param>
             <param name="useSqlParams"><em>TRUE</em> if the query should be in parameterized form. <em>FALSE</em> otherwise.</param>
             <returns>The rows affected.</returns>
+        </member>
+        <member name="M:Orleans.SqlUtils.RelationalStorageExtensions.ReadAsync``1(Orleans.SqlUtils.IRelationalStorage,System.String,System.Func{System.Data.IDataRecord,``0},System.Action{System.Data.IDbCommand})">
+            <summary>
+            A simplified version of <see cref="M:Orleans.SqlUtils.IRelationalStorage.ReadAsync``1(System.String,System.Action{System.Data.IDbCommand},System.Func{System.Data.IDataRecord,System.Int32,System.Threading.CancellationToken,System.Threading.Tasks.Task{``0}},System.Threading.CancellationToken,System.Data.CommandBehavior)"/>
+            </summary>
+            <param name="storage"></param>
+            <param name="query"></param>
+            <param name="selector"></param>
+            <param name="parameterProvider"></param>
+            <typeparam name="TResult"></typeparam>
+            <returns></returns>
         </member>
         <member name="M:Orleans.SqlUtils.RelationalStorageExtensions.ReadAsync``1(Orleans.SqlUtils.IRelationalStorage,System.String,System.Object,System.Threading.CancellationToken)">
             <summary>
@@ -1272,6 +1157,108 @@
             <param name="counters">The counters to batch.</param>
             <param name="maxBatchSizeInclusive">The maximum size of one batch.</param>
             <returns>The counters batched.</returns>
+        </member>
+        <member name="T:OrleansSQLUtils.Storage.DbStoredQueries">
+            <summary>
+            This class implements the expected contract between Orleans and the underlying relational storage.
+            It makes sure all the stored queries are present and 
+            </summary>
+        </member>
+        <member name="F:OrleansSQLUtils.Storage.DbStoredQueries.GetQueriesKey">
+            <summary>
+            The query that's used to get all the stored queries.
+            this will probably be the same for all relational dbs.
+            </summary>
+        </member>
+        <member name="P:OrleansSQLUtils.Storage.DbStoredQueries.GatewaysQueryKey">
+            <summary>
+            A query template to retrieve gateway URIs.
+            </summary>        
+        </member>
+        <member name="P:OrleansSQLUtils.Storage.DbStoredQueries.MembershipReadRowKey">
+            <summary>
+            A query template to retrieve a single row of membership data.
+            </summary>        
+        </member>
+        <member name="P:OrleansSQLUtils.Storage.DbStoredQueries.MembershipReadAllKey">
+            <summary>
+            A query template to retrieve all membership data.
+            </summary>        
+        </member>
+        <member name="P:OrleansSQLUtils.Storage.DbStoredQueries.InsertMembershipVersionKey">
+            <summary>
+            A query template to insert a membership version row.
+            </summary>
+        </member>
+        <member name="P:OrleansSQLUtils.Storage.DbStoredQueries.UpdateIAmAlivetimeKey">
+            <summary>
+            A query template to update "I Am Alive Time".
+            </summary>
+        </member>
+        <member name="P:OrleansSQLUtils.Storage.DbStoredQueries.InsertMembershipKey">
+            <summary>
+            A query template to insert a membership row.
+            </summary>
+        </member>
+        <member name="P:OrleansSQLUtils.Storage.DbStoredQueries.UpdateMembershipKey">
+            <summary>
+            A query template to update a membership row.
+            </summary>
+        </member>
+        <member name="P:OrleansSQLUtils.Storage.DbStoredQueries.DeleteMembershipTableEntriesKey">
+            <summary>
+            A query template to delete membership entries.
+            </summary>
+        </member>
+        <member name="P:OrleansSQLUtils.Storage.DbStoredQueries.ReadReminderRowsKey">
+            <summary>
+            A query template to read reminder entries.
+            </summary>
+        </member>
+        <member name="P:OrleansSQLUtils.Storage.DbStoredQueries.ReadRangeRows1Key">
+            <summary>
+            A query template to read reminder entries with ranges.
+            </summary>
+        </member>
+        <member name="P:OrleansSQLUtils.Storage.DbStoredQueries.ReadRangeRows2Key">
+            <summary>
+            A query template to read reminder entries with ranges.
+            </summary>
+        </member>
+        <member name="P:OrleansSQLUtils.Storage.DbStoredQueries.ReadReminderRowKey">
+            <summary>
+            A query template to read a reminder entry with ranges.
+            </summary>
+        </member>
+        <member name="P:OrleansSQLUtils.Storage.DbStoredQueries.UpsertReminderRowKey">
+            <summary>
+            A query template to upsert a reminder row.
+            </summary>
+        </member>
+        <member name="P:OrleansSQLUtils.Storage.DbStoredQueries.InsertOrleansStatisticsKey">
+            <summary>
+            A query template to insert Orleans statistics.
+            </summary>
+        </member>
+        <member name="P:OrleansSQLUtils.Storage.DbStoredQueries.UpsertReportClientMetricsKey">
+            <summary>
+            A query template to insert or update an Orleans client metrics key.
+            </summary>
+        </member>
+        <member name="P:OrleansSQLUtils.Storage.DbStoredQueries.UpsertSiloMetricsKey">
+            <summary>
+            A query template to insert or update an Orleans silo metrics key.
+            </summary>
+        </member>
+        <member name="P:OrleansSQLUtils.Storage.DbStoredQueries.DeleteReminderRowKey">
+            <summary>
+            A query template to delete a reminder row.
+            </summary>
+        </member>
+        <member name="P:OrleansSQLUtils.Storage.DbStoredQueries.DeleteReminderRowsKey">
+            <summary>
+            A query template to delete all reminder rows.
+            </summary>
         </member>
     </members>
 </doc>

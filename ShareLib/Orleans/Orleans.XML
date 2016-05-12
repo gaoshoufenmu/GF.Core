@@ -184,22 +184,24 @@
             Extension methods for configuration classes specific to Orleans.dll 
             </summary>
         </member>
-        <member name="M:Orleans.Runtime.Configuration.ConfigurationExtensions.AddSimpleMessageStreamProvider(Orleans.Runtime.Configuration.ClusterConfiguration,System.String,System.Boolean,Orleans.Streams.StreamPubSubType)">
+        <member name="M:Orleans.Runtime.Configuration.ConfigurationExtensions.AddSimpleMessageStreamProvider(Orleans.Runtime.Configuration.ClusterConfiguration,System.String,System.Boolean,System.Boolean,Orleans.Streams.StreamPubSubType)">
             <summary>
             Adds a stream provider of type <see cref="T:Orleans.Providers.Streams.SimpleMessageStream.SimpleMessageStreamProvider"/>
             </summary>
             <param name="config">The cluster configuration object to add provider to.</param>
             <param name="providerName">The provider name.</param>
             <param name="fireAndForgetDelivery">Specifies whether the producer waits for the consumer to process the event before continuing. Setting this to false is useful for troubleshooting serialization issues.</param>
+            <param name="optimizeForImmutableData">If set to true items transfered via the stream are always wrapped in Immutable for delivery.</param>
             <param name="pubSubType">Specifies how can grains subscribe to this stream.</param>
         </member>
-        <member name="M:Orleans.Runtime.Configuration.ConfigurationExtensions.AddSimpleMessageStreamProvider(Orleans.Runtime.Configuration.ClientConfiguration,System.String,System.Boolean,Orleans.Streams.StreamPubSubType)">
+        <member name="M:Orleans.Runtime.Configuration.ConfigurationExtensions.AddSimpleMessageStreamProvider(Orleans.Runtime.Configuration.ClientConfiguration,System.String,System.Boolean,System.Boolean,Orleans.Streams.StreamPubSubType)">
             <summary>
             Adds a stream provider of type <see cref="T:Orleans.Providers.Streams.SimpleMessageStream.SimpleMessageStreamProvider"/>
             </summary>
             <param name="config">The cluster configuration object to add provider to.</param>
             <param name="providerName">The provider name.</param>
             <param name="fireAndForgetDelivery">Specifies whether the producer waits for the consumer to process the event before continuing. Setting this to false is useful for troubleshooting serialization issues.</param>
+            <param name="optimizeForImmutableData">If set to true items transfered via the stream are always wrapped in Immutable for delivery.</param>>
             <param name="pubSubType">Specifies how can grains subscribe to this stream.</param>
         </member>
         <member name="T:Orleans.Runtime.Configuration.LimitNames">
@@ -3544,12 +3546,6 @@
             Implemented in Orleans generated code.
             </summary>
         </member>
-        <member name="P:Orleans.Runtime.GrainReference.GenericArguments">
-            <summary>
-            Return the generic type arguments of the interface as a string
-            Implemented in generated code.
-            </summary>
-        </member>
         <member name="M:Orleans.Runtime.GrainReference.GetMethodName(System.Int32,System.Int32)">
             <summary>
             Return the method name associated with the specified interfaceId and methodId values.
@@ -4796,11 +4792,6 @@
             Needs to be public since it used by generated client code.
             </summary>
         </member>
-        <member name="T:Orleans.Serialization.NonSerializableAttribute">
-            <summary>
-            Marker attribute for classes which should not be serialized.
-            </summary>
-        </member>
         <member name="T:Orleans.Serialization.BinaryTokenStreamReader">
             <summary>
             Reader for Orleans binary token streams
@@ -5149,7 +5140,7 @@
         </member>
         <member name="T:Orleans.Serialization.SerializationManager">
             <summary>
-            SerializationManager to oversee the Orleans syrializer system.
+            SerializationManager to oversee the Orleans serializer system.
             </summary>
         </member>
         <member name="T:Orleans.Serialization.SerializationManager.DeepCopier">
@@ -5605,6 +5596,22 @@
         </member>
         <member name="P:Orleans.Storage.InconsistentStateException.CurrentEtag">
             <summary>The Etag value currently help in memory, and attempting to be updated.</summary>
+        </member>
+        <member name="T:Orleans.Streams.StreamIdentity">
+            <summary>
+            Stream identity contains the public stream information use to uniquely identify a stream.
+            Stream identities are only unique per stream provider.
+            </summary>
+        </member>
+        <member name="P:Orleans.Streams.StreamIdentity.Guid">
+            <summary>
+            Stream primary key guid.
+            </summary>
+        </member>
+        <member name="P:Orleans.Streams.StreamIdentity.Namespace">
+            <summary>
+            Stream namespace.
+            </summary>
         </member>
         <member name="T:Orleans.Streams.IDeploymentConfiguration">
             <summary>
@@ -6727,6 +6734,13 @@
             </summary>
             <param name="grain">The grain to find the primary key for.</param>
             <returns>A Guid representing the primary key for this grain.</returns>
+        </member>
+        <member name="M:Orleans.GrainExtensions.GetPrimaryKeyString(Orleans.Runtime.IAddressable)">
+            <summary>
+            Returns the string primary key of the grain.
+            </summary>
+            <param name="grain">The grain to find the primary key for.</param>
+            <returns>A string representing the primary key for this grain.</returns>
         </member>
         <member name="M:Orleans.SetExtensions.ToSet``1(System.Collections.Generic.IEnumerable{``0})">
             <summary>

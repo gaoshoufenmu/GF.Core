@@ -56,12 +56,6 @@
              connected to as needed.
             
         </member>
-        <member name="F:org.apache.zookeeper.ClientCnxn.disableAutoWatchReset">
-            This controls whether automatic watch resetting is enabled. Clients
-            automatically reset watches during session reconnect, this option allows
-            the client to turn off this behavior by setting the environment variable
-            "zookeeper.disableAutoWatchReset" to "true"
-        </member>
         <member name="F:org.apache.zookeeper.ClientCnxn.pendingQueue">
             These are the packets that have been sent and are waiting for a response.
         </member>
@@ -128,17 +122,6 @@
                         case of partitioning
              @throws IOException
         </member>
-        <member name="M:org.apache.zookeeper.ClientCnxn.getDisableAutoResetWatch">
-            tests use this to check on reset of watches
-            
-            @return if the auto reset of watches are disabled
-        </member>
-        <member name="M:org.apache.zookeeper.ClientCnxn.setDisableAutoResetWatch(System.Boolean)">
-            tests use this to set the auto reset
-            
-            @param disableAutoResetWatch
-                   the value to set disable watches to
-        </member>
         <member name="F:org.apache.zookeeper.ClientCnxn.sessionState">
             This is really the queued session state until the event task
             actually processes the event and hands it to the watcher. But for all
@@ -186,7 +169,7 @@
             create a socket channel. </summary>
             <returns> the created socket channel </returns>
         </member>
-        <member name="M:org.apache.zookeeper.ClientCnxnSocketNIO.registerAndConnect(System.Net.Sockets.Socket,System.Net.DnsEndPoint)">
+        <member name="M:org.apache.zookeeper.ClientCnxnSocketNIO.registerAndConnect(System.Net.Sockets.Socket,System.Net.IPEndPoint)">
             <summary>
             register with the selection and connect </summary>
             <param name="sock"> the <seealso cref="T:System.Net.Sockets.Socket"/> </param>
@@ -588,7 +571,7 @@
             <summary>
                 Performs client path validations.
             </summary>
-            <exception cref="T:System.InvalidOperationException">
+            <exception cref="T:System.ArgumentException">
                 if an invalid path is specified
             </exception>
             <exception cref="T:org.apache.zookeeper.KeeperException.BadArgumentsException">
@@ -1496,9 +1479,33 @@
             @since 3.3.0
             </summary>
         </member>
-        <member name="M:org.apache.zookeeper.ZooKeeper.AddLogConsumer(org.apache.utils.ILogConsumer)">
+        <member name="P:org.apache.zookeeper.ZooKeeper.LogToFile">
             <summary>
-            Adds a custom log consumer. For integration with third party logging systems.
+            Should ZooKeeper log be written to a file named <see cref="P:org.apache.zookeeper.ZooKeeper.LogFileName"/>
+            </summary>
+        </member>
+        <member name="P:org.apache.zookeeper.ZooKeeper.LogToTrace">
+            <summary>
+            Should ZooKeeper log be written to trace.
+            The log level is controlled by <see cref="P:org.apache.zookeeper.ZooKeeper.LogLevel"/>
+            </summary>
+        </member>
+        <member name="P:org.apache.zookeeper.ZooKeeper.LogFileName">
+            <summary>
+            The file name of the log used when <see cref="P:org.apache.zookeeper.ZooKeeper.LogToFile"/> is true.
+            The log level is controlled by <see cref="P:org.apache.zookeeper.ZooKeeper.LogLevel"/>
+            </summary>
+        </member>
+        <member name="P:org.apache.zookeeper.ZooKeeper.LogLevel">
+            <summary>
+            The minimum log level that should be written to the output. The output can be set via the
+            <see cref="P:org.apache.zookeeper.ZooKeeper.LogToTrace"/>, <see cref="P:org.apache.zookeeper.ZooKeeper.LogToFile"/> and <see cref="P:org.apache.zookeeper.ZooKeeper.CustomLogConsumer"/>
+            </summary>
+        </member>
+        <member name="P:org.apache.zookeeper.ZooKeeper.CustomLogConsumer">
+            <summary>
+            This is for providing an external logger. 
+            The log level is controlled by <see cref="P:org.apache.zookeeper.ZooKeeper.LogLevel"/>
             </summary>
         </member>
         <member name="M:org.apache.zookeeper.ZooKeeper.Using(System.String,System.Int32,org.apache.zookeeper.Watcher,System.Int64,System.Byte[],System.Func{org.apache.zookeeper.ZooKeeper,System.Threading.Tasks.Task},System.Boolean)">
@@ -1531,6 +1538,22 @@
             ZOOKEEPER-849.
             </summary>
         </member>
+        <member name="M:org.apache.zookeeper.client.DnsResolver.GetHostAddressesAsync(System.String)">
+            <summary>
+            The method "Dns.GetHostAddressesAsync" doesn't exist in .NET 4
+            But, it isn't really async in .NET 4.5 and up. The internal implementation
+            just queues a blocking call on the thread pool. see: http://stackoverflow.com/questions/11480742/dns-begingethost-methods-blocking
+            Therefore, the .NET 4 implementation here is equivalent to "Dns.GetHostAddressesAsync".
+            In .NET Core the implementation is OS specific, so real async implementations
+            might exist.
+            </summary>
+        </member>
+        <member name="T:org.apache.zookeeper.client.DynamicHostProvider">
+            <summary>
+            This HostProvider resolves its hosts on first call to next(). Then, after 
+            returning all resolved IPs, it resolves again.
+            </summary>
+        </member>
         <member name="T:org.apache.zookeeper.client.HostProvider">
             <summary>
             A set of hosts a ZooKeeper client should connect to.
@@ -1552,7 +1575,7 @@
             * A HostProvider that prefers nearby hosts.
             </summary>
         </member>
-        <member name="M:org.apache.zookeeper.client.HostProvider.next(System.Int64)">
+        <member name="M:org.apache.zookeeper.client.HostProvider.next(System.Int32)">
             <summary>
             The next host to try to connect to.
             
@@ -1566,11 +1589,6 @@
             Notify the HostProvider of a successful connection.
             
             The HostProvider may use this notification to reset it's inner state.
-            </summary>
-        </member>
-        <member name="T:org.apache.zookeeper.client.StaticHostProvider">
-            <summary>
-            Most simple HostProvider, resolves only on instantiation.
             </summary>
         </member>
         <member name="T:org.apache.zookeeper.common.PathUtils">
@@ -1862,35 +1880,37 @@
             <param name="buffer">The byte array to copy the bytes into</param>
             <param name="index">The first index into the array to copy the bytes into</param>
         </member>
-        <member name="T:org.apache.utils.LogWriterBase">
+        <member name="T:org.apache.utils.ILogConsumer">
             <summary>
-                The Log Writer base class provides default partial implementation suitable for most specific log writer.
+            This is for providing external loggers for ZooKeeper
             </summary>
         </member>
-        <member name="M:org.apache.utils.LogWriterBase.Log(System.Diagnostics.TraceLevel,System.String,System.String,System.Exception)">
+        <member name="M:org.apache.utils.ILogConsumer.Log(System.Diagnostics.TraceLevel,System.String,System.String,System.Exception)">
+            <summary>
+            The log method
+            </summary>
+            <param name="severity"></param>
+            <param name="className"></param>
+            <param name="message"></param>
+            <param name="exception"></param>
+        </member>
+        <member name="M:org.apache.utils.LogWriter.Log(System.Diagnostics.TraceLevel,System.String,System.String,System.Exception)">
             <summary>
                 The method to call during logging.
                 This method should be very fast, since it is called synchronously during logging.
             </summary>
-            <param name="severity">The severity of the message being traced.</param>
+            <param name="traceLevel">The severity of the message being traced.</param>
             <param name="className">The name of the logger tracing the message.</param>
             <param name="message">The message to log.</param>
             <param name="exception">The exception to log. May be null.</param>
         </member>
-        <member name="M:org.apache.utils.LogWriterBase.WriteLogMessage(System.String,System.Diagnostics.TraceLevel)">
-            <summary>
-                The method to call during logging to write the log message by this log.
-            </summary>
-            <param name="msg">Message string to be written</param>
-            <param name="severity">The severity level of this message</param>
-        </member>
-        <member name="M:org.apache.utils.LogWriterBase.PrintDate">
+        <member name="M:org.apache.utils.LogWriter.PrintDate">
             <summary>
                 Utility function to convert a <c>DateTime</c> object into printable data format used by the TraceLogger subsystem.
             </summary>
             <returns>Formatted string representation of the input data, in the printable format used by the TraceLogger subsystem.</returns>
         </member>
-        <member name="M:org.apache.utils.LogWriterBase.PrintException(System.Exception)">
+        <member name="M:org.apache.utils.LogWriter.PrintException(System.Exception)">
             <summary>
                 Utility function to convert an exception into printable format, including expanding and formatting any nested
                 sub-expressions.
@@ -1900,22 +1920,6 @@
                 Formatted string representation of the exception, including expanding and formatting any nested
                 sub-expressions.
             </returns>
-        </member>
-        <member name="T:org.apache.utils.LogWriterToFile">
-            <summary>
-                This Log Writer class is an Log Consumer wrapper class which writes to a specified log file.
-            </summary>
-        </member>
-        <member name="M:org.apache.utils.LogWriterToFile.WriteLogMessage(System.String,System.Diagnostics.TraceLevel)">
-            <summary>Write the log message for this log.</summary>
-        </member>
-        <member name="T:org.apache.utils.LogWriterToTrace">
-            <summary>
-                The Log Writer class is a convenient wrapper around the .Net Trace class.
-            </summary>
-        </member>
-        <member name="M:org.apache.utils.LogWriterToTrace.WriteLogMessage(System.String,System.Diagnostics.TraceLevel)">
-            <summary>Write the log message for this log.</summary>
         </member>
     </members>
 </doc>

@@ -538,6 +538,11 @@
             Sets the partition key before persist call.
             </summary>
         </member>
+        <member name="M:Orleans.Providers.Streams.PersistentStreams.StreamDeliveryFailureEntity.MakeDefaultPartitionKey(System.String,System.String)">
+            <summary>
+            Default partition key
+            </summary>
+        </member>
         <member name="M:Orleans.Providers.Streams.PersistentStreams.StreamDeliveryFailureEntity.SetRowkey">
             <summary>
             Sets the row key before persist call
@@ -578,6 +583,11 @@
         </member>
         <member name="F:Orleans.Providers.Streams.AzureQueue.AzureQueueAdapterFactory.DeploymentIdPropertyName">
             <summary>"DeploymentId".</summary>
+        </member>
+        <member name="P:Orleans.Providers.Streams.AzureQueue.AzureQueueAdapterFactory.StreamFailureHandlerFactory">
+            <summary>
+            Application level failure handler override.
+            </summary>
         </member>
         <member name="M:Orleans.Providers.Streams.AzureQueue.AzureQueueAdapterFactory.Init(Orleans.Providers.IProviderConfiguration,System.String,Orleans.Runtime.Logger,System.IServiceProvider)">
             <summary> Init the factory.</summary>
@@ -986,6 +996,33 @@
             Writes a set of statistics to storage.
             </summary>
             <param name="statsCounters">Statistics to write</param>
+            <returns></returns>
+        </member>
+        <member name="T:Orleans.AzureUtils.TableQueryFilterBuilder">
+            <summary>
+            Helper functions for building table queries.
+            </summary>
+        </member>
+        <member name="M:Orleans.AzureUtils.TableQueryFilterBuilder.MatchPartitionKeyFilter(System.String)">
+            <summary>
+            Builds query string to match partitionkey
+            </summary>
+            <param name="partitionKey"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Orleans.AzureUtils.TableQueryFilterBuilder.MatchRowKeyFilter(System.String)">
+            <summary>
+            Builds query string to match rowkey
+            </summary>
+            <param name="rowKey"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Orleans.AzureUtils.TableQueryFilterBuilder.MatchPartitionKeyAndRowKeyFilter(System.String,System.String)">
+            <summary>
+            Builds a query string that matches a specific partitionkey and rowkey.
+            </summary>
+            <param name="partitionKey"></param>
+            <param name="rowKey"></param>
             <returns></returns>
         </member>
     </members>
