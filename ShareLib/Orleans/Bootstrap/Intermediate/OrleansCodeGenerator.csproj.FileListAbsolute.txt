@@ -5,3 +5,4 @@ D:\work\_Git2\orleans\Binaries\Release\Bootstrap\Intermediate\OrleansCodeGenerat
 D:\work\_Git2\orleans\Binaries\Release\Bootstrap\Intermediate\OrleansCodeGenerator.pdb
 D:\work\_Git2\orleans\Binaries\Release\Bootstrap\OrleansCodeGenerator.dll
 D:\work\_Git2\orleans\Binaries\Release\Bootstrap\OrleansCodeGenerator.pdb
+D:\work\_Git2\orleans\Binaries\Release\Bootstrap\OrleansCodeGenerator.XML

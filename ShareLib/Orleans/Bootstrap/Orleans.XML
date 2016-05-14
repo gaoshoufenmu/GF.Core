@@ -5618,7 +5618,7 @@
             Interface for accessing the deployment configuration.
             </summary>
         </member>
-        <member name="M:Orleans.Streams.IDeploymentConfiguration.GetAllSiloInstanceNames">
+        <member name="M:Orleans.Streams.IDeploymentConfiguration.GetAllSiloNames">
             <summary>
             Get the silo instance names for all configured silos
             </summary>

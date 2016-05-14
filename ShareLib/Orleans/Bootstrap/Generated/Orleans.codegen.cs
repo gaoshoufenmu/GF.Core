@@ -163,10 +163,10 @@ namespace Orleans
             result.@FaultZone = input.@FaultZone;
             result.@HostName = input.@HostName;
             result.@IAmAliveTime = input.@IAmAliveTime;
-            result.@InstanceName = input.@InstanceName;
             result.@ProxyPort = input.@ProxyPort;
             result.@RoleName = input.@RoleName;
             result.@SiloAddress = input.@SiloAddress;
+            result.@SiloName = input.@SiloName;
             result.@StartTime = input.@StartTime;
             result.@Status = input.@Status;
             result.@SuspectTimes = (global::System.Collections.Generic.List<global::System.Tuple<global::Orleans.Runtime.SiloAddress, global::System.DateTime>>)global::Orleans.Serialization.SerializationManager.@DeepCopyInner(input.@SuspectTimes);
@@ -182,10 +182,10 @@ namespace Orleans
             global::Orleans.Serialization.SerializationManager.@SerializeInner(input.@FaultZone, stream, typeof (global::System.Int32));
             global::Orleans.Serialization.SerializationManager.@SerializeInner(input.@HostName, stream, typeof (global::System.String));
             global::Orleans.Serialization.SerializationManager.@SerializeInner(input.@IAmAliveTime, stream, typeof (global::System.DateTime));
-            global::Orleans.Serialization.SerializationManager.@SerializeInner(input.@InstanceName, stream, typeof (global::System.String));
             global::Orleans.Serialization.SerializationManager.@SerializeInner(input.@ProxyPort, stream, typeof (global::System.Int32));
             global::Orleans.Serialization.SerializationManager.@SerializeInner(input.@RoleName, stream, typeof (global::System.String));
             global::Orleans.Serialization.SerializationManager.@SerializeInner(input.@SiloAddress, stream, typeof (global::Orleans.Runtime.SiloAddress));
+            global::Orleans.Serialization.SerializationManager.@SerializeInner(input.@SiloName, stream, typeof (global::System.String));
             global::Orleans.Serialization.SerializationManager.@SerializeInner(input.@StartTime, stream, typeof (global::System.DateTime));
             global::Orleans.Serialization.SerializationManager.@SerializeInner(input.@Status, stream, typeof (global::Orleans.Runtime.SiloStatus));
             global::Orleans.Serialization.SerializationManager.@SerializeInner(input.@SuspectTimes, stream, typeof (global::System.Collections.Generic.List<global::System.Tuple<global::Orleans.Runtime.SiloAddress, global::System.DateTime>>));
@@ -200,10 +200,10 @@ namespace Orleans
             result.@FaultZone = (global::System.Int32)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.Int32), stream);
             result.@HostName = (global::System.String)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.String), stream);
             result.@IAmAliveTime = (global::System.DateTime)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.DateTime), stream);
-            result.@InstanceName = (global::System.String)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.String), stream);
             result.@ProxyPort = (global::System.Int32)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.Int32), stream);
             result.@RoleName = (global::System.String)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.String), stream);
             result.@SiloAddress = (global::Orleans.Runtime.SiloAddress)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::Orleans.Runtime.SiloAddress), stream);
+            result.@SiloName = (global::System.String)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.String), stream);
             result.@StartTime = (global::System.DateTime)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.DateTime), stream);
             result.@Status = (global::Orleans.Runtime.SiloStatus)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::Orleans.Runtime.SiloStatus), stream);
             result.@SuspectTimes = (global::System.Collections.Generic.List<global::System.Tuple<global::Orleans.Runtime.SiloAddress, global::System.DateTime>>)global::Orleans.Serialization.SerializationManager.@DeserializeInner(typeof (global::System.Collections.Generic.List<global::System.Tuple<global::Orleans.Runtime.SiloAddress, global::System.DateTime>>), stream);
