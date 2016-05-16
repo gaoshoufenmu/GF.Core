@@ -19,9 +19,20 @@ namespace SharpConfig
         public char Symbol;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Comment"/> class.
+        /// Initializes a new instance of the <see cref="Comment"/> structure,
+        /// using the first element in <see cref="Configuration.ValidCommentChars"/> as the comment symbol.
         /// </summary>
-        /// <param name="value"> The string value of the comment.</param>
+        /// <param name="value">The string value of the comment.</param>
+        public Comment(string value)
+        {
+            Value = value;
+            Symbol = Configuration.ValidCommentChars[0];
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Comment"/> structure.
+        /// </summary>
+        /// <param name="value">The string value of the comment.</param>
         /// <param name="symbol">The delimiting symbol of the comment.</param>
         public Comment(string value, char symbol)
         {
@@ -30,12 +41,8 @@ namespace SharpConfig
         }
 
         /// <summary>
-        /// Returns the fully qualified type name of this instance.
+        /// Gets the string representation of the comment.
         /// </summary>
-        ///
-        /// <returns>
-        /// A <see cref="T:System.String" /> containing a fully qualified type name.
-        /// </returns>
         public override string ToString()
         {
             return string.Format("{0} {1}", Symbol, Value ?? string.Empty);

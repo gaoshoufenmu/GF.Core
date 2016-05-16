@@ -5,4 +5,3 @@ D:\work\_Git2\orleans\Binaries\Release\Bootstrap\Intermediate\Orleans.pdb
 D:\work\_Git2\orleans\Binaries\Release\Bootstrap\Orleans.dll
 D:\work\_Git2\orleans\Binaries\Release\Bootstrap\Orleans.pdb
 D:\work\_Git2\orleans\Binaries\Release\Bootstrap\Orleans.XML
-D:\work\_Git2\orleans\Binaries\Release\Bootstrap\Intermediate\Orleans.csprojResolveAssemblyReference.cache

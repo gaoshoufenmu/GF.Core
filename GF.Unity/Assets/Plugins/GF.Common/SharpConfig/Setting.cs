@@ -40,18 +40,6 @@ namespace SharpConfig
             SetValue(value);
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Setting"/> class.
-        /// </summary>
-        ///
-        /// <param name="name"> The name of the setting.</param>
-        /// <param name="value">The value of the setting.</param>
-        public Setting(string name, DateTime value) :
-            base(name)
-        {
-            SetValue(value);
-        }
-
         #endregion
 
         #region Properties
@@ -369,15 +357,17 @@ namespace SharpConfig
                 // Special case for bool.
                 switch (value.ToLowerInvariant())
                 {
+                    case "false":
                     case "off":
                     case "no":
                     case "0":
-                        value = bool.FalseString;
+                        ret = false;
                         break;
+                    case "true":
                     case "on":
                     case "yes":
                     case "1":
-                        value = bool.TrueString;
+                        ret = true;
                         break;
                 }
             }
@@ -511,7 +501,7 @@ namespace SharpConfig
         #region Public Methods
 
         /// <summary>
-        /// Gets a string that represents the setting, not including comments.
+        /// Gets the string representation of the setting, without its comments.
         /// </summary>
         public override string ToString()
         {
@@ -519,7 +509,7 @@ namespace SharpConfig
         }
 
         /// <summary>
-        /// Gets a string that represents the setting.
+        /// Gets the string representation of the setting.
         /// </summary>
         ///
         /// <param name="includeComment">Specify true to include the comments in the string; false otherwise.</param>
@@ -535,26 +525,33 @@ namespace SharpConfig
                 if (Comment != null && hasPreComments)
                 {
                     // Include inline comment and pre-comments.
-                    return string.Format("{0}\n{1}={2} {3}",
-                        string.Join(Environment.NewLine, preCommentStrings),
-                        Name, mRawValue, Comment.ToString());
+                    return string.Format("{0}{1}{2} = {3} {4}",
+                        string.Join(Environment.NewLine, preCommentStrings), // {0}
+                        Environment.NewLine,    // {1}
+                        Name,                   // {2}
+                        mRawValue,              // {3}
+                        Comment.ToString()      // {4}
+                        );
                 }
                 else if (Comment != null)
                 {
                     // Include only the inline comment.
-                    return string.Format("{0}={1} {2}", Name, mRawValue, Comment.ToString());
+                    return string.Format("{0} = {1} {2}", Name, mRawValue, Comment.ToString());
                 }
                 else if (hasPreComments)
                 {
                     // Include only the pre-comments.
-                    return string.Format("{0}\n{1}={2}",
-                        string.Join(Environment.NewLine, preCommentStrings),
-                        Name, mRawValue);
+                    return string.Format("{0}{1}{2} = {3}",
+                        string.Join(Environment.NewLine, preCommentStrings), // {0}
+                        Environment.NewLine,    // {1}
+                        Name,                   // {2}
+                        mRawValue               // {3}
+                        );
                 }
             }
 
             // In every other case, include just the assignment in the string.
-            return string.Format("{0}={1}", Name, mRawValue);
+            return string.Format("{0} = {1}", Name, mRawValue);
         }
 
         #endregion
