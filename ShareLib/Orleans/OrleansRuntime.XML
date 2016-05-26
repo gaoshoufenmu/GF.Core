@@ -1236,6 +1236,12 @@
             Gets the assembly which has just been loaded from.
             </summary>
         </member>
+        <member name="M:Orleans.Runtime.GrainTypeManager.GetGrainTypeList">
+            <summary>
+            Returns a list of all graintypes in the system.
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:Orleans.Runtime.ActivationCollector">
             <summary>
             Identifies activations that have been idle long enough to be deactivated.

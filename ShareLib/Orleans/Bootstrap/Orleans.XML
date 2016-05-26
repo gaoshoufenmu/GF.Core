@@ -1365,6 +1365,30 @@
             <param name="gatewayPort">Client gateway TCP port</param>
             <returns>ClusterConfiguration object that can be passed to Silo or SiloHost classes for initialization</returns>
         </member>
+        <member name="M:Orleans.Runtime.IRingRange.InRange(System.UInt32)">
+            <summary>
+            Check if <paramref name="n"/> is our responsibility to serve
+            </summary>
+            <param name="id"></param>
+            <returns>true if the reminder is in our responsibility range, false otherwise</returns>
+        </member>
+        <member name="P:Orleans.Runtime.SingleRange.Begin">
+            <summary>
+            Exclusive
+            </summary>
+        </member>
+        <member name="P:Orleans.Runtime.SingleRange.End">
+            <summary>
+            Inclusive
+            </summary>
+        </member>
+        <member name="M:Orleans.Runtime.SingleRange.InRange(System.UInt32)">
+            <summary>
+            checks if n is element of (Begin, End], while remembering that the ranges are on a ring
+            </summary>
+            <param name="n"></param>
+            <returns>true if n is in (Begin, End], false otherwise</returns>
+        </member>
         <member name="T:Orleans.Runtime.OrleansException">
             <summary>
             An exception class used by the Orleans runtime for reporting errors.
@@ -1627,30 +1651,6 @@
             </summary>
             <param name="observer">An observer interface to receive range change notifications.</param>
             <returns>bool value indicating that unsubscription succeeded or not</returns>
-        </member>
-        <member name="M:Orleans.Runtime.IRingRange.InRange(System.UInt32)">
-            <summary>
-            Check if <paramref name="n"/> is our responsibility to serve
-            </summary>
-            <param name="id"></param>
-            <returns>true if the reminder is in our responsibility range, false otherwise</returns>
-        </member>
-        <member name="P:Orleans.Runtime.SingleRange.Begin">
-            <summary>
-            Exclusive
-            </summary>
-        </member>
-        <member name="P:Orleans.Runtime.SingleRange.End">
-            <summary>
-            Inclusive
-            </summary>
-        </member>
-        <member name="M:Orleans.Runtime.SingleRange.InRange(System.UInt32)">
-            <summary>
-            checks if n is element of (Begin, End], while remembering that the ranges are on a ring
-            </summary>
-            <param name="n"></param>
-            <returns>true if n is in (Begin, End], false otherwise</returns>
         </member>
         <member name="M:Orleans.Runtime.AssemblyLoaderReflectionCriterion.NewCriterion(Orleans.Runtime.AssemblyLoaderReflectionCriterion.AssemblyPredicate)">
             <summary>
@@ -1928,18 +1928,20 @@
             </summary>
             <returns>Completion promise for this operation.</returns>
         </member>
-        <member name="M:Orleans.Runtime.IManagementGrain.GetGrainActivationCount(Orleans.Runtime.GrainReference)">
+        <member name="M:Orleans.Runtime.IManagementGrain.GetDetailedGrainStatistics(System.String[],Orleans.Runtime.SiloAddress[])">
             <summary>
-            Return the most recent activation count for a specific grain across all silos.
+            Returns the most recent detailed grain statistics information, amalgomated across silos for the specified types.
             </summary>
-            <param name="grainReference">Reference to the grain to be queried.</param>
-            <returns>Completion promise for this operation.</returns>
+            <param name="hostsIds">List of silos this command is to be sent to.</param>
+            <param name="types">Array of grain types to filter the results with</param>
+            <returns></returns>
         </member>
         <member name="M:Orleans.Runtime.IManagementGrain.GetTotalActivationCount">
             <summary>
             Return the total count of all current grain activations across all silos.
             </summary>
             <returns>Completion promise for this operation.</returns>
+            
         </member>
         <member name="M:Orleans.Runtime.IManagementGrain.SendControlCommandToProvider(System.String,System.String,System.Int32,System.Object)">
             <summary>
@@ -1983,6 +1985,13 @@
             </summary>
             <param name="hostIds">Silos to update, or null for all silos</param>
             <param name="configuration">XML elements and attributes to update</param>
+            <returns></returns>
+        </member>
+        <member name="M:Orleans.Runtime.IManagementGrain.GetActiveGrainTypes(Orleans.Runtime.SiloAddress[])">
+            <summary>
+            Returns an array of all the active grain types in the system
+            </summary>
+            <param name="hostsIds">List of silos this command is to be sent to.</param>
             <returns></returns>
         </member>
         <member name="M:Orleans.Runtime.IMembershipService.SiloStatusChangeNotification(Orleans.Runtime.SiloAddress,Orleans.Runtime.SiloStatus)">
@@ -2211,6 +2220,26 @@
         <member name="M:Orleans.Runtime.SimpleGrainStatistic.ToString">
             <summary>
             Returns the string representatio of this SimpleGrainStatistic.
+            </summary>
+        </member>
+        <member name="P:Orleans.Runtime.DetailedGrainStatistic.GrainType">
+            <summary>
+            The type of the grain for this DetailedGrainStatistic.
+            </summary>
+        </member>
+        <member name="P:Orleans.Runtime.DetailedGrainStatistic.SiloAddress">
+            <summary>
+            The silo address for this DetailedGrainStatistic.
+            </summary>
+        </member>
+        <member name="P:Orleans.Runtime.DetailedGrainStatistic.GrainIdentity">
+            <summary>
+            Unique Id for the grain.
+            </summary>
+        </member>
+        <member name="P:Orleans.Runtime.DetailedGrainStatistic.Category">
+            <summary>
+            The grains Category
             </summary>
         </member>
         <member name="T:Orleans.Runtime.SafeTimerBase">
