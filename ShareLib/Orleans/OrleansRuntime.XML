@@ -19,6 +19,26 @@
             Tombstone for activation that was unable to be properly created
             </summary>
         </member>
+        <member name="T:Orleans.Runtime.GrainCreator">
+            <summary>
+            Helper classes used to create local instances of grains.
+            </summary>
+        </member>
+        <member name="M:Orleans.Runtime.GrainCreator.#ctor(Orleans.Runtime.IGrainRuntime,System.IServiceProvider)">
+            <summary>
+            Instantiate a new instance of a <see cref="T:Orleans.Runtime.GrainCreator"/>
+            </summary>
+            <param name="grainRuntime">Runtime to use for all new grains</param>
+            <param name="services">(Optional) Service provider used to create new grains</param>
+        </member>
+        <member name="M:Orleans.Runtime.GrainCreator.CreateGrainInstance(System.Type,Orleans.Core.IGrainIdentity)">
+            <summary>
+            Create a new instance of a grain
+            </summary>
+            <param name="grainType"></param>
+            <param name="identity">Identity for the new grain</param>
+            <returns></returns>
+        </member>
         <member name="T:Orleans.Runtime.Counters.OrleansPerformanceCounterInstaller">
             <summary>
             Providers installer hooks for registering Orleans custom performance counters.
@@ -81,6 +101,237 @@
             Delete any existing perf counters registered with Windows
             </summary>
             <remarks>Note: Program needs to be running as Administrator to be able to delete Windows perf counters.</remarks>
+        </member>
+        <member name="T:Orleans.Runtime.MultiClusterNetwork.MultiClusterData">
+            <summary>
+            Data stored and transmitted in the multicluster network. 
+            IMPORTANT: these objects can represent full state, partial state, or delta.
+            So far includes multicluster-configuration and multicluster-gateway information.
+            Data is gossip-able.
+            </summary>
+        </member>
+        <member name="P:Orleans.Runtime.MultiClusterNetwork.MultiClusterData.Gateways">
+            <summary>
+            The dictionary of gateway entries and their current status.
+            </summary>
+        </member>
+        <member name="P:Orleans.Runtime.MultiClusterNetwork.MultiClusterData.Configuration">
+            <summary>
+            The admin-injected configuration.
+            May be null if none has been injected yet, or if this object represents a partial state or delta.
+            </summary>
+        </member>
+        <member name="P:Orleans.Runtime.MultiClusterNetwork.MultiClusterData.IsEmpty">
+            <summary>
+            Whether there is actually any data in here.
+            </summary>
+        </member>
+        <member name="M:Orleans.Runtime.MultiClusterNetwork.MultiClusterData.#ctor(System.Collections.Generic.IReadOnlyDictionary{Orleans.Runtime.SiloAddress,Orleans.Runtime.MultiClusterNetwork.GatewayEntry},Orleans.MultiCluster.MultiClusterConfiguration)">
+            <summary>
+            Construct MultiClusterData containing a collection of gateway entries and a multi-cluster configuration.
+            </summary>
+            <param name="d">The gateway entries, by SiloAddress</param>
+            <param name="config">The configuration</param>
+        </member>
+        <member name="M:Orleans.Runtime.MultiClusterNetwork.MultiClusterData.#ctor">
+            <summary>
+            Construct empty MultiClusterData.
+            </summary>
+        </member>
+        <member name="M:Orleans.Runtime.MultiClusterNetwork.MultiClusterData.#ctor(Orleans.Runtime.MultiClusterNetwork.GatewayEntry)">
+            <summary>
+            Construct MultiClusterData containing a single gateway entry.
+            </summary>
+            <param name="gatewayEntry">The gateway entry</param>
+        </member>
+        <member name="M:Orleans.Runtime.MultiClusterNetwork.MultiClusterData.#ctor(System.Collections.Generic.IEnumerable{Orleans.Runtime.MultiClusterNetwork.GatewayEntry})">
+            <summary>
+            Construct MultiClusterData containing a collection of gateway entries.
+            </summary>
+            <param name="gatewayEntries">The gateway entries, by SiloAddress</param>
+        </member>
+        <member name="M:Orleans.Runtime.MultiClusterNetwork.MultiClusterData.#ctor(Orleans.MultiCluster.MultiClusterConfiguration)">
+            <summary>
+            Construct MultiClusterData containing a multi-cluster configuration.
+            </summary>
+            <param name="config">The configuration</param>
+        </member>
+        <member name="M:Orleans.Runtime.MultiClusterNetwork.MultiClusterData.ToString">
+            <summary>
+            Display content of MultiCluster data as an (abbreviated) string.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Orleans.Runtime.MultiClusterNetwork.MultiClusterData.IsActiveGatewayForCluster(Orleans.Runtime.SiloAddress,System.String)">
+            <summary>
+            Check whether a particular silo is an active gateway for a cluster
+            </summary>
+            <param name="address">the silo address</param>
+            <param name="clusterid">the id of the cluster</param>
+            <returns></returns>
+        </member>
+        <member name="M:Orleans.Runtime.MultiClusterNetwork.MultiClusterData.Merge(Orleans.Runtime.MultiClusterNetwork.MultiClusterData)">
+            <summary>
+             merge source into this object, and return result.
+             Ignores expired entries in source, and removes expired entries from this.
+            </summary>
+            <param name="source">The source data to apply to the data in this object</param>
+            <returns>The updated data</returns>
+        </member>
+        <member name="M:Orleans.Runtime.MultiClusterNetwork.MultiClusterData.Merge(Orleans.Runtime.MultiClusterNetwork.MultiClusterData,Orleans.Runtime.MultiClusterNetwork.MultiClusterData@)">
+            <summary>
+             incorporate source, producing new result, and report delta.
+             Ignores expired entries in source, and removes expired entries from this.
+            </summary>
+            <param name="source">The source data to apply to the data in this object</param>
+            <param name="delta">A delta of what changes were actually applied, used for change listeners</param>
+            <returns>The updated data</returns>
+        </member>
+        <member name="M:Orleans.Runtime.MultiClusterNetwork.MultiClusterData.Minus(Orleans.Runtime.MultiClusterNetwork.MultiClusterData)">
+            <summary>
+            Returns all data of this object except for what keys appear in exclude
+            </summary>
+            <param name="exclude"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Orleans.Runtime.MultiClusterNetwork.GatewayEntry">
+            <summary>
+            Information about gateways, as stored/transmitted in the multicluster network.
+            </summary>
+        </member>
+        <member name="P:Orleans.Runtime.MultiClusterNetwork.GatewayEntry.ClusterId">
+            <summary>
+            The cluster id.
+            </summary>
+        </member>
+        <member name="P:Orleans.Runtime.MultiClusterNetwork.GatewayEntry.SiloAddress">
+            <summary>
+            The address of the silo.
+            </summary>
+        </member>
+        <member name="P:Orleans.Runtime.MultiClusterNetwork.GatewayEntry.Status">
+            <summary>
+            The gateway status of the silo (indicates whether this silo is currently acting as a gateway)
+            </summary>
+        </member>
+        <member name="P:Orleans.Runtime.MultiClusterNetwork.GatewayEntry.HeartbeatTimestamp">
+            <summary>
+            UTC timestamp of this gateway entry.
+            </summary>
+        </member>
+        <member name="P:Orleans.Runtime.MultiClusterNetwork.GatewayEntry.Expired">
+            <summary>
+            Whether this entry has expired based on its timestamp.
+            </summary>
+        </member>
+        <member name="F:Orleans.Runtime.MultiClusterNetwork.GatewayEntry.ExpiresAfter">
+            <summary>
+            time after which entries expire.
+            </summary>
+        </member>
+        <member name="M:Orleans.Runtime.MultiClusterNetwork.GatewayEntry.Equals(Orleans.Runtime.MultiClusterNetwork.GatewayEntry)">
+            <summary>
+            Checks equality of all fields.
+            </summary>
+        </member>
+        <member name="M:Orleans.Runtime.MultiClusterNetwork.GatewayEntry.Equals(System.Object)">
+            <summary>
+            Untyped version of Equals.
+            </summary>
+        </member>
+        <member name="M:Orleans.Runtime.MultiClusterNetwork.GatewayEntry.GetHashCode">
+            <summary>
+            Overrides GetHashCode to conform with definition of Equals.
+            </summary>
+        </member>
+        <member name="M:Orleans.Runtime.MultiClusterNetwork.GatewayEntry.ToString">
+            <summary>
+            create a string representation of the gateway info.
+            </summary>
+        </member>
+        <member name="T:Orleans.Runtime.MultiClusterNetwork.IGossipChannel">
+            <summary>
+            Interface for gossip channel.
+            
+            A gossip channel stores multicluster data (configuration, gateways) and exchanges
+            this data with silos using a gossip-style communication, offering
+            two different methods (Publish or Synchronize).
+            </summary>
+        </member>
+        <member name="M:Orleans.Runtime.MultiClusterNetwork.IGossipChannel.Initialize(System.Guid,System.String)">
+            <summary>
+            Initialize the channel with given configuration.
+            </summary>
+            <param name="serviceId"></param>
+            <param name="connectionString"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Orleans.Runtime.MultiClusterNetwork.IGossipChannel.Name">
+            <summary>
+            A name for the channel.
+            </summary>
+        </member>
+        <member name="M:Orleans.Runtime.MultiClusterNetwork.IGossipChannel.Publish(Orleans.Runtime.MultiClusterNetwork.MultiClusterData)">
+            <summary>
+            One-way small-scale gossip. 
+            Used to update small amounts of data (e.g. multicluster configuration, single gateway status) in the channel.
+            The passed-in data is stored only if it is newer than the already stored data.
+            </summary>
+            <param name="data">The data to update</param>
+            <returns></returns>
+        </member>
+        <member name="M:Orleans.Runtime.MultiClusterNetwork.IGossipChannel.Synchronize(Orleans.Runtime.MultiClusterNetwork.MultiClusterData)">
+            <summary>
+            Two-way bulk gossip.
+            - any passed-in information that is newer than stored information is stored.
+            - any stored information that is newer than passed-in information is returned.
+            </summary>
+            <param name="gossipdata">The gossip data to compare to the current contents, and store if newer, or not there</param>
+            <returns>returns all stored data that is newer, or not part of, the gossipdata</returns>
+        </member>
+        <member name="M:Orleans.Runtime.MultiClusterNetwork.IMultiClusterOracle.GetMultiClusterConfiguration">
+            <summary>
+            Get the latest multicluster configuration.
+            </summary>
+            <returns>The current multicluster configuration, or null if there is none</returns>
+        </member>
+        <member name="M:Orleans.Runtime.MultiClusterNetwork.IMultiClusterOracle.InjectMultiClusterConfiguration(Orleans.MultiCluster.MultiClusterConfiguration)">
+            <summary>
+            Inject a multicluster configuration. For this to have any effect, the timestamp must be newer 
+            than the latest configuation stored in the multicluster network.
+            </summary>
+            <returns>A task that completes once information has propagated to the multicluster channels</returns>
+        </member>
+        <member name="M:Orleans.Runtime.MultiClusterNetwork.IMultiClusterOracle.IsFunctionalClusterGateway(Orleans.Runtime.SiloAddress)">
+            <summary>
+            Whether a gateway is functional (to the best knowledge of this node) 
+            </summary>
+            <param name="siloAddress">A gateway whose status we are interested in.</param>
+        </member>
+        <member name="M:Orleans.Runtime.MultiClusterNetwork.IMultiClusterOracle.FindLaggingSilos(Orleans.MultiCluster.MultiClusterConfiguration)">
+            <summary>
+            Contact all silos in all clusters, return silos that do not have the expected configuration.
+            </summary>
+            <returns>A dictionary containing silo addresses and the corresponding configuration for all non-matching configurations</returns>
+        </member>
+        <member name="M:Orleans.Runtime.MultiClusterNetwork.IMultiClusterOracle.GetActiveClusters">
+            <summary>
+            Returns a list of cluster ids for active clusters based on what gateways we have stored in the table.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Orleans.Runtime.MultiClusterNetwork.IMultiClusterOracle.GetGateways">
+            <summary>
+            Returns the list of currently known multicluster gateways.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Orleans.Runtime.MultiClusterNetwork.IMultiClusterOracle.GetRandomClusterGateway(System.String)">
+            <summary>
+            Returns one of the active cluster gateways for a given cluster.
+            </summary>
+            <param name="cluster">the cluster for which we want a gateway</param>
+            <returns>a gateway address, or null if none is found for the given cluster</returns>
         </member>
         <member name="T:Orleans.Runtime.GrainDirectory.RegistrarManager">
             <summary>
@@ -482,6 +733,12 @@
             <param name="onlyActive">Include only silo who are currently considered to be active. If false, inlude all.</param>
             <returns>A list of silo statuses.</returns>
         </member>
+        <member name="M:Orleans.Runtime.ISiloStatusOracle.GetApproximateMultiClusterGateways">
+            <summary>
+            Get a list of silos that are designated to function as gateways.
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:Orleans.Runtime.ISiloStatusOracle.TryGetSiloName(Orleans.Runtime.SiloAddress,System.String@)">
             <summary>
             Get the name of a silo. 
@@ -644,9 +901,7 @@
             The base invoker will throw an appropriate exception if the request is not recognized.
             </summary>
             <param name="grain"></param>
-            <param name="interfaceId"></param>
-            <param name="methodId"></param>
-            <param name="arguments"></param>
+            <param name="request"></param>
             <returns></returns>
         </member>
         <member name="P:Orleans.Runtime.ActivationData.ForwardingAddress">
@@ -961,6 +1216,13 @@
             Interface for dynamic loading of ConfigureStartupBuilder
             </summary>
         </member>
+        <member name="M:Orleans.Runtime.Startup.IStartupBuilder.ConfigureStartup(System.String)">
+            <summary>
+            Configure dependency injection for startup of this silo.
+            </summary>
+            <param name="startupTypeName"></param>
+            <returns></returns>
+        </member>
         <member name="T:Orleans.Runtime.Host.SiloHost">
             <summary>
             Allows programmatically hosting an Orleans silo in the curent app domain.
@@ -1169,7 +1431,12 @@
             Search for and load the config file for this silo.
             </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Orleans.Runtime.Host.SiloHost.SetSiloConfig(Orleans.Runtime.Configuration.ClusterConfiguration)" -->
+        <member name="M:Orleans.Runtime.Host.SiloHost.SetSiloConfig(Orleans.Runtime.Configuration.ClusterConfiguration)">
+            <summary>
+            Allows silo config to be programmatically set.
+            </summary>
+            <param name="config">Configuration data for this silo and cluster.</param>
+        </member>
         <member name="M:Orleans.Runtime.Host.SiloHost.WaitForOrleansSiloShutdownImpl(System.Nullable{System.Threading.CancellationToken})">
             <summary>
             Helper to wait for this silo to shutdown or to be stopped via a cancellation token.
@@ -1190,6 +1457,10 @@
             <summary>
             Called when this silo is being Disposed by .NET runtime.
             </summary>
+        </member>
+        <member name="M:Orleans.Runtime.Host.SiloHost.Dispose(System.Boolean)">
+            <summary> Perform the Dispose / cleanup operation. </summary>
+            <param name="disposing"></param>
         </member>
         <member name="M:Orleans.Runtime.Providers.SiloProviderRuntime.TryAddExtension(Orleans.Runtime.IGrainExtension)">
             <summary>
@@ -1321,11 +1592,26 @@
             Orleans silo.
             </summary>
         </member>
+        <member name="F:Orleans.Runtime.Silo.PrimarySiloName">
+            <summary> Standard name for Primary silo. </summary>
+        </member>
         <member name="T:Orleans.Runtime.Silo.SiloType">
             <summary> Silo Types. </summary>
         </member>
+        <member name="F:Orleans.Runtime.Silo.SiloType.None">
+            <summary> No silo type specified. </summary>
+        </member>
+        <member name="F:Orleans.Runtime.Silo.SiloType.Primary">
+            <summary> Primary silo. </summary>
+        </member>
+        <member name="F:Orleans.Runtime.Silo.SiloType.Secondary">
+            <summary> Secondary silo. </summary>
+        </member>
         <member name="P:Orleans.Runtime.Silo.Type">
             <summary> Type of this silo. </summary>
+        </member>
+        <member name="P:Orleans.Runtime.Silo.ClusterId">
+            <summary> Get the id of the cluster this silo is part of. </summary>
         </member>
         <member name="P:Orleans.Runtime.Silo.SiloAddress">
             <summary> SiloAddress for this silo. </summary>
@@ -1489,6 +1775,7 @@
             <param name="newPlacement">Creation of new activation was requested by the placement director.</param>
             <param name="grainType">The type of grain to be activated or created</param>
             <param name="genericArguments">Specific generic type of grain to be activated or created</param>
+            <param name="requestContextData">Request context data.</param>
             <param name="activatedPromise"></param>
             <returns></returns>
         </member>
@@ -1540,6 +1827,7 @@
             Invoke the activate method on a newly created activation
             </summary>
             <param name="activation"></param>
+            <param name="requestContextData"></param>
             <returns></returns>
         </member>
         <member name="M:Orleans.Runtime.Dispatcher.ReceiveMessage(Orleans.Runtime.Message)">
@@ -1600,8 +1888,27 @@
             <param name="message"></param>
             <param name="targetActivation"></param>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Orleans.Runtime.Dispatcher.AsyncSendMessage(Orleans.Runtime.Message,Orleans.Runtime.ActivationData)" -->
-        <!-- Badly formed XML comment ignored for member "M:Orleans.Runtime.Dispatcher.AddressMessage(Orleans.Runtime.Message)" -->
+        <member name="M:Orleans.Runtime.Dispatcher.AsyncSendMessage(Orleans.Runtime.Message,Orleans.Runtime.ActivationData)">
+            <summary>
+            Send an outgoing message
+            - may buffer for transaction completion / commit if it ends a transaction
+            - choose target placement address, maintaining send order
+            - add ordering info and maintain send order
+            
+            </summary>
+            <param name="message"></param>
+            <param name="sendingActivation"></param>
+        </member>
+        <member name="M:Orleans.Runtime.Dispatcher.AddressMessage(Orleans.Runtime.Message)">
+            <summary>
+            Resolve target address for a message
+            - use transaction info
+            - check ordering info in message and sending activation
+            - use sender's placement strategy
+            </summary>
+            <param name="message"></param>
+            <returns>Resolve when message is addressed (modifies message fields)</returns>
+        </member>
         <member name="M:Orleans.Runtime.Dispatcher.TransportMessage(Orleans.Runtime.Message)">
             <summary>
             Directly send a message to the transport without processing
@@ -1635,10 +1942,9 @@
         </member>
         <member name="T:Orleans.Storage.MemoryStorageGrain">
             <summary>
-            Implementaiton class for the Storage Grain used by In-memory Storage Provider
+            Implementaiton class for the Storage Grain used by In-memory storage provider
+            <c>Orleans.Storage.MemoryStorage</c>
             </summary>
-            <seealso cref="!:MemoryStorage"/>
-            <seealso cref="T:Orleans.Storage.IMemoryStorageGrain"/>
         </member>
         <member name="M:Orleans.Streams.PersistentStreamPullingManager.QueueDistributionChangeNotification">
             <summary>

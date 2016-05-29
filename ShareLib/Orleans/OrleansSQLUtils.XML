@@ -1260,5 +1260,11 @@
             A query template to delete all reminder rows.
             </summary>
         </member>
+        <member name="M:OrleansSQLUtils.Storage.DbStoredQueries.Converters.TryGetSiloName(System.Data.IDataRecord)">
+            <summary>
+            This method is for compatibility with membership tables that
+            do not contain a SiloName field
+            </summary>
+        </member>
     </members>
 </doc>

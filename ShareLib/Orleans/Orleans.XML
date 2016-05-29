@@ -729,6 +729,22 @@
         <member name="F:Orleans.Runtime.Configuration.GlobalConfiguration.ReminderServiceProviderType.Custom">
             <summary>Use custom Reminder Service from third-party assembly</summary>
         </member>
+        <member name="T:Orleans.Runtime.Configuration.GlobalConfiguration.GossipChannelType">
+            <summary>
+            Configuration for Gossip Channels
+            </summary>
+        </member>
+        <member name="F:Orleans.Runtime.Configuration.GlobalConfiguration.GossipChannelType.NotSpecified">
+            <summary>Default value to allow discrimination of override values.</summary>
+        </member>
+        <member name="F:Orleans.Runtime.Configuration.GlobalConfiguration.GossipChannelType.AzureTable">
+            <summary>An Azure Table serving as a channel. </summary>
+        </member>
+        <member name="T:Orleans.Runtime.Configuration.GlobalConfiguration.GossipChannelConfiguration">
+            <summary>
+            Gossip channel configuration.
+            </summary>
+        </member>
         <member name="T:Orleans.Runtime.Configuration.GlobalConfiguration.DirectoryCachingStrategyType">
             <summary>
             Configuration type that controls the type of the grain directory caching algorithm that silo use.
@@ -834,6 +850,36 @@
         <member name="P:Orleans.Runtime.Configuration.GlobalConfiguration.DeploymentId">
             <summary>
             Deployment Id.
+            </summary>
+        </member>
+        <member name="P:Orleans.Runtime.Configuration.GlobalConfiguration.HasMultiClusterNetwork">
+            <summary>
+            Whether this cluster is configured to be part of a multicluster network
+            </summary>
+        </member>
+        <member name="P:Orleans.Runtime.Configuration.GlobalConfiguration.ClusterId">
+            <summary>
+            Cluster id (one per deployment, unique across all the deployments/clusters)
+            </summary>
+        </member>
+        <member name="P:Orleans.Runtime.Configuration.GlobalConfiguration.DefaultMultiCluster">
+             <summary>
+            A list of cluster ids, to be used if no multicluster configuration is found in gossip channels.
+             </summary>
+        </member>
+        <member name="P:Orleans.Runtime.Configuration.GlobalConfiguration.MaxMultiClusterGateways">
+            <summary>
+            The maximum number of silos per cluster should be designated to serve as gateways.
+            </summary>
+        </member>
+        <member name="P:Orleans.Runtime.Configuration.GlobalConfiguration.BackgroundGossipInterval">
+            <summary>
+            The number of seconds between background gossips.
+            </summary>
+        </member>
+        <member name="P:Orleans.Runtime.Configuration.GlobalConfiguration.GossipChannels">
+            <summary>
+            A list of connection strings for gossip channels.
             </summary>
         </member>
         <member name="P:Orleans.Runtime.Configuration.GlobalConfiguration.DataConnectionString">
@@ -1551,6 +1597,29 @@
             <param name="exception">The exception to log. May be null.</param>
             <param name="eventCode">Numeric event code for this log entry. May be zero, meaning 'Unspecified'.</param>
         </member>
+        <member name="M:Orleans.Runtime.IMultiClusterGossipService.Publish(Orleans.Runtime.IMultiClusterGossipData,System.Boolean)">
+            <summary>
+            One-way small-scale gossip: send partial data to recipient
+            </summary>
+            <param name="data">The gossip data</param>
+            <param name="forwardLocally">Whether to forward the changes to local silos</param>
+            <returns></returns>
+        </member>
+        <member name="M:Orleans.Runtime.IMultiClusterGossipService.Synchronize(Orleans.Runtime.IMultiClusterGossipData)">
+            <summary>
+            Two-way bulk gossip: send all known data to recipient, and receive all unknown data
+            </summary>
+            <param name="gossipData">The pushed gossip data</param>
+            <returns>The returned gossip data</returns>
+        </member>
+        <member name="M:Orleans.Runtime.IMultiClusterGossipService.FindLaggingSilos(Orleans.MultiCluster.MultiClusterConfiguration,System.Boolean)">
+            <summary>
+            Find silos whose configuration does not match the expected configuration.
+            </summary>
+            <param name="expected">the configuration to compare with</param>
+            <param name="forwardLocally">whether to recursively include all silos in the same cluster</param>
+            <returns></returns>
+        </member>
         <member name="T:Orleans.Runtime.IRuntimeClient">
             <summary>
             The IRuntimeClient interface defines a subset of the runtime API that is exposed to both silo and client.
@@ -1862,6 +1931,14 @@
             or by default data for all current and previous silo instances [including those in Joining or Dead status].</param>
             <returns></returns>
         </member>
+        <member name="M:Orleans.Runtime.IManagementGrain.GetDetailedHosts(System.Boolean)">
+            <summary>
+            Get the list of silo hosts and membership information currently known about in this cluster.
+            </summary>
+            <param name="onlyActive">Whether data on just current active silos should be returned, 
+            or by default data for all current and previous silo instances [including those in Joining or Dead status].</param>
+            <returns></returns>
+        </member>
         <member name="M:Orleans.Runtime.IManagementGrain.SetSystemLogLevel(Orleans.Runtime.SiloAddress[],System.Int32)">
             <summary>
             Set the current log level for system runtime components.
@@ -1993,6 +2070,34 @@
             </summary>
             <param name="hostsIds">List of silos this command is to be sent to.</param>
             <returns></returns>
+        </member>
+        <member name="M:Orleans.Runtime.IManagementGrain.GetMultiClusterGateways">
+            <summary>
+            Get the current list of multicluster gateways.
+            </summary>
+            <returns>A list of the currently known gateways</returns>
+        </member>
+        <member name="M:Orleans.Runtime.IManagementGrain.GetMultiClusterConfiguration">
+            <summary>
+            Get the current multicluster configuration.
+            </summary>
+            <returns>The current multicluster configuration, or null if there is none</returns>
+        </member>
+        <member name="M:Orleans.Runtime.IManagementGrain.FindLaggingSilos">
+            <summary>
+            Contact all silos in all clusters and return silos that do not have the latest multi-cluster configuration. 
+            If some clusters and/or silos cannot be reached, an exception is thrown.
+            </summary>
+            <returns>A list of silo addresses of silos that do not have the latest configuration</returns>
+        </member>
+        <member name="M:Orleans.Runtime.IManagementGrain.InjectMultiClusterConfiguration(System.Collections.Generic.IEnumerable{System.String},System.String,System.Boolean)">
+            <summary>
+            Configure the active multi-cluster, by injecting a multicluster configuration.
+            </summary>
+            <param name="clusters">the clusters that should be part of the active configuration</param>
+            <param name="comment">a comment to store alongside the configuration</param>
+            <param name="checkForLaggingSilosFirst">if true, checks that all clusters are reachable and up-to-date before injecting the new configuration</param>
+            <returns> The task completes once information has propagated to the gossip channels</returns>
         </member>
         <member name="M:Orleans.Runtime.IMembershipService.SiloStatusChangeNotification(Orleans.Runtime.SiloAddress,Orleans.Runtime.SiloStatus)">
             <summary>
@@ -3705,6 +3810,33 @@
             <summary>
             </summary>
         </member>
+        <member name="T:Orleans.BatchWorker">
+            <summary>
+            General pattern for an asynchronous worker that performs a work task, when notified,
+            to service queued work. Each work cycle handles ALL the queued work. 
+            If new work arrives during a work cycle, another cycle is scheduled. 
+            The worker never executes more than one instance of the work cycle at a time, 
+            and consumes no resources when idle. It uses TaskScheduler.Current 
+            to schedule the work cycles.
+            </summary>
+        </member>
+        <member name="M:Orleans.BatchWorker.Notify">
+            <summary>
+            Notify the worker that there is more work.
+            </summary>
+        </member>
+        <member name="M:Orleans.BatchWorker.IsIdle">
+            <summary>
+            Check if this worker is busy.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Orleans.BatchWorker.WaitForCurrentWorkToBeServiced">
+            <summary>
+            Wait for the current work cycle, and also the next work cycle if there is currently unserviced work.
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:Orleans.AsyncSerialExecutor">
             <summary>
             A utility class that provides serial execution of async functions.
@@ -3896,6 +4028,51 @@
         <member name="P:Orleans.TaskDone.Done">
             <summary>
             A special 'Done' Task that is already in the RunToCompletion state
+            </summary>
+        </member>
+        <member name="T:Orleans.MultiCluster.GatewayStatus">
+            <summary>
+            Multicluster Gateways are either active (silo is a gateway), 
+            or Inactive (silo is not a gateway)
+            </summary>
+        </member>
+        <member name="T:Orleans.MultiCluster.IMultiClusterGatewayInfo">
+            <summary>
+            Information about multicluster gateways
+            </summary>
+        </member>
+        <member name="T:Orleans.MultiCluster.MultiClusterConfiguration">
+            <summary>
+            Multicluster configuration, as injected by user, and stored/transmitted in the multicluster network.
+            </summary>
+        </member>
+        <member name="P:Orleans.MultiCluster.MultiClusterConfiguration.AdminTimestamp">
+            <summary>
+            The UTC timestamp of this configuration. 
+            New configurations are injected by administrator.
+            Newer configurations automatically replace older ones in the multicluster network.
+            </summary>
+        </member>
+        <member name="P:Orleans.MultiCluster.MultiClusterConfiguration.Clusters">
+            <summary>
+            List of clusters that are joined to the multicluster.
+            </summary>
+        </member>
+        <member name="P:Orleans.MultiCluster.MultiClusterConfiguration.Comment">
+            <summary>
+            A comment included by the administrator.
+            </summary>
+        </member>
+        <member name="T:Orleans.MultiCluster.RegistrationAttribute">
+            <summary>
+            base class for multi cluster registration strategies.
+            </summary>
+        </member>
+        <member name="T:Orleans.MultiCluster.OneInstancePerClusterAttribute">
+            <summary>
+            This attribute indicates that instances of the marked grain class
+            will have an independent instance for each cluster with 
+            no coordination. 
             </summary>
         </member>
         <member name="T:Orleans.CodeGeneration.CodeGeneratorManager">
@@ -7242,18 +7419,6 @@
         <member name="M:Orleans.OutsideRuntimeClient.Reconnect">
             <summary>
             For testing only.
-            </summary>
-        </member>
-        <member name="T:Orleans.MultiCluster.RegistrationAttribute">
-            <summary>
-            base class for multi cluster registration strategies.
-            </summary>
-        </member>
-        <member name="T:Orleans.MultiCluster.OneInstancePerClusterAttribute">
-            <summary>
-            This attribute indicates that instances of the marked grain class
-            will have an independent instance for each cluster with 
-            no coordination. 
             </summary>
         </member>
         <member name="T:Orleans.Placement.PlacementAttribute">

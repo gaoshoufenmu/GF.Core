@@ -52,6 +52,7 @@
               itself and return to the pool.
             </summary>
             <param name="poolSize"></param>
+            <param name="factoryFunc"></param>
         </member>
         <member name="T:Orleans.Providers.Streams.Common.FixedSizeBuffer">
             <summary>
@@ -177,6 +178,7 @@
             </summary>
             <param name="queueMessage"></param>
             <param name="dequeueTimeUtc"></param>
+            <param name="streamPosition"></param>
             <returns></returns>
         </member>
         <member name="T:Orleans.Providers.Streams.Common.ObjectPool`1">
@@ -309,13 +311,19 @@
             <summary> Logger used by this storage provider instance. </summary>
             <see cref="P:Orleans.Storage.IStorageProvider.Log"/>
         </member>
+        <member name="M:Orleans.Storage.MemoryStorage.#ctor">
+            <summary> Default constructor. </summary>
+        </member>
+        <member name="M:Orleans.Storage.MemoryStorage.#ctor(System.Int32)">
+            <summary> Constructor - use the specificed number of store grains. </summary>
+            <param name="numStoreGrains">Number of store grains to use.</param>
+        </member>
         <member name="M:Orleans.Storage.MemoryStorage.Init(System.String,Orleans.Providers.IProviderRuntime,Orleans.Providers.IProviderConfiguration)">
             <summary> Initialization function for this storage provider. </summary>
             <see cref="M:Orleans.Providers.IProvider.Init(System.String,Orleans.Providers.IProviderRuntime,Orleans.Providers.IProviderConfiguration)"/>
         </member>
         <member name="M:Orleans.Storage.MemoryStorage.Close">
             <summary> Shutdown function for this storage provider. </summary>
-            <see cref="!:IStorageProvider.Close"/>
         </member>
         <member name="M:Orleans.Storage.MemoryStorage.ReadStateAsync(System.String,Orleans.Runtime.GrainReference,Orleans.IGrainState)">
             <summary> Read state data function for this storage provider. </summary>
@@ -351,6 +359,28 @@
             </code>
             </example>
         </member>
+        <member name="M:Orleans.Storage.MemoryStorageWithLatency.#ctor">
+            <summary> Default constructor. </summary>
+        </member>
+        <member name="M:Orleans.Storage.MemoryStorageWithLatency.Init(System.String,Orleans.Providers.IProviderRuntime,Orleans.Providers.IProviderConfiguration)">
+            <summary> Initialization function for this storage provider. </summary>
+            <see cref="M:Orleans.Providers.IProvider.Init(System.String,Orleans.Providers.IProviderRuntime,Orleans.Providers.IProviderConfiguration)"/>
+        </member>
+        <member name="M:Orleans.Storage.MemoryStorageWithLatency.Close">
+            <summary> Shutdown function for this storage provider. </summary>
+        </member>
+        <member name="M:Orleans.Storage.MemoryStorageWithLatency.ReadStateAsync(System.String,Orleans.Runtime.GrainReference,Orleans.IGrainState)">
+            <summary> Read state data function for this storage provider. </summary>
+            <see cref="M:Orleans.Storage.IStorageProvider.ReadStateAsync(System.String,Orleans.Runtime.GrainReference,Orleans.IGrainState)"/>
+        </member>
+        <member name="M:Orleans.Storage.MemoryStorageWithLatency.WriteStateAsync(System.String,Orleans.Runtime.GrainReference,Orleans.IGrainState)">
+            <summary> Write state data function for this storage provider. </summary>
+            <see cref="M:Orleans.Storage.IStorageProvider.WriteStateAsync(System.String,Orleans.Runtime.GrainReference,Orleans.IGrainState)"/>
+        </member>
+        <member name="M:Orleans.Storage.MemoryStorageWithLatency.ClearStateAsync(System.String,Orleans.Runtime.GrainReference,Orleans.IGrainState)">
+            <summary> Delete / Clear state data function for this storage provider. </summary>
+            <see cref="M:Orleans.Storage.IStorageProvider.ClearStateAsync(System.String,Orleans.Runtime.GrainReference,Orleans.IGrainState)"/>
+        </member>
         <member name="T:Orleans.Storage.ShardedStorageProvider">
             <summary>
             Simple storage provider for writing grain state data shared across a number of other storage providers.
@@ -367,8 +397,7 @@
             is bridged over to the appropriate underlying provider for execution.
             </para>
             <para>
-            <see cref="!:Http://en.wikipedia.org/wiki/Jenkins_hash"/> for more information 
-            about the Jenkins Hash function.
+            See http://en.wikipedia.org/wiki/Jenkins_hash for more information about the Jenkins Hash function.
             </para>
             </remarks>
             <example>
@@ -414,7 +443,6 @@
         </member>
         <member name="M:Orleans.Storage.ShardedStorageProvider.Close">
             <summary> Shutdown function for this storage provider. </summary>
-            <see cref="!:IStorageProvider.Close"/>
         </member>
         <member name="M:Orleans.Storage.ShardedStorageProvider.ReadStateAsync(System.String,Orleans.Runtime.GrainReference,Orleans.IGrainState)">
             <summary> Read state data function for this storage provider. </summary>

@@ -4,6 +4,32 @@
         <name>OrleansAzureUtils</name>
     </assembly>
     <members>
+        <member name="T:Orleans.Runtime.MultiClusterNetwork.AzureTableBasedGossipChannel">
+            <summary>
+            An implementation of a gossip channel based on a standard Orleans Azure table.
+            Multiple gossip networks can use the same table, and are separated by partition key = GlobalServiceId
+            </summary>
+        </member>
+        <member name="T:Orleans.Runtime.MultiClusterNetwork.GossipTableEntry">
+            <summary>
+            Low level representation details and functionality for Azure-Table-Based Gossip Channels
+            </summary>
+        </member>
+        <member name="M:Orleans.Runtime.MultiClusterNetwork.GossipTableInstanceManager.TryUpdateTableEntryAsync(Orleans.Runtime.MultiClusterNetwork.GossipTableEntry,System.String,System.String)">
+            <summary>
+            Try once to conditionally update a data entry in the Azure table. Returns false if etag does not match.
+            </summary>
+        </member>
+        <member name="M:Orleans.Runtime.MultiClusterNetwork.GossipTableInstanceManager.TryCreateTableEntryAsync(Orleans.Runtime.MultiClusterNetwork.GossipTableEntry,System.String)">
+            <summary>
+            Try once to insert a new data entry in the Azure table. Returns false if there is a conflict.
+            </summary>       
+        </member>
+        <member name="M:Orleans.Runtime.MultiClusterNetwork.GossipTableInstanceManager.TryDeleteTableEntryAsync(Orleans.Runtime.MultiClusterNetwork.GossipTableEntry,System.String,System.String)">
+            <summary>
+            Try once to delete a data entry in the Azure table. Returns false if there is a conflict.
+            </summary>       
+        </member>
         <member name="T:Orleans.Runtime.Configuration.AzureConfigurationExtensions">
             <summary>
             Extension methods for configuration classes specific to OrleansAzureUtils.dll 
