@@ -1,8 +1,8 @@
-D:\work\_Git2\orleans\Binaries\Debug\Bootstrap\Orleans.SDK.targets
-D:\work\_Git2\orleans\Binaries\Debug\Bootstrap\Configuration\OrleansConfiguration.xsd
-D:\work\_Git2\orleans\Binaries\Debug\Bootstrap\Intermediate\Orleans.dll
-D:\work\_Git2\orleans\Binaries\Debug\Bootstrap\Intermediate\Orleans.pdb
-D:\work\_Git2\orleans\Binaries\Debug\Bootstrap\Orleans.dll
-D:\work\_Git2\orleans\Binaries\Debug\Bootstrap\Orleans.pdb
-D:\work\_Git2\orleans\Binaries\Debug\Bootstrap\Orleans.XML
-D:\work\_Git2\orleans\Binaries\Debug\Bootstrap\Intermediate\Orleans.csprojResolveAssemblyReference.cache
+G:\_Git\orleans\Binaries\Debug\Bootstrap\Orleans.SDK.targets
+G:\_Git\orleans\Binaries\Debug\Bootstrap\Configuration\OrleansConfiguration.xsd
+G:\_Git\orleans\Binaries\Debug\Bootstrap\Intermediate\Orleans.dll
+G:\_Git\orleans\Binaries\Debug\Bootstrap\Intermediate\Orleans.pdb
+G:\_Git\orleans\Binaries\Debug\Bootstrap\Orleans.dll
+G:\_Git\orleans\Binaries\Debug\Bootstrap\Orleans.pdb
+G:\_Git\orleans\Binaries\Debug\Bootstrap\Orleans.XML
+G:\_Git\orleans\Binaries\Debug\Bootstrap\Intermediate\Orleans.csprojResolveAssemblyReference.cache

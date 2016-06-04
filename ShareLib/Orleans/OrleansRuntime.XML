@@ -21,7 +21,7 @@
         </member>
         <member name="T:Orleans.Runtime.GrainCreator">
             <summary>
-            Helper classes used to create local instances of grains.
+            Helper classe used to create local instances of grains.
             </summary>
         </member>
         <member name="M:Orleans.Runtime.GrainCreator.#ctor(Orleans.Runtime.IGrainRuntime,System.IServiceProvider)">
@@ -32,6 +32,14 @@
             <param name="services">(Optional) Service provider used to create new grains</param>
         </member>
         <member name="M:Orleans.Runtime.GrainCreator.CreateGrainInstance(System.Type,Orleans.Core.IGrainIdentity)">
+            <summary>
+            Create a new instance of a grain
+            </summary>
+            <param name="grainType"></param>
+            <param name="identity">Identity for the new grain</param>
+            <returns></returns>
+        </member>
+        <member name="M:Orleans.Runtime.GrainCreator.CreateGrainInstance(System.Type,Orleans.Core.IGrainIdentity,System.Type,Orleans.Storage.IStorageProvider)">
             <summary>
             Create a new instance of a grain
             </summary>

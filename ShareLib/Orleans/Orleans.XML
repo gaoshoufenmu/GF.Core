@@ -3948,12 +3948,12 @@
             </summary>
             <returns>A completed task.</returns>
         </member>
-        <member name="T:Orleans.PublicOrleansTaskExtentions">
+        <member name="T:Orleans.PublicOrleansTaskExtensions">
             <summary>
-            Utility functions for dealing with Task's.
+            Utility functions for dealing with Tasks.
             </summary>
         </member>
-        <member name="M:Orleans.PublicOrleansTaskExtentions.Ignore(System.Threading.Tasks.Task)">
+        <member name="M:Orleans.PublicOrleansTaskExtensions.Ignore(System.Threading.Tasks.Task)">
             <summary>
             Observes and ignores a potential exception on a given Task.
             If a Task fails and throws an exception which is never observed, it will be caught by the .NET finalizer thread.
@@ -3962,44 +3962,32 @@
             </summary>
             <param name="task">The task to be ignored.</param>
         </member>
-        <member name="M:Orleans.PublicOrleansTaskExtentions.Box(System.Threading.Tasks.Task)">
+        <member name="M:Orleans.PublicOrleansTaskExtensions.Box(System.Threading.Tasks.Task)">
             <summary>
             Returns a <see cref="T:System.Threading.Tasks.Task`1"/> for the provided <see cref="T:System.Threading.Tasks.Task"/>.
             </summary>
-            <param name="task">
-            The task.
-            </param>
-            <returns>
-            The response.
-            </returns>
+            <param name="task">The task.</param>
         </member>
-        <member name="M:Orleans.PublicOrleansTaskExtentions.Box``1(System.Threading.Tasks.Task{``0})">
+        <member name="M:Orleans.PublicOrleansTaskExtensions.Box``1(System.Threading.Tasks.Task{``0})">
             <summary>
             Returns a <see cref="T:System.Threading.Tasks.Task`1"/> for the provided <see cref="T:System.Threading.Tasks.Task`1"/>.
             </summary>
-            <typeparam name="T">
-            The underlying type of <paramref name="task"/>.
-            </typeparam>
-            <param name="task">
-            The task.
-            </param>
-            <returns>
-            The response.
-            </returns>
+            <typeparam name="T">The underlying type of <paramref name="task"/>.</typeparam>
+            <param name="task">The task.</param>
         </member>
-        <member name="M:Orleans.PublicOrleansTaskExtentions.Box(System.Threading.Tasks.Task{System.Object})">
+        <member name="M:Orleans.PublicOrleansTaskExtensions.Unbox``1(System.Threading.Tasks.Task{System.Object})">
             <summary>
             Returns a <see cref="T:System.Threading.Tasks.Task`1"/> for the provided <see cref="T:System.Threading.Tasks.Task`1"/>.
             </summary>
-            <typeparam name="object">
-            The underlying type of <paramref name="task"/>.
-            </typeparam>
-            <param name="task">
-            The task.
-            </param>
-            <returns>
-            The response.
-            </returns>
+            <typeparam name="T">The underlying type of <paramref name="task"/>.</typeparam>
+            <param name="task">The task.</param>
+        </member>
+        <member name="M:Orleans.PublicOrleansTaskExtensions.Box(System.Threading.Tasks.Task{System.Object})">
+            <summary>
+            Returns a <see cref="T:System.Threading.Tasks.Task`1"/> for the provided <see cref="T:System.Threading.Tasks.Task`1"/>.
+            </summary>
+            <typeparam name="object">The underlying type of <paramref name="task"/>.</typeparam>
+            <param name="task">The task.</param>
         </member>
         <member name="M:Orleans.OrleansTaskExtentions.WithTimeout(System.Threading.Tasks.Task,System.TimeSpan)">
             <summary>
